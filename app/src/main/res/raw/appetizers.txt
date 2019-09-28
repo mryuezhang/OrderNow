@@ -1,0 +1,4 @@
+Spinach,3.5
+Sambuza,1.5
+Bajia,1
+Xalwo(500g),5
