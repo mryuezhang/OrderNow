@@ -4,26 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
-import com.yue.ordernow.list.OrderListAdapter
 import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.utils.currencyFormat
 import kotlinx.android.synthetic.main.activity_order.*
-import kotlinx.android.synthetic.main.content_order.*
 
 
-class OrderActivity : AppCompatActivity() {
-
-    companion object {
-        fun getStartActivityIntent(context: Context) =
-            Intent(context, OrderActivity::class.java)
-    }
+class OrderActivity : AppCompatActivity(),
+    OrderListFragment.OnOrderListFragmentInteractionListener {
+    private val menuItems = HashMap<MainActivity.Companion.Category, ArrayList<MenuItem>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +26,13 @@ class OrderActivity : AppCompatActivity() {
         var total = 0.0F
 
         enumValues<MainActivity.Companion.Category>().forEach { category ->
-            intent.getParcelableArrayListExtra<MenuItem>(category.name).forEach { menuItem ->
+            menuItems[category] = intent.getParcelableArrayListExtra<MenuItem>(category.name)
+            menuItems[category]!!.forEach { menuItem ->
                 if (menuItem.orderCount > 0) {
-                    Log.i("FUCK", menuItem.toString())
                     orders.add(menuItem)
                     total += menuItem.totalAmount()
                 }
             }
-
         }
 
         if (orders.isEmpty()) {
@@ -54,12 +44,16 @@ class OrderActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, orderListFragment).commit()
         }
-
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
+                val intent = Intent()
+                enumValues<MainActivity.Companion.Category>().forEach { category ->
+                    intent.putParcelableArrayListExtra(category.name, menuItems[category])
+                }
+                setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true
             }
@@ -67,4 +61,21 @@ class OrderActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onOrderListFragmentInteraction() {
+
+        val noOrderFragment = NoOrderFragment()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, noOrderFragment).commit()
+
+        enumValues<MainActivity.Companion.Category>().forEach { category ->
+            menuItems[category]?.forEach { menuItem ->
+                menuItem.orderCount = 0
+            }
+        }
+    }
+
+    companion object {
+        fun getStartActivityIntent(context: Context) =
+            Intent(context, OrderActivity::class.java)
+    }
 }

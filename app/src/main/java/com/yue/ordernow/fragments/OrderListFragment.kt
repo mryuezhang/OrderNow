@@ -1,11 +1,11 @@
 package com.yue.ordernow.fragments
 
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
@@ -22,6 +22,7 @@ class OrderListFragment : Fragment() {
 
     private var orders: ArrayList<MenuItem>? = null
     private var totalAmount: Float? = null
+    private var listener: OnOrderListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +30,15 @@ class OrderListFragment : Fragment() {
             orders = it.getParcelableArrayList(ORDERS)
             totalAmount = it.getFloat(TOTAL_AMOUNT)
         }
+        setHasOptionsMenu(true)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? = inflater.inflate(R.layout.fragment_order_list, container, false)
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -48,6 +52,46 @@ class OrderListFragment : Fragment() {
         )
         order_list.adapter = OrderListAdapter(orders!!)
         total_amount.text = currencyFormat(totalAmount!!)
+    }
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnOrderListFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_order_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
+        R.id.action_clear -> {
+
+            // update recycler view
+            orders?.clear()
+            order_list.adapter?.notifyDataSetChanged()
+
+            // update text view
+            totalAmount = 0F
+            total_amount.text = currencyFormat(totalAmount!!)
+
+            // replace fragment
+            listener?.onOrderListFragmentInteraction()
+            true
+        }
+        R.id.action_send -> {
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    interface OnOrderListFragmentInteractionListener {
+        fun onOrderListFragmentInteraction()
     }
 
 

@@ -1,5 +1,7 @@
 package com.yue.ordernow.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.SparseArray
 import android.view.Menu
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
+private const val CONFIRM_ORDERS = 1000
 
 class MainActivity : AppCompatActivity() {
 
@@ -60,69 +63,33 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_confirm -> {
-                startOrderActivity()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.action_confirm -> {
+            startOrderActivity()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
     }
 
-    class MenuPageViewAdapter(
-        fm: FragmentManager,
-        private val menuItems: HashMap<Category, ArrayList<com.yue.ordernow.models.MenuItem>>
-    ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        private var registeredFragments = SparseArray<Fragment>()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CONFIRM_ORDERS) {
+            if (resultCode == Activity.RESULT_OK) {
+                enumValues<Category>().forEach { category ->
+                    menuItems[category] =
+                        data!!.getParcelableArrayListExtra<com.yue.ordernow.models.MenuItem>(
+                            category.name
+                        )
+                }
 
-//        override fun getItem(position: Int): Fragment {
-//            val f = MenuFragment()
-//            when (position) {
-//                0 -> f.items = menuItems[Category.Appetizer]!!
-//                1 -> f.items = menuItems[Category.Breakfast]!!
-//                2 -> f.items = menuItems[Category.Maindish]!!
-//                else -> f.items = menuItems[Category.Drink]!!
-//            }
-//            return f
-//        }
-
-        override fun getItem(position: Int): Fragment = when (position) {
-            0 -> MenuFragment.newInstance(menuItems[Category.Appetizer]!!)
-            1 -> MenuFragment.newInstance(menuItems[Category.Breakfast]!!)
-            2 -> MenuFragment.newInstance(menuItems[Category.Maindish]!!)
-            else -> MenuFragment.newInstance(menuItems[Category.Drink]!!)
+                (menuViewPager.adapter as MenuPageViewAdapter).menuItems = menuItems
+                menuViewPager.adapter?.notifyDataSetChanged()
+            }
         }
-
-        override fun getCount(): Int = 4
-
-        override fun getPageTitle(position: Int): CharSequence = when (position) {
-            0 -> "Appetizers"
-            1 -> "Breakfast"
-            2 -> "Maindishes"
-            else -> "Drinks"
-        }
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val fragment = super.instantiateItem(container, position) as Fragment
-            registeredFragments.put(position, fragment)
-            return fragment
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            registeredFragments.remove(position)
-            super.destroyItem(container, position, `object`)
-        }
-
-        fun getRegisteredFragment(position: Int): Fragment = registeredFragments.get(position)
     }
 
     private fun getMenuItemsFromFile(id: Int): ArrayList<com.yue.ordernow.models.MenuItem> {
@@ -154,6 +121,44 @@ class MainActivity : AppCompatActivity() {
             orderActivityIntent.putParcelableArrayListExtra(category.name, menuItems[category])
         }
 
-        startActivity(orderActivityIntent)
+        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
+    }
+
+    private class MenuPageViewAdapter(
+        fm: FragmentManager,
+        var menuItems: HashMap<Category, ArrayList<com.yue.ordernow.models.MenuItem>>
+    ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        private var registeredFragments = SparseArray<Fragment>()
+
+        override fun getItem(position: Int): Fragment = when (position) {
+            0 -> MenuFragment.newInstance(menuItems[Category.Appetizer]!!)
+            1 -> MenuFragment.newInstance(menuItems[Category.Breakfast]!!)
+            2 -> MenuFragment.newInstance(menuItems[Category.Maindish]!!)
+            else -> MenuFragment.newInstance(menuItems[Category.Drink]!!)
+        }
+
+        override fun getCount(): Int = 4
+
+        override fun getPageTitle(position: Int): CharSequence = when (position) {
+            0 -> "Appetizers"
+            1 -> "Breakfast"
+            2 -> "Maindishes"
+            else -> "Drinks"
+        }
+
+        override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val fragment = super.instantiateItem(container, position) as Fragment
+            registeredFragments.put(position, fragment)
+            return fragment
+        }
+
+        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+            registeredFragments.remove(position)
+            super.destroyItem(container, position, `object`)
+        }
+
+        override fun getItemPosition(`object`: Any): Int {
+            return POSITION_NONE
+        }
     }
 }

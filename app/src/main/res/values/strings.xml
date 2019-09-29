@@ -4,6 +4,8 @@
     <string name="subtract">subtract</string>
 
     <string name="action_confirm">Confirm</string>
+    <string name="action_clear_orders">Clear</string>
+    <string name="action_send_orders">Send</string>
 
     <string name="max_order">999</string>
     <string name="max_amount">9999.99</string>
