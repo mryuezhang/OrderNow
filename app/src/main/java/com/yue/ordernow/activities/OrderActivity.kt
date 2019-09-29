@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
+import com.yue.ordernow.fragments.NoOrderFragment
+import com.yue.ordernow.fragments.OrderListFragment
 import com.yue.ordernow.list.OrderListAdapter
 import com.yue.ordernow.models.MenuItem
 import com.yue.ordernow.utils.currencyFormat
@@ -43,10 +45,16 @@ class OrderActivity : AppCompatActivity() {
 
         }
 
-        orderList.layoutManager = LinearLayoutManager(this)
-        orderList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        orderList.adapter = OrderListAdapter(orders)
-        totalAmount.text = currencyFormat(total)
+        if (orders.isEmpty()) {
+            val noOrderFragment = NoOrderFragment()
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, noOrderFragment).commit()
+        } else {
+            val orderListFragment = OrderListFragment.newInstance(orders, total)
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, orderListFragment).commit()
+        }
+
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {

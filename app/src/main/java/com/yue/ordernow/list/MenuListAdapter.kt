@@ -37,7 +37,7 @@ class MenuListAdapter(private val itemList: ArrayList<MenuItem>) :
             }
         }
 
-        holder.orderCountEditText.doOnTextChanged { text, start, count, after ->
+        holder.orderCountEditText.doOnTextChanged { text, _, _, _ ->
             if (text.toString() != "") {
                 val numericValue = text.toString().toInt()
                 if (numericValue in 0..999) {

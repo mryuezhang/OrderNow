@@ -1,7 +1,5 @@
 package com.yue.ordernow.activities
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.SparseArray
 import android.view.Menu
@@ -86,11 +84,22 @@ class MainActivity : AppCompatActivity() {
     ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
         private var registeredFragments = SparseArray<Fragment>()
 
+//        override fun getItem(position: Int): Fragment {
+//            val f = MenuFragment()
+//            when (position) {
+//                0 -> f.items = menuItems[Category.Appetizer]!!
+//                1 -> f.items = menuItems[Category.Breakfast]!!
+//                2 -> f.items = menuItems[Category.Maindish]!!
+//                else -> f.items = menuItems[Category.Drink]!!
+//            }
+//            return f
+//        }
+
         override fun getItem(position: Int): Fragment = when (position) {
-            0 -> MenuFragment(menuItems[Category.Appetizer]!!)
-            1 -> MenuFragment(menuItems[Category.Breakfast]!!)
-            2 -> MenuFragment(menuItems[Category.Maindish]!!)
-            else -> MenuFragment(menuItems[Category.Drink]!!)
+            0 -> MenuFragment.newInstance(menuItems[Category.Appetizer]!!)
+            1 -> MenuFragment.newInstance(menuItems[Category.Breakfast]!!)
+            2 -> MenuFragment.newInstance(menuItems[Category.Maindish]!!)
+            else -> MenuFragment.newInstance(menuItems[Category.Drink]!!)
         }
 
         override fun getCount(): Int = 4

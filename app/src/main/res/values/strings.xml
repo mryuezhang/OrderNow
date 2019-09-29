@@ -2,7 +2,13 @@
     <string name="app_name">OrderNow</string>
     <string name="add">add</string>
     <string name="subtract">subtract</string>
+
     <string name="action_confirm">Confirm</string>
+
     <string name="max_order">999</string>
     <string name="max_amount">9999.99</string>
+    <string name="max_item_name">Item Name</string>
+
+
+    <string name="no_order_text">No order yet</string>
 </resources>
