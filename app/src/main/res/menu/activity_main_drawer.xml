@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_restaurant_menu"
+            android:icon="@drawable/ic_restaurant_menu"
+            android:title="@string/menu_restaurant_menu" />
+        <item
+            android:id="@+id/nav_order_history"
+            android:icon="@drawable/ic_history"
+            android:title="@string/menu_order_history" />
+    </group>
+
+</menu>

@@ -1,65 +1,38 @@
 package com.yue.ordernow.activities
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.SparseArray
 import android.view.Menu
-import android.view.MenuItem
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 import com.yue.ordernow.R
-import com.yue.ordernow.fragments.MenuFragment
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import java.io.BufferedReader
-import java.io.InputStreamReader
-
-private const val CONFIRM_ORDERS = 1000
+import kotlinx.android.synthetic.main.app_bar_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val menuItems = HashMap<Category, ArrayList<com.yue.ordernow.models.MenuItem>>()
-
-    companion object {
-        enum class Category {
-            Appetizer,
-            Breakfast,
-            Maindish,
-            Drink
-        }
-    }
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        if (savedInstanceState == null) {
-            menuItems[Category.Appetizer] = getMenuItemsFromFile(R.raw.appetizers)
-            menuItems[Category.Breakfast] = getMenuItemsFromFile(R.raw.breakfast)
-            menuItems[Category.Maindish] = getMenuItemsFromFile(R.raw.maindishes)
-            menuItems[Category.Drink] = getMenuItemsFromFile(R.raw.drinks)
-        } else {
-            enumValues<Category>().forEach { category ->
-                menuItems[category] = savedInstanceState.getParcelableArrayList(category.name)!!
-            }
-        }
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val navController = findNavController(R.id.nav_host_fragment)
 
-        val menuPageViewAdapter = MenuPageViewAdapter(supportFragmentManager, menuItems)
-        menuViewPager.adapter = menuPageViewAdapter
-        tablayout.setupWithViewPager(menuViewPager)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-
-        enumValues<Category>().forEach { category ->
-            outState.putParcelableArrayList(category.name, menuItems[category])
-        }
-        super.onSaveInstanceState(outState)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_restaurant_menu, R.id.nav_order_history
+            ), drawerLayout
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -67,98 +40,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        R.id.action_confirm -> {
-            startOrderActivity()
-            true
-        }
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         else -> super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CONFIRM_ORDERS) {
-            if (resultCode == Activity.RESULT_OK) {
-                enumValues<Category>().forEach { category ->
-                    menuItems[category] =
-                        data!!.getParcelableArrayListExtra<com.yue.ordernow.models.MenuItem>(
-                            category.name
-                        )
-                }
-
-                (menuViewPager.adapter as MenuPageViewAdapter).menuItems = menuItems
-                menuViewPager.adapter?.notifyDataSetChanged()
-            }
-        }
-    }
-
-    private fun getMenuItemsFromFile(id: Int): ArrayList<com.yue.ordernow.models.MenuItem> {
-
-        val items = ArrayList<com.yue.ordernow.models.MenuItem>()
-        val reader = BufferedReader(InputStreamReader(resources.openRawResource(id)))
-        var line = reader.readLine()
-        var tokens: List<String>
-
-        while (line != null) {
-            tokens = line.split(",")
-
-            try {
-                items.add(com.yue.ordernow.models.MenuItem(tokens[0], tokens[1].toFloat(), 0))
-            } catch (e: NumberFormatException) {
-                items.add(com.yue.ordernow.models.MenuItem(tokens[0], 0.0F, 0))
-            }
-
-            line = reader.readLine()
-        }
-
-        return items
-    }
-
-    private fun startOrderActivity() {
-        val orderActivityIntent = OrderActivity.getStartActivityIntent(this)
-
-        enumValues<Category>().forEach { category ->
-            orderActivityIntent.putParcelableArrayListExtra(category.name, menuItems[category])
-        }
-
-        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
-    }
-
-    private class MenuPageViewAdapter(
-        fm: FragmentManager,
-        var menuItems: HashMap<Category, ArrayList<com.yue.ordernow.models.MenuItem>>
-    ) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-        private var registeredFragments = SparseArray<Fragment>()
-
-        override fun getItem(position: Int): Fragment = when (position) {
-            0 -> MenuFragment.newInstance(menuItems[Category.Appetizer]!!)
-            1 -> MenuFragment.newInstance(menuItems[Category.Breakfast]!!)
-            2 -> MenuFragment.newInstance(menuItems[Category.Maindish]!!)
-            else -> MenuFragment.newInstance(menuItems[Category.Drink]!!)
-        }
-
-        override fun getCount(): Int = 4
-
-        override fun getPageTitle(position: Int): CharSequence = when (position) {
-            0 -> "Appetizers"
-            1 -> "Breakfast"
-            2 -> "Maindishes"
-            else -> "Drinks"
-        }
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            val fragment = super.instantiateItem(container, position) as Fragment
-            registeredFragments.put(position, fragment)
-            return fragment
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            registeredFragments.remove(position)
-            super.destroyItem(container, position, `object`)
-        }
-
-        override fun getItemPosition(`object`: Any): Int {
-            return POSITION_NONE
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

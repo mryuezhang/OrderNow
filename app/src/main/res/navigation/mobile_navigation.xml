@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_restaurant_menu">
+
+    <fragment
+        android:id="@+id/nav_restaurant_menu"
+        android:name="com.yue.ordernow.fragments.RestaurantMenuFragment"
+        android:label="@string/menu_restaurant_menu"
+        tools:layout="@layout/fragment_menu_options" />
+
+    <fragment
+        android:id="@+id/nav_order_history"
+        android:name="com.yue.ordernow.fragments.OrderHistoryFragment"
+        android:label="@string/menu_order_history"
+        tools:layout="@layout/fragment_order_history" />
+</navigation>
