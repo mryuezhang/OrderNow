@@ -4,6 +4,7 @@ package com.yue.ordernow.fragments
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.OrderActivity
 import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.fragment_restaurant_menu.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -105,9 +107,9 @@ class RestaurantMenuFragment : Fragment() {
             tokens = line.split(",")
 
             try {
-                items.add(MenuItem(tokens[0], tokens[1].toFloat(), 0))
+                items.add(MenuItem(tokens[0], tokens[1].toFloat()))
             } catch (e: NumberFormatException) {
-                items.add(MenuItem(tokens[0], 0.0F, 0))
+                items.add(MenuItem(tokens[0], 0.0F))
             }
 
             line = reader.readLine()
@@ -154,9 +156,25 @@ class RestaurantMenuFragment : Fragment() {
         }
     }
 
+    class OnOrderButtonClickListener(val item: MenuItem) : View.OnClickListener {
+        override fun onClick(p0: View?) {
+            val order = Order(item)
+            Log.i(tag, order.item.toString() + ", " + order.createTime)
+
+        }
+
+    }
+
+    class OnAddNoteButtonClickListener(val item: MenuItem) : View.OnClickListener {
+        override fun onClick(p0: View) {
+        }
+
+    }
+
     companion object {
 
         private const val ITEMS = "items"
+        private const val tag = "RestaurantMenuFragment"
 
         enum class Category {
             Appetizer,

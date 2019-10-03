@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/itemName"
+        android:id="@+id/item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemName" />
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
     <TextView
         android:id="@+id/orderCount"
@@ -54,7 +54,7 @@
         android:text="@string/max_amount"
         android:textAlignment="textEnd"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/itemName"
+        app:layout_constraintEnd_toEndOf="@+id/item_name"
         app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <TextView

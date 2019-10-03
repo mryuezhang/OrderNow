@@ -1,17 +1,15 @@
 package com.yue.ordernow.list
 
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 
 class MenuListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    val itemNameTextView: TextView = view.findViewById(R.id.itemName)
+    val itemNameTextView: TextView = view.findViewById(R.id.item_name)
     val priceTextView: TextView = view.findViewById(R.id.price)
-    val addButton: ImageButton = view.findViewById(R.id.addButton)
-    val removeButton: ImageButton = view.findViewById(R.id.removeButton)
-    val orderCountEditText: EditText = view.findViewById(R.id.orderCount)
+    val orderButton: Button = view.findViewById(R.id.button_order)
+    val addNoteButton: Button = view.findViewById(R.id.button_add_note)
 }

@@ -29,12 +29,12 @@ class OrderActivity : AppCompatActivity(),
 
         enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
             menuItems[category] = intent.getParcelableArrayListExtra<MenuItem>(category.name)
-            menuItems[category]!!.forEach { menuItem ->
-                if (menuItem.orderCount > 0) {
-                    orders.add(menuItem)
-                    total += menuItem.totalAmount()
-                }
-            }
+//            menuItems[category]!!.forEach { menuItem ->
+//                if (menuItem.orderCount > 0) {
+//                    orders.add(menuItem)
+//                    total += menuItem.totalAmount()
+//                }
+//            }
         }
 
         if (orders.isEmpty()) {
@@ -69,11 +69,11 @@ class OrderActivity : AppCompatActivity(),
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, noOrderFragment).commit()
 
-        enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
-            menuItems[category]?.forEach { menuItem ->
-                menuItem.orderCount = 0
-            }
-        }
+//        enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
+//            menuItems[category]?.forEach { menuItem ->
+//                menuItem.orderCount = 0
+//            }
+//        }
     }
 
     companion object {
