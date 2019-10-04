@@ -3,7 +3,7 @@ package com.yue.ordernow.models
 import android.os.Parcel
 import android.os.Parcelable
 
-data class MenuItem(val name: String, val price: Float) : Parcelable {
+data class MenuItem(val name: String, var price: Float) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readFloat()

@@ -8,15 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yue.ordernow.R
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
-import com.yue.ordernow.fragments.RestaurantMenuFragment
-import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.activity_order.*
 
 
 class OrderActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
-    private val menuItems =
-        HashMap<RestaurantMenuFragment.Companion.Category, ArrayList<MenuItem>>()
+    private val orders = ArrayList<Order>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +22,11 @@ class OrderActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val orders = ArrayList<MenuItem>()
         var total = 0.0F
 
-        enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
-            menuItems[category] = intent.getParcelableArrayListExtra<MenuItem>(category.name)
-//            menuItems[category]!!.forEach { menuItem ->
-//                if (menuItem.orderCount > 0) {
-//                    orders.add(menuItem)
-//                    total += menuItem.totalAmount()
-//                }
-//            }
+        orders.addAll(intent.getParcelableArrayListExtra(ORDERS))
+        orders.forEach {
+            total += it.item.price
         }
 
         if (orders.isEmpty()) {
@@ -52,9 +44,7 @@ class OrderActivity : AppCompatActivity(),
         when (item.itemId) {
             android.R.id.home -> {
                 val intent = Intent()
-                enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
-                    intent.putParcelableArrayListExtra(category.name, menuItems[category])
-                }
+                intent.putParcelableArrayListExtra(ORDERS, orders)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true

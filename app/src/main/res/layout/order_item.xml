@@ -20,30 +20,17 @@
         app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Order Count:"
+        android:text="Amount:"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/amount"
         app:layout_constraintTop_toBottomOf="@+id/item_name" />
-
-    <TextView
-        android:id="@+id/orderCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxEms="2"
-        android:minEms="2"
-        android:text="@string/max_order"
-        android:textAlignment="textEnd"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/amount"
@@ -54,16 +41,7 @@
         android:text="@string/max_amount"
         android:textAlignment="textEnd"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/item_name"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="@+id/item_name" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/amount"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

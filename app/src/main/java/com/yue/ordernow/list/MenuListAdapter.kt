@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.yue.ordernow.AddNoteDialog
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.MainActivity
+import com.yue.ordernow.dialog.AddNoteDialog
 import com.yue.ordernow.models.MenuItem
 import com.yue.ordernow.models.Order
 import com.yue.ordernow.utils.currencyFormat
@@ -29,14 +29,15 @@ class MenuListAdapter(
         holder.priceTextView.text = currencyFormat(itemList[position].price)
         holder.orderButton.setOnClickListener {
             if (context is MainActivity) {
-                context.orders.add(Order(itemList[position]))
+                context.orders.add(Order(itemList[position], ""))
             } else {
                 throw IllegalArgumentException("context must be MainActivity")
             }
         }
 
         holder.addNoteButton.setOnClickListener {
-            AddNoteDialog(itemList[position]).show(context.supportFragmentManager, "")
+            AddNoteDialog(itemList[position].copy()) // MUST pass a copy here
+                .show(context.supportFragmentManager, "")
         }
     }
 }

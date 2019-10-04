@@ -2,7 +2,6 @@ package com.yue.ordernow.fragments
 
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
 import com.yue.ordernow.list.OrderListAdapter
-import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.models.Order
 import com.yue.ordernow.utils.currencyFormat
 import kotlinx.android.synthetic.main.fragment_order_list.*
 
@@ -20,7 +19,7 @@ private const val TOTAL_AMOUNT = "total_amount"
 
 class OrderListFragment : Fragment() {
 
-    private var orders: ArrayList<MenuItem>? = null
+    private var orders: ArrayList<Order>? = null
     private var totalAmount: Float? = null
     private var listener: OnOrderListFragmentInteractionListener? = null
 
@@ -69,7 +68,7 @@ class OrderListFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_clear -> {
 
             // update recycler view
@@ -98,7 +97,7 @@ class OrderListFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(orders: ArrayList<MenuItem>, totalAmount: Float) =
+        fun newInstance(orders: ArrayList<Order>, totalAmount: Float) =
             OrderListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ORDERS, orders)

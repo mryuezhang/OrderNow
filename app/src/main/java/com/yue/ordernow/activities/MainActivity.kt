@@ -1,7 +1,8 @@
 package com.yue.ordernow.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,13 +13,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.yue.ordernow.AddNoteDialog
 import com.yue.ordernow.R
-import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.dialog.AddNoteDialog
 import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 private const val CONFIRM_ORDERS = 1000
+const val ORDERS = "orders"
 
 class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
 
@@ -43,22 +44,15 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
         navView.setupWithNavController(navController)
     }
 
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == CONFIRM_ORDERS) {
-//            if (resultCode == Activity.RESULT_OK) {
-//                enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
-//                    menuItems[category] =
-//                        data!!.getParcelableArrayListExtra<MenuItem>(
-//                            category.name
-//                        )
-//                }
-//
-//                (menu_page.adapter as RestaurantMenuFragment.MenuPageViewAdapter).menuItems = menuItems
-//                menu_page.adapter?.notifyDataSetChanged()
-//            }
-//        }
-//    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CONFIRM_ORDERS) {
+            if (resultCode == Activity.RESULT_OK) {
+                orders.clear()
+                orders.addAll(data!!.getParcelableArrayListExtra(ORDERS))
+            }
+        }
+    }
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -68,9 +62,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-//            startOrderActivity()
-
-            Log.i("FUCK", orders.toString())
+            startOrderActivity()
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -81,17 +73,13 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, menuItem: MenuItem, note: String) {
-        orders.add(Order(menuItem, note))
+    override fun onDialogPositiveClick(dialog: DialogFragment, order: Order) {
+        orders.add(order)
     }
 
-//    private fun startOrderActivity() {
-//        val orderActivityIntent = OrderActivity.getStartActivityIntent(this)
-//
-//        enumValues<RestaurantMenuFragment.Companion.Category>().forEach { category ->
-//            orderActivityIntent.putParcelableArrayListExtra(category.name, orders[category])
-//        }
-//
-//        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
-//    }
+    private fun startOrderActivity() {
+        val orderActivityIntent = OrderActivity.getStartActivityIntent(this)
+        orderActivityIntent.putParcelableArrayListExtra(ORDERS, orders)
+        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
+    }
 }

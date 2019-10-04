@@ -7,6 +7,5 @@ import com.yue.ordernow.R
 
 class OrderListViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val itemName: TextView = view.findViewById(R.id.item_name)
-    val orderCount: TextView = view.findViewById(R.id.orderCount)
-    val totalAmount: TextView = view.findViewById(R.id.amount)
+    val price: TextView = view.findViewById(R.id.amount)
 }
