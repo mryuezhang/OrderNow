@@ -10,4 +10,8 @@ data class Order(val item: MenuItem) {
     constructor(item: MenuItem, note: String) : this(item) {
         this.note = note
     }
+
+    override fun toString(): String {
+        return "Order(item=$item, note=${note}, created at: ${createTime})"
+    }
 }

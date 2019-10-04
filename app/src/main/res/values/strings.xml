@@ -26,4 +26,11 @@
 
     <string name="menu_restaurant_menu">Menu</string>
     <string name="menu_order_history">History</string>
+
+    <string name="title_add_note">Add note to %1$s</string>
+    <string name="hint_add_note">Note</string>
+
+    <string name="add_note">Add note</string>
+    <string name="cancel">Cancel</string>
+    <string name="place_order">Order</string>
 </resources>

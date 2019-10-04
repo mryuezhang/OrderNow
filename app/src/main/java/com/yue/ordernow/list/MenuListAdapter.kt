@@ -2,13 +2,19 @@ package com.yue.ordernow.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.yue.ordernow.AddNoteDialog
 import com.yue.ordernow.R
-import com.yue.ordernow.fragments.RestaurantMenuFragment
+import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.models.Order
 import com.yue.ordernow.utils.currencyFormat
 
-class MenuListAdapter(private val itemList: ArrayList<MenuItem>) :
+class MenuListAdapter(
+    private val context: FragmentActivity,
+    private val itemList: ArrayList<MenuItem>
+) :
     RecyclerView.Adapter<MenuListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuListViewHolder {
@@ -21,15 +27,16 @@ class MenuListAdapter(private val itemList: ArrayList<MenuItem>) :
     override fun onBindViewHolder(holder: MenuListViewHolder, position: Int) {
         holder.itemNameTextView.text = itemList[position].name
         holder.priceTextView.text = currencyFormat(itemList[position].price)
-        holder.orderButton.setOnClickListener(
-            RestaurantMenuFragment.OnOrderButtonClickListener(
-                itemList[position]
-            )
-        )
-        holder.addNoteButton.setOnClickListener(
-            RestaurantMenuFragment.OnAddNoteButtonClickListener(
-                itemList[position]
-            )
-        )
+        holder.orderButton.setOnClickListener {
+            if (context is MainActivity) {
+                context.orders.add(Order(itemList[position]))
+            } else {
+                throw IllegalArgumentException("context must be MainActivity")
+            }
+        }
+
+        holder.addNoteButton.setOnClickListener {
+            AddNoteDialog(itemList[position]).show(context.supportFragmentManager, "")
+        }
     }
 }

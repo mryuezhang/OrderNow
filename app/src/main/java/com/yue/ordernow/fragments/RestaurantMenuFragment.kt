@@ -1,10 +1,7 @@
 package com.yue.ordernow.fragments
 
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -13,18 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.yue.ordernow.R
-import com.yue.ordernow.activities.OrderActivity
 import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.fragment_restaurant_menu.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-private const val CONFIRM_ORDERS = 1000
-
 class RestaurantMenuFragment : Fragment() {
 
     private val menuItems = HashMap<Category, ArrayList<MenuItem>>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,42 +52,6 @@ class RestaurantMenuFragment : Fragment() {
             outState.putParcelableArrayList(category.name, menuItems[category])
         }
         super.onSaveInstanceState(outState)
-    }
-
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
-        R.id.action_confirm -> {
-            startOrderActivity()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == CONFIRM_ORDERS) {
-            if (resultCode == Activity.RESULT_OK) {
-                enumValues<Category>().forEach { category ->
-                    menuItems[category] =
-                        data!!.getParcelableArrayListExtra<MenuItem>(
-                            category.name
-                        )
-                }
-
-                (menu_page.adapter as MenuPageViewAdapter).menuItems = menuItems
-                menu_page.adapter?.notifyDataSetChanged()
-            }
-        }
-    }
-
-
-    private fun startOrderActivity() {
-        val orderActivityIntent = OrderActivity.getStartActivityIntent(activity!!)
-
-        enumValues<Category>().forEach { category ->
-            orderActivityIntent.putParcelableArrayListExtra(category.name, menuItems[category])
-        }
-
-        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
     }
 
     private fun getMenuItemsFromFile(id: Int): ArrayList<MenuItem> {
@@ -154,21 +112,6 @@ class RestaurantMenuFragment : Fragment() {
         override fun getItemPosition(`object`: Any): Int {
             return POSITION_NONE
         }
-    }
-
-    class OnOrderButtonClickListener(val item: MenuItem) : View.OnClickListener {
-        override fun onClick(p0: View?) {
-            val order = Order(item)
-            Log.i(tag, order.item.toString() + ", " + order.createTime)
-
-        }
-
-    }
-
-    class OnAddNoteButtonClickListener(val item: MenuItem) : View.OnClickListener {
-        override fun onClick(p0: View) {
-        }
-
     }
 
     companion object {

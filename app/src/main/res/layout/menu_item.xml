@@ -42,33 +42,35 @@
             app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
         <Button
+
             android:id="@+id/button_order"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@null"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="8dp"
-            android:text="order"
+            android:text="@string/place_order"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/price"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/price" />
 
         <Button
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:id="@+id/button_add_note"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:background="@null"
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="8dp"
-            android:text="Add note"
+            android:text="@string/add_note"
             app:layout_constraintBottom_toBottomOf="@+id/button_order"
             app:layout_constraintStart_toEndOf="@+id/button_order"
             app:layout_constraintTop_toTopOf="@+id/button_order" />

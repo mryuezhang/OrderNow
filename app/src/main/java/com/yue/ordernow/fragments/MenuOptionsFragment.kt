@@ -33,7 +33,7 @@ class MenuOptionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        menu_options.adapter = MenuListAdapter(items)
+        menu_options.adapter = MenuListAdapter(activity!!, items)
     }
 
     companion object {
