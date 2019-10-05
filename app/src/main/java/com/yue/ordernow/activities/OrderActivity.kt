@@ -4,11 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.yue.ordernow.R
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
 import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import kotlinx.android.synthetic.main.activity_order.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,7 +18,7 @@ import kotlin.collections.ArrayList
 
 class OrderActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
-    private val orders = ArrayList<Order>()
+    private val orders = ArrayList<OrderItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +26,17 @@ class OrderActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var total = 0.0F
-
         orders.addAll(intent.getParcelableArrayListExtra(ORDERS))
+
+        // calculate subtotal, and total quantity
+        var subtotalAmount = 0.0F
+        var totalQuantity = 0
         orders.forEach {
-            total += it.item.price
+            subtotalAmount += it.item.price
+            totalQuantity += it.quantity
         }
+
+        // sort items in alphabetical order
         orders.sortWith(Comparator { t, t2 ->
             t.item.name.compareTo(t2.item.name)
         })
@@ -39,7 +46,7 @@ class OrderActivity : AppCompatActivity(),
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, noOrderFragment).commit()
         } else {
-            val orderListFragment = OrderListFragment.newInstance(orders, total)
+            val orderListFragment = OrderListFragment.newInstance(orders, subtotalAmount)
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, orderListFragment).commit()
         }
@@ -53,6 +60,10 @@ class OrderActivity : AppCompatActivity(),
                 setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true
+            }
+            R.id.action_send -> {
+                val order = Order(orders)
+                Log.i(tag, order.toString())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -74,5 +85,7 @@ class OrderActivity : AppCompatActivity(),
     companion object {
         fun getStartActivityIntent(context: Context) =
             Intent(context, OrderActivity::class.java)
+
+        private const val tag = "OrderActivity"
     }
 }

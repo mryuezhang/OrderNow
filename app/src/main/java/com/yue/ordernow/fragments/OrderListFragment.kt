@@ -9,24 +9,24 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
 import com.yue.ordernow.list.OrderListAdapter
-import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 import kotlinx.android.synthetic.main.fragment_order_list.*
 
-private const val ORDERS = "orders"
+private const val ORDERS = "orderItems"
 private const val TOTAL_AMOUNT = "total_amount"
 
 
 class OrderListFragment : Fragment() {
 
-    private var orders: ArrayList<Order>? = null
+    private var orderItems: ArrayList<OrderItem>? = null
     private var totalAmount: Float? = null
     private var listener: OnOrderListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            orders = it.getParcelableArrayList(ORDERS)
+            orderItems = it.getParcelableArrayList(ORDERS)
             totalAmount = it.getFloat(TOTAL_AMOUNT)
         }
         setHasOptionsMenu(true)
@@ -49,7 +49,7 @@ class OrderListFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-        order_list.adapter = OrderListAdapter(orders!!)
+        order_list.adapter = OrderListAdapter(orderItems!!)
         total_amount.text = currencyFormat(totalAmount!!)
     }
 
@@ -72,7 +72,7 @@ class OrderListFragment : Fragment() {
         R.id.action_clear -> {
 
             // update recycler view
-            orders?.clear()
+            orderItems?.clear()
             order_list.adapter?.notifyDataSetChanged()
 
             // update text view
@@ -97,10 +97,10 @@ class OrderListFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(orders: ArrayList<Order>, totalAmount: Float) =
+        fun newInstance(orderItems: ArrayList<OrderItem>, totalAmount: Float) =
             OrderListFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(ORDERS, orders)
+                    putParcelableArrayList(ORDERS, orderItems)
                     putFloat(TOTAL_AMOUNT, totalAmount)
                 }
             }

@@ -8,7 +8,7 @@ import com.yue.ordernow.R
 import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.dialog.AddNoteDialog
 import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 
 class MenuListAdapter(
@@ -29,7 +29,7 @@ class MenuListAdapter(
         holder.priceTextView.text = currencyFormat(itemList[position].price)
         holder.orderButton.setOnClickListener {
             if (context is MainActivity) {
-                context.addOrder(Order(itemList[position], 1, ""))
+                context.addOrder(OrderItem(itemList[position], 1, ""))
             } else {
                 throw IllegalArgumentException("context must be MainActivity")
             }

@@ -4,10 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
-import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 
-class OrderListAdapter(private val orders: ArrayList<Order>) :
+class OrderListAdapter(private val orderItems: ArrayList<OrderItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -15,7 +15,7 @@ class OrderListAdapter(private val orders: ArrayList<Order>) :
         const val TYPE_WITH_NOTE = 1
     }
 
-    override fun getItemViewType(position: Int): Int = when (orders[position].note) {
+    override fun getItemViewType(position: Int): Int = when (orderItems[position].note) {
         "" -> TYPE_WITHOUT_NOTE
         else -> TYPE_WITH_NOTE
     }
@@ -31,24 +31,24 @@ class OrderListAdapter(private val orders: ArrayList<Order>) :
             OrderWithNoteViewHolder(view)
         }
 
-    override fun getItemCount(): Int = orders.size
+    override fun getItemCount(): Int = orderItems.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is OrderWithoutNoteViewHolder -> {
-                holder.itemName.text = orders[position].item.name
-                holder.quantity.text = orders[position].quantity.toString()
-                holder.unitPrice.text = currencyFormat(orders[position].item.price)
+                holder.itemName.text = orderItems[position].item.name
+                holder.quantity.text = orderItems[position].quantity.toString()
+                holder.unitPrice.text = currencyFormat(orderItems[position].item.price)
                 holder.amount.text =
-                    currencyFormat(orders[position].item.price * orders[position].quantity)
+                    currencyFormat(orderItems[position].item.price * orderItems[position].quantity)
             }
             is OrderWithNoteViewHolder -> {
-                holder.itemName.text = orders[position].item.name
-                holder.quantity.text = orders[position].quantity.toString()
-                holder.unitPrice.text = currencyFormat(orders[position].item.price)
+                holder.itemName.text = orderItems[position].item.name
+                holder.quantity.text = orderItems[position].quantity.toString()
+                holder.unitPrice.text = currencyFormat(orderItems[position].item.price)
                 holder.amount.text =
-                    currencyFormat(orders[position].item.price * orders[position].quantity)
-                holder.note.text = orders[position].note
+                    currencyFormat(orderItems[position].item.price * orderItems[position].quantity)
+                holder.note.text = orderItems[position].note
             }
             else -> throw IllegalStateException("Unknown view holder type")
         }

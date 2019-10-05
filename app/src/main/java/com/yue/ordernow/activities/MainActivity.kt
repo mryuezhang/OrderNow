@@ -15,16 +15,16 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.yue.ordernow.R
 import com.yue.ordernow.dialog.AddNoteDialog
-import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 private const val CONFIRM_ORDERS = 1000
-const val ORDERS = "orders"
+const val ORDERS = "orderItems"
 
 class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    val orders = ArrayList<Order>()
+    val orderItems = ArrayList<OrderItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,8 +48,8 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CONFIRM_ORDERS) {
             if (resultCode == Activity.RESULT_OK) {
-                orders.clear()
-                orders.addAll(data!!.getParcelableArrayListExtra(ORDERS))
+                orderItems.clear()
+                orderItems.addAll(data!!.getParcelableArrayListExtra(ORDERS))
             }
         }
     }
@@ -73,26 +73,26 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun addOrder(order: Order) {
-        for (it in orders) {
-            if (it.item == order.item && it.note == order.note) {
+    fun addOrder(orderItem: OrderItem) {
+        for (it in orderItems) {
+            if (it.item == orderItem.item && it.note == orderItem.note) {
 
-                // combine the two orders
-                it.quantity += order.quantity
+                // combine the two orderItems
+                it.quantity += orderItem.quantity
                 return
             }
         }
 
-        orders.add(order)
+        orderItems.add(orderItem)
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, order: Order) {
-        addOrder(order)
+    override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
+        addOrder(orderItem)
     }
 
     private fun startOrderActivity() {
         val orderActivityIntent = OrderActivity.getStartActivityIntent(this)
-        orderActivityIntent.putParcelableArrayListExtra(ORDERS, orders)
+        orderActivityIntent.putParcelableArrayListExtra(ORDERS, orderItems)
         startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
     }
 }

@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.yue.ordernow.R
 import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.models.Order
+import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.CurrencyFormatInputFilter
 
 class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
@@ -23,7 +23,7 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
     interface AddNoteDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, order: Order)
+        fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem)
     }
 
     override fun onAttach(context: Context) {
@@ -74,7 +74,7 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
                     if (inputNote.text!!.isNotBlank() && inputNote.text!!.isNotEmpty()) {
                         listener.onDialogPositiveClick(
                             this,
-                            Order(
+                            OrderItem(
                                 menuItem,
                                 quantity.text.toString().toInt(),
                                 inputNote.text.toString()
@@ -83,7 +83,7 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
                     } else {
                         listener.onDialogPositiveClick(
                             this,
-                            Order(menuItem, quantity.text.toString().toInt(), "")
+                            OrderItem(menuItem, quantity.text.toString().toInt(), "")
                         )
                     }
                 }
