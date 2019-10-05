@@ -10,6 +10,8 @@ import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
 import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.activity_order.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OrderActivity : AppCompatActivity(),
@@ -28,6 +30,9 @@ class OrderActivity : AppCompatActivity(),
         orders.forEach {
             total += it.item.price
         }
+        orders.sortWith(Comparator { t, t2 ->
+            t.item.name.compareTo(t2.item.name)
+        })
 
         if (orders.isEmpty()) {
             val noOrderFragment = NoOrderFragment()

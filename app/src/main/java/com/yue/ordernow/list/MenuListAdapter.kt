@@ -29,7 +29,7 @@ class MenuListAdapter(
         holder.priceTextView.text = currencyFormat(itemList[position].price)
         holder.orderButton.setOnClickListener {
             if (context is MainActivity) {
-                context.orders.add(Order(itemList[position], ""))
+                context.addOrder(Order(itemList[position], 1, ""))
             } else {
                 throw IllegalArgumentException("context must be MainActivity")
             }

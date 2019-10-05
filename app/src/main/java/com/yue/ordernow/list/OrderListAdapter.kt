@@ -37,12 +37,18 @@ class OrderListAdapter(private val orders: ArrayList<Order>) :
         when (holder) {
             is OrderWithoutNoteViewHolder -> {
                 holder.itemName.text = orders[position].item.name
-                holder.price.text = currencyFormat(orders[position].item.price)
+                holder.quantity.text = orders[position].quantity.toString()
+                holder.unitPrice.text = currencyFormat(orders[position].item.price)
+                holder.amount.text =
+                    currencyFormat(orders[position].item.price * orders[position].quantity)
             }
             is OrderWithNoteViewHolder -> {
                 holder.itemName.text = orders[position].item.name
+                holder.quantity.text = orders[position].quantity.toString()
+                holder.unitPrice.text = currencyFormat(orders[position].item.price)
+                holder.amount.text =
+                    currencyFormat(orders[position].item.price * orders[position].quantity)
                 holder.note.text = orders[position].note
-                holder.price.text = currencyFormat(orders[position].item.price)
             }
             else -> throw IllegalStateException("Unknown view holder type")
         }

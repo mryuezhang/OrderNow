@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="88dp">
-
-    <TextView
-        android:id="@+id/note"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="note"
-        android:textAlignment="viewStart"
-        android:textSize="12sp"
-        app:firstBaselineToTopHeight="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/item_name"
-        app:layout_constraintStart_toStartOf="@+id/item_name"
-        app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
     <TextView
         android:id="@+id/item_name"
@@ -31,16 +20,86 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_width="56dp"
         android:layout_height="wrap_content"
-        android:maxEms="4"
-        android:minEms="4"
+        android:text="@string/quantity"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintStart_toStartOf="@+id/item_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/quantity"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
+        android:text="@string/max_order"
+        android:textAlignment="viewEnd"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="@string/unit_price"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintStart_toEndOf="@+id/quantity"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/unit_price"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
         android:text="@string/max_amount"
         android:textAlignment="viewEnd"
         android:textSize="12sp"
         app:firstBaselineToTopHeight="20dp"
-        app:layout_constraintEnd_toEndOf="@+id/note"
-        app:layout_constraintTop_toBottomOf="@+id/note" />
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:text="@string/unit_price"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/amount"
+        app:layout_constraintTop_toBottomOf="@+id/item_name"
+        tools:text="@string/amount" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="56dp"
+        android:layout_height="wrap_content"
+        android:text="@string/max_amount"
+        android:textAlignment="viewEnd"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/item_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_name" />
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_add_note"
+        android:textAlignment="viewStart"
+        android:textSize="12sp"
+        app:firstBaselineToTopHeight="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/item_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/item_name"
+        app:layout_constraintTop_toBottomOf="@+id/amount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

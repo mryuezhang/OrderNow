@@ -70,7 +70,7 @@
             android:minWidth="0dp"
             android:minHeight="0dp"
             android:padding="8dp"
-            android:text="@string/add_note"
+            android:text="@string/customize"
             app:layout_constraintBottom_toBottomOf="@+id/button_order"
             app:layout_constraintStart_toEndOf="@+id/button_order"
             app:layout_constraintTop_toTopOf="@+id/button_order" />

@@ -3,13 +3,16 @@ package com.yue.ordernow.dialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.InputFilter
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.yue.ordernow.R
 import com.yue.ordernow.models.MenuItem
 import com.yue.ordernow.models.Order
+import com.yue.ordernow.utils.CurrencyFormatInputFilter
 
 class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
 
@@ -37,13 +40,28 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
+        return activity?.let { it ->
             val builder = AlertDialog.Builder(it)
             val view = requireActivity().layoutInflater.inflate(R.layout.dialog_add_note, null)
             val title: TextView = view.findViewById(R.id.add_note_title)
             val inputNote: TextInputEditText = view.findViewById(R.id.input_note)
             val extraCost: TextInputEditText = view.findViewById(R.id.extra_cost)
+            val quantityLayout: TextInputLayout = view.findViewById(R.id.textInputLayout3)
+            val quantity: TextInputEditText = view.findViewById(R.id.quantity)
+
             title.text = getString(R.string.title_add_note, menuItem.name)
+
+            // max length has to be set here since the xml attribute is overridden by filters
+            extraCost.filters = arrayOf(CurrencyFormatInputFilter(), InputFilter.LengthFilter(7))
+
+            // add error check and error message for user-input quantity
+            quantity.setOnFocusChangeListener { _, _ ->
+                when (quantity.text.toString()) {
+                    "" -> quantityLayout.error = "quantity cannot be null"
+                    "0" -> quantityLayout.error = "quantity cannot be 0"
+                    else -> quantityLayout.error = ""
+                }
+            }
 
             // Inflate and set the layout for the dialog
             // Pass null as the parent view because its going in the dialog layout
@@ -56,12 +74,16 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
                     if (inputNote.text!!.isNotBlank() && inputNote.text!!.isNotEmpty()) {
                         listener.onDialogPositiveClick(
                             this,
-                            Order(menuItem, inputNote.text.toString())
+                            Order(
+                                menuItem,
+                                quantity.text.toString().toInt(),
+                                inputNote.text.toString()
+                            )
                         )
                     } else {
                         listener.onDialogPositiveClick(
                             this,
-                            Order(menuItem, "")
+                            Order(menuItem, quantity.text.toString().toInt(), "")
                         )
                     }
                 }

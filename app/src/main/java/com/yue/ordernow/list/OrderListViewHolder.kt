@@ -8,11 +8,15 @@ import com.yue.ordernow.R
 
 class OrderWithoutNoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val itemName: TextView = view.findViewById(R.id.item_name)
-    val price: TextView = view.findViewById(R.id.amount)
+    val quantity: TextView = view.findViewById(R.id.quantity)
+    val unitPrice: TextView = view.findViewById(R.id.unit_price)
+    val amount: TextView = view.findViewById(R.id.amount)
 }
 
 class OrderWithNoteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val itemName: TextView = view.findViewById(R.id.item_name)
+    val quantity: TextView = view.findViewById(R.id.quantity)
+    val unitPrice: TextView = view.findViewById(R.id.unit_price)
+    val amount: TextView = view.findViewById(R.id.amount)
     val note: TextView = view.findViewById(R.id.note)
-    val price: TextView = view.findViewById(R.id.amount)
 }

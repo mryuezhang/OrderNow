@@ -73,8 +73,21 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment, order: Order) {
+    fun addOrder(order: Order) {
+        for (it in orders) {
+            if (it.item == order.item && it.note == order.note) {
+
+                // combine the two orders
+                it.quantity += order.quantity
+                return
+            }
+        }
+
         orders.add(order)
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, order: Order) {
+        addOrder(order)
     }
 
     private fun startOrderActivity() {
