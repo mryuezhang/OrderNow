@@ -1,11 +1,13 @@
 package com.yue.ordernow.fragments
 
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.yue.ordernow.R
 import com.yue.ordernow.list.MenuListAdapter
 import com.yue.ordernow.models.MenuItem
@@ -33,6 +35,14 @@ class MenuOptionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            menu_options.layoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        } else {
+            menu_options.layoutManager =
+                StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+        }
+
         menu_options.adapter = MenuListAdapter(activity!!, items)
     }
 

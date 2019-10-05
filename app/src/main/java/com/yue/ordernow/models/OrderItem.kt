@@ -5,8 +5,6 @@ import android.os.Parcelable
 
 data class OrderItem(val item: MenuItem, var quantity: Int, val note: String) : Parcelable {
 
-    //val createTime = Calendar.getInstance().time.toString()
-
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(MenuItem::class.java.classLoader) as MenuItem,
         parcel.readInt(),

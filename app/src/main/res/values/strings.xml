@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">OrderNow</string>
+    <string name="preference_file">com.yue.ordernow.preference</string>
     <string name="add">add</string>
     <string name="subtract">subtract</string>
 
@@ -7,8 +8,8 @@
     <string name="action_clear_orders">Clear</string>
     <string name="action_send_orders">Send</string>
 
-    <string name="max_order">999</string>
-    <string name="max_amount">9999.99</string>
+    <string name="max_quantity">999</string>
+    <string name="max_amount">$9999.99</string>
     <string name="max_item_name">Item Name</string>
 
 

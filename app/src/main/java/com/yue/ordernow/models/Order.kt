@@ -1,9 +1,13 @@
 package com.yue.ordernow.models
 
+import androidx.room.Entity
 import java.util.*
 
+@Entity
 data class Order(val orderItems: ArrayList<OrderItem>) {
-    val timeCreated = Calendar.getInstance()
+    private val timeCreated: Calendar = Calendar.getInstance()
+    var subtotalAmount = 0.0F
+    var totalQuantity = 0
 
     var orderNumber: Int = if (timeCreated.get(Calendar.DAY_OF_MONTH) ==
         lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
@@ -17,7 +21,7 @@ data class Order(val orderItems: ArrayList<OrderItem>) {
     }
 
     override fun toString(): String =
-        "#${orderNumber}, created at ${timeCreated.time}, ${orderItems}"
+        "#${orderNumber}, created at ${timeCreated.time}, $orderItems"
 
     companion object {
         var lastOrderCreatedTime: Calendar? = null

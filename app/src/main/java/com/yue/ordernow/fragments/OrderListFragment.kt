@@ -20,14 +20,14 @@ private const val TOTAL_AMOUNT = "total_amount"
 class OrderListFragment : Fragment() {
 
     private var orderItems: ArrayList<OrderItem>? = null
-    private var totalAmount: Float? = null
+    private var subtotalAmount: Float? = null
     private var listener: OnOrderListFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             orderItems = it.getParcelableArrayList(ORDERS)
-            totalAmount = it.getFloat(TOTAL_AMOUNT)
+            subtotalAmount = it.getFloat(TOTAL_AMOUNT)
         }
         setHasOptionsMenu(true)
     }
@@ -50,7 +50,10 @@ class OrderListFragment : Fragment() {
             )
         )
         order_list.adapter = OrderListAdapter(orderItems!!)
-        total_amount.text = currencyFormat(totalAmount!!)
+        subtotal.text = currencyFormat(subtotalAmount!!)
+        tax.text =
+            currencyFormat(subtotalAmount!! * 0.13F) //TODO change hardcoded tax rate to something more flexible
+        total_amount.text = currencyFormat(subtotalAmount!! * 1.13F)
     }
 
 
@@ -76,8 +79,8 @@ class OrderListFragment : Fragment() {
             order_list.adapter?.notifyDataSetChanged()
 
             // update text view
-            totalAmount = 0F
-            total_amount.text = currencyFormat(totalAmount!!)
+            subtotalAmount = 0F
+            subtotal.text = currencyFormat(subtotalAmount!!)
 
             // replace fragment
             listener?.onOrderListFragmentInteraction()

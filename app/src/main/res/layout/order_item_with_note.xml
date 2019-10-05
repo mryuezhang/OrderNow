@@ -35,7 +35,7 @@
         android:id="@+id/quantity"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
-        android:text="@string/max_order"
+        android:text="@string/max_quantity"
         android:textAlignment="viewEnd"
         android:textSize="12sp"
         app:firstBaselineToTopHeight="20dp"
