@@ -1,0 +1,20 @@
+Spinach,3.5
+Sambuza,1.5
+Bajia,1
+Xalwo(500g),5
+Beef Liver,9.99
+Fasuliyad Beans,6.99
+Muqmad,9.99
+Oodkac,9.99
+Soft Drinks,1.25
+Mango Shake,4
+Somali Tea,1
+Somali Coffee,1.5
+Grapefruit,1
+Lamb Shank,15.99
+Beef Suqaar,12.99
+Chicken Suqaar,12.99
+Salmon,14.99
+King Fish,14.50
+Wasalad,17.99
+Lamb,13.99

@@ -10,8 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.yue.ordernow.R
-import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.models.OrderItem
+import com.yue.ordernow.data.MenuItem
+import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.utils.CurrencyFormatInputFilter
 
 class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {

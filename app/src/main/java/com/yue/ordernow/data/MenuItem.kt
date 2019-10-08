@@ -1,9 +1,23 @@
-package com.yue.ordernow.models
+package com.yue.ordernow.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class MenuItem(val name: String, var price: Float) : Parcelable {
+@Entity(tableName = "menu-items")
+data class MenuItem(
+    @ColumnInfo(name = "name")
+    val name: String,
+    @ColumnInfo(name = "price")
+    var price: Float
+) : Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    var menuItemId: Long = 0
+
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readFloat()

@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
+import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.list.OrderListAdapter
-import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 import kotlinx.android.synthetic.main.fragment_order_list.*
 

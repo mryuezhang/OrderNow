@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -45,5 +48,15 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.1.0'
     implementation 'androidx.room:room-runtime:2.1.0'
+    implementation "androidx.work:work-runtime-ktx:2.2.0"
     annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    implementation "androidx.room:room-ktx:2.1.0"
+
+    // Testing dependencies
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    // Extensions = ViewModel + LiveData
+    kapt "androidx.room:room-compiler:2.1.0"
+    implementation "android.arch.lifecycle:extensions:1.1.1"
+    implementation "android.arch.persistence.room:runtime:1.1.1"
 }

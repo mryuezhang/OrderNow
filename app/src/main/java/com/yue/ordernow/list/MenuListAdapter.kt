@@ -6,9 +6,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.MainActivity
+import com.yue.ordernow.data.MenuItem
+import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.dialog.AddNoteDialog
-import com.yue.ordernow.models.MenuItem
-import com.yue.ordernow.models.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 
 class MenuListAdapter(

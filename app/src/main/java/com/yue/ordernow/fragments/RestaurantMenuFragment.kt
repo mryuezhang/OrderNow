@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.yue.ordernow.R
-import com.yue.ordernow.models.MenuItem
+import com.yue.ordernow.data.MenuItem
 import kotlinx.android.synthetic.main.fragment_restaurant_menu.*
 import java.io.BufferedReader
 import java.io.InputStreamReader

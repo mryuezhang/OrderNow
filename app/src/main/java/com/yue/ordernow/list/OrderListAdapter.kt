@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
-import com.yue.ordernow.models.OrderItem
+import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.utils.currencyFormat
 
 class OrderListAdapter(private val orderItems: ArrayList<OrderItem>) :

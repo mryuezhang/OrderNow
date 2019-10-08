@@ -14,8 +14,8 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.yue.ordernow.R
+import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.dialog.AddNoteDialog
-import com.yue.ordernow.models.OrderItem
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 private const val CONFIRM_ORDERS = 1000

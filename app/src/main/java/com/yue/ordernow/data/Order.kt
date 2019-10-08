@@ -1,4 +1,4 @@
-package com.yue.ordernow.models
+package com.yue.ordernow.data
 
 import androidx.room.Entity
 import java.util.*

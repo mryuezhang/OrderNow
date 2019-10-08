@@ -7,9 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.yue.ordernow.R
+import com.yue.ordernow.data.Order
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
-import com.yue.ordernow.models.Order
 import kotlinx.android.synthetic.main.activity_order.*
 import java.util.*
 
