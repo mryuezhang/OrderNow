@@ -1,80 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardPreventCornerOverlap="true"
-    app:cardUseCompatPadding="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="menuItem"
+            type="com.yue.ordernow.data.MenuItem" />
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
 
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:ellipsize="end"
-            android:lines="1"
-            android:singleLine="true"
-            android:text="Item Name"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textSize="24sp"
-            app:autoSizeMaxTextSize="24sp"
-            app:autoSizeMinTextSize="14sp"
-            app:autoSizeStepGranularity="2sp"
-            app:autoSizeTextType="uniform"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:singleLine="true"
-            android:text="@string/max_amount"
-            android:textAlignment="viewStart"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/item_name"
-            app:layout_constraintTop_toBottomOf="@+id/item_name" />
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:singleLine="true"
+                android:text="Item Name"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="24sp"
+                app:autoSizeMaxTextSize="24sp"
+                app:autoSizeMinTextSize="14sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:singleLine="true"
+                android:text="@string/max_amount"
+                android:textAlignment="viewStart"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="@+id/item_name"
+                app:layout_constraintTop_toBottomOf="@+id/item_name" />
 
-            android:id="@+id/button_order"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:padding="8dp"
-            android:text="@string/place_order"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price" />
+            <Button
 
-        <Button
-            android:id="@+id/button_add_note"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:padding="8dp"
-            android:text="@string/customize"
-            app:layout_constraintBottom_toBottomOf="@+id/button_order"
-            app:layout_constraintStart_toEndOf="@+id/button_order"
-            app:layout_constraintTop_toTopOf="@+id/button_order" />
+                android:id="@+id/button_order"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="8dp"
+                android:text="@string/place_order"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/button_add_note"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:padding="8dp"
+                android:text="@string/customize"
+                app:layout_constraintBottom_toBottomOf="@+id/button_order"
+                app:layout_constraintStart_toEndOf="@+id/button_order"
+                app:layout_constraintTop_toTopOf="@+id/button_order" />
 
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

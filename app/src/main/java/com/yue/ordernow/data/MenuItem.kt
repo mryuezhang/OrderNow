@@ -11,7 +11,9 @@ data class MenuItem(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "price")
-    var price: Float
+    var price: Float,
+    @ColumnInfo(name = "category")
+    var category: String
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
@@ -20,12 +22,14 @@ data class MenuItem(
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
-        parcel.readFloat()
+        parcel.readFloat(),
+        parcel.readString()!!
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeFloat(price)
+        parcel.writeString(category)
     }
 
     override fun describeContents(): Int {

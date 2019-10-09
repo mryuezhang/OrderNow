@@ -1,5 +1,5 @@
-Soft Drinks,1.25
-Mango Shake,4
-Somali Tea,1
-Somali Coffee,1.5
-Grapefruit,1
+Soft Drinks,1.25,drink
+Mango Shake,4,drink
+Somali Tea,1,drink
+Somali Coffee,1.5,drink
+Grapefruit,1,drink

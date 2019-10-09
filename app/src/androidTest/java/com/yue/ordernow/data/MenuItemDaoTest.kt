@@ -3,7 +3,7 @@ package com.yue.ordernow.data
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
-import com.google.samples.apps.sunflower.utilities.getValue
+import com.yue.ordernow.utils.getValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers
 import org.junit.*
@@ -11,9 +11,9 @@ import org.junit.*
 class MenuItemDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var menuItemDao: MenuItemDao
-    private val burger = MenuItem("burger", 15.00F)
-    private val pizza = MenuItem("pizza", 12.00F)
-    private val wings = MenuItem("pizza", 8.00F)
+    private val burger = MenuItem("burger", 15.00F, "main")
+    private val pizza = MenuItem("pizza", 12.00F, "main")
+    private val wings = MenuItem("wings", 8.00F, "appetizer")
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -42,5 +42,16 @@ class MenuItemDaoTest {
         Assert.assertThat(menuItemList[0], Matchers.equalTo(burger))
         Assert.assertThat(menuItemList[1], Matchers.equalTo(pizza))
         Assert.assertThat(menuItemList[2], Matchers.equalTo(wings))
+
+        // Get only mains
+        val mainList = getValue(menuItemDao.getMains())
+        Assert.assertThat(mainList.size, Matchers.equalTo(2))
+        Assert.assertThat(mainList[0], Matchers.equalTo(burger))
+        Assert.assertThat(mainList[1], Matchers.equalTo(pizza))
+
+        // Get only appetizers
+        val appetizerList = getValue(menuItemDao.getAppetizers())
+        Assert.assertThat(appetizerList.size, Matchers.equalTo(1))
+        Assert.assertThat(appetizerList[0], Matchers.equalTo(wings))
     }
 }

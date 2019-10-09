@@ -9,8 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.yue.ordernow.R
 import com.yue.ordernow.data.MenuItem
+import com.yue.ordernow.utils.*
+import com.yue.ordernow.viewModels.RestaurantMenuViewModel
 import kotlinx.android.synthetic.main.fragment_restaurant_menu.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -19,6 +23,9 @@ class RestaurantMenuFragment : Fragment() {
 
     private val menuItems = HashMap<Category, ArrayList<MenuItem>>()
 
+    private val viewModel: RestaurantMenuViewModel by viewModels {
+        InjectorUtils.provideRestaurantMenuViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,17 +37,33 @@ class RestaurantMenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        // Either load menu items from previous saved state or file resource
-        if (savedInstanceState == null) {
-            menuItems[Category.Appetizer] = getMenuItemsFromFile(R.raw.appetizers)
-            menuItems[Category.Breakfast] = getMenuItemsFromFile(R.raw.breakfast)
-            menuItems[Category.Maindish] = getMenuItemsFromFile(R.raw.maindishes)
-            menuItems[Category.Drink] = getMenuItemsFromFile(R.raw.drinks)
-        } else {
-            enumValues<Category>().forEach { category ->
-                menuItems[category] = savedInstanceState.getParcelableArrayList(category.name)!!
-            }
-        }
+//        // Either load menu items from previous saved state or file resource
+//        if (savedInstanceState == null) {
+//            menuItems[Category.Appetizer] = getMenuItemsFromFile(R.raw.appetizers)
+//            menuItems[Category.Breakfast] = getMenuItemsFromFile(R.raw.breakfast)
+//            menuItems[Category.Maindish] = getMenuItemsFromFile(R.raw.maindishes)
+//            menuItems[Category.Drink] = getMenuItemsFromFile(R.raw.drinks)
+//        } else {
+//            enumValues<Category>().forEach { category ->
+//                menuItems[category] = savedInstanceState.getParcelableArrayList(category.name)!!
+//            }
+//        }
+
+        viewModel.menuItemRepository.getAppetizers().observe(viewLifecycleOwner, Observer {
+            menuItems[Category.Appetizer] = it as ArrayList<MenuItem>
+        })
+        viewModel.menuItemRepository.getBreakfasts().observe(viewLifecycleOwner, Observer {
+            menuItems[Category.Breakfast] = it as ArrayList<MenuItem>
+        })
+
+        viewModel.menuItemRepository.getMains().observe(viewLifecycleOwner, Observer {
+            menuItems[Category.Maindish] = it as ArrayList<MenuItem>
+        })
+
+        viewModel.menuItemRepository.getDrinks().observe(viewLifecycleOwner, Observer {
+            menuItems[Category.Drink] = it as ArrayList<MenuItem>
+        })
+
 
         val menuPageViewAdapter = MenuPageViewAdapter(childFragmentManager, menuItems)
         menu_page.adapter = menuPageViewAdapter
@@ -65,9 +88,9 @@ class RestaurantMenuFragment : Fragment() {
             tokens = line.split(",")
 
             try {
-                items.add(MenuItem(tokens[0], tokens[1].toFloat()))
+                items.add(MenuItem(tokens[0], tokens[1].toFloat(), tokens[2]))
             } catch (e: NumberFormatException) {
-                items.add(MenuItem(tokens[0], 0.0F))
+                items.add(MenuItem(tokens[0], 0.0F, tokens[2]))
             }
 
             line = reader.readLine()
@@ -92,10 +115,10 @@ class RestaurantMenuFragment : Fragment() {
         override fun getCount(): Int = 4
 
         override fun getPageTitle(position: Int): CharSequence = when (position) {
-            0 -> "Appetizers"
-            1 -> "Breakfast"
-            2 -> "Maindishes"
-            else -> "Drinks"
+            0 -> APPETIZER
+            1 -> BREAKFAST
+            2 -> MAIN
+            else -> DRINK
         }
 
         override fun instantiateItem(container: ViewGroup, position: Int): Any {

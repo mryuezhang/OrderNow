@@ -1,7 +1,7 @@
-Lamb Shank,15.99
-Beef Suqaar,12.99
-Chicken Suqaar,12.99
-Salmon,14.99
-King Fish,14.50
-Wasalad,17.99
-Lamb,13.99
+Lamb Shank,15.99,main
+Beef Suqaar,12.99,main
+Chicken Suqaar,12.99,main
+Salmon,14.99,main
+King Fish,14.50,main
+Wasalad,17.99,main
+Lamb,13.99,main

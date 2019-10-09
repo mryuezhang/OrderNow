@@ -40,13 +40,16 @@ class DataBaseWorker(
             tokens = line.split(",")
 
             try {
-                items.add(MenuItem(tokens[0], tokens[1].toFloat()))
+                if (tokens[2] != "main")
+                    items.add(MenuItem(tokens[0], tokens[1].toFloat(), tokens[2]))
             } catch (e: NumberFormatException) {
-                items.add(MenuItem(tokens[0], 0.0F))
+                items.add(MenuItem(tokens[0], 0.0F, tokens[2]))
             }
 
             line = reader.readLine()
         }
+
+        Log.i(TAG, items.toString())
 
         return items
     }

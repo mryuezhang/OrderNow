@@ -1,4 +1,4 @@
-Spinach,3.5
-Sambuza,1.5
-Bajia,1
-Xalwo(500g),5
+Spinach,3.5,appetizer
+Sambuza,1.5,appetizer
+Bajia,1,appetizer
+Xalwo(500g),5,appetizer
