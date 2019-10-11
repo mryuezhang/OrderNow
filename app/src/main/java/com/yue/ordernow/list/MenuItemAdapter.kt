@@ -2,18 +2,19 @@ package com.yue.ordernow.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.data.MenuItem
-import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.MenuItemBinding
-import com.yue.ordernow.dialog.AddNoteDialog
 
-class MenuItemAdapter(val activity: FragmentActivity) :
+class MenuItemAdapter(private val listener: MenuItemListener) :
     ListAdapter<MenuItem, RecyclerView.ViewHolder>(MenuItemDiffCallback()) {
+
+    interface MenuItemListener {
+        fun onOrderButtonClick(menuItem: MenuItem?)
+        fun onCustomizeButtonClick(menuItem: MenuItem?)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         MenuItemViewHolder(
@@ -33,16 +34,11 @@ class MenuItemAdapter(val activity: FragmentActivity) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setOrderButtonOnClickListener {
-                if (activity is MainActivity) {
-                    activity.addOrder(OrderItem(binding.menuItem!!, 1, ""))
-                } else {
-                    throw IllegalArgumentException("context must be MainActivity")
-                }
+                listener.onOrderButtonClick(binding.menuItem)
             }
 
             binding.setCustomizeButtonOnclickListener {
-                AddNoteDialog(binding.menuItem!!.copy()) // MUST pass a copy here
-                    .show(activity.supportFragmentManager, "")
+                listener.onCustomizeButtonClick(binding.menuItem)
             }
         }
 

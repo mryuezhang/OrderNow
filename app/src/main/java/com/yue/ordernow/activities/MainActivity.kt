@@ -14,14 +14,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.yue.ordernow.R
+import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.dialog.AddNoteDialog
+import com.yue.ordernow.list.MenuItemAdapter
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 private const val CONFIRM_ORDERS = 1000
 const val ORDERS = "orderItems"
 
-class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
+class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
+    MenuItemAdapter.MenuItemListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     val orderItems = ArrayList<OrderItem>()
@@ -88,6 +91,20 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener {
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
+    }
+
+
+    override fun onOrderButtonClick(menuItem: MenuItem?) {
+        menuItem?.let {
+            addOrder(OrderItem(it, 1, ""))
+        }
+    }
+
+    override fun onCustomizeButtonClick(menuItem: MenuItem?) {
+        menuItem?.let {
+            AddNoteDialog(it.copy()) // MUST pass a copy here
+                .show(supportFragmentManager, "")
+        }
     }
 
     private fun startOrderActivity() {

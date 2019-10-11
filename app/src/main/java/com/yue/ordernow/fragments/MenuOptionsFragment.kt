@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.databinding.FragmentMenuOptionsBinding
 import com.yue.ordernow.list.MenuItemAdapter
 import com.yue.ordernow.utils.InjectorUtils
@@ -41,7 +42,7 @@ class MenuOptionsFragment : Fragment() {
         val binding = FragmentMenuOptionsBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        val adapter = MenuItemAdapter(activity!!)
+        val adapter = MenuItemAdapter(activity as MainActivity)
         binding.menuOptions.adapter = adapter
         subscribeUi(adapter)
 
