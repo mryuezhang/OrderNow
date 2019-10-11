@@ -21,6 +21,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
@@ -54,11 +56,11 @@
                 android:layout_marginTop="8dp"
                 android:singleLine="true"
                 android:text="@{menuItem.getFormattedPrice()}"
-                tool:text="@string/max_amount"
                 android:textAlignment="viewStart"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/item_name"
-                app:layout_constraintTop_toBottomOf="@+id/item_name" />
+                app:layout_constraintTop_toBottomOf="@+id/item_name"
+                tool:text="@string/max_amount" />
 
             <Button
 
