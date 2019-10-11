@@ -38,15 +38,14 @@
                 android:lines="1"
                 android:singleLine="true"
                 android:text="@{menuItem.name}"
-                tool:text="Item Name"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="24sp"
                 app:autoSizeMaxTextSize="24sp"
                 app:autoSizeMinTextSize="14sp"
                 app:autoSizeStepGranularity="2sp"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tool:text="Item Name" />
 
             <TextView
                 android:id="@+id/price"
@@ -64,35 +63,33 @@
             <Button
 
                 android:id="@+id/button_order"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{orderButtonOnClickListener}"
                 android:padding="8dp"
                 android:text="@string/place_order"
                 android:textSize="14sp"
-                android:onClick="@{orderButtonOnClickListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price" />
 
             <Button
                 android:id="@+id/button_add_note"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:onClick="@{customizeButtonOnclickListener}"
                 android:padding="8dp"
                 android:text="@string/customize"
-                android:onClick="@{customizeButtonOnclickListener}"
                 app:layout_constraintBottom_toBottomOf="@+id/button_order"
                 app:layout_constraintStart_toEndOf="@+id/button_order"
                 app:layout_constraintTop_toTopOf="@+id/button_order" />
