@@ -42,7 +42,6 @@ class MenuItemAdapter(private val listener: MenuItemListener) :
             }
         }
 
-
         fun bind(item: MenuItem) {
             binding.apply {
                 menuItem = item

@@ -13,17 +13,20 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
-import com.yue.ordernow.dialog.AddNoteDialog
+import com.yue.ordernow.fragments.AddNoteDialogFragment
 import com.yue.ordernow.list.MenuItemAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+
 
 private const val CONFIRM_ORDERS = 1000
 const val ORDERS = "orderItems"
 
-class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
+class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogListener,
     MenuItemAdapter.MenuItemListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -76,7 +79,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun addOrder(orderItem: OrderItem) {
+    private fun addOrder(orderItem: OrderItem) {
         for (it in orderItems) {
             if (it.item == orderItem.item && it.note == orderItem.note) {
 
@@ -91,18 +94,28 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
-    }
 
+        if (orderItem.quantity == 1) {
+            Snackbar.make(drawer_layout, "Item has been added to order", Snackbar.LENGTH_SHORT)
+                .show()
+        } else {
+            Snackbar.make(drawer_layout, "Items have been added to order", Snackbar.LENGTH_SHORT)
+                .show()
+        }
+    }
 
     override fun onOrderButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
             addOrder(OrderItem(it, 1, ""))
+
+            Snackbar.make(drawer_layout, "Item has been added to order", Snackbar.LENGTH_SHORT)
+                .show()
         }
     }
 
     override fun onCustomizeButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
-            AddNoteDialog(it.copy()) // MUST pass a copy here
+            AddNoteDialogFragment(it.copy()) // MUST pass a copy here
                 .show(supportFragmentManager, "")
         }
     }
@@ -112,4 +125,5 @@ class MainActivity : AppCompatActivity(), AddNoteDialog.AddNoteDialogListener,
         orderActivityIntent.putParcelableArrayListExtra(ORDERS, orderItems)
         startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
     }
+
 }

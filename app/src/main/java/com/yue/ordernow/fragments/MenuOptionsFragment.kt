@@ -2,7 +2,6 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,6 @@ class MenuOptionsFragment : Fragment() {
 
     private fun subscribeUi(adapter: MenuItemAdapter) {
         viewModel.menuItems.observe(viewLifecycleOwner, Observer {
-            Log.i("FUCK", it.toString())
             adapter.submitList(it)
         })
     }

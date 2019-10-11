@@ -1,9 +1,11 @@
-package com.yue.ordernow.dialog
+package com.yue.ordernow.fragments
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
@@ -14,7 +16,8 @@ import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.utils.CurrencyFormatInputFilter
 
-class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
+
+class AddNoteDialogFragment(private val menuItem: MenuItem) : DialogFragment() {
 
     // Use this instance of the interface to deliver action events
     private lateinit var listener: AddNoteDialogListener
@@ -96,4 +99,9 @@ class AddNoteDialog(private val menuItem: MenuItem) : DialogFragment() {
         } ?: throw IllegalStateException("Activity cannot be null")
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        // hide soft keyboard
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        super.onDismiss(dialog)
+    }
 }
