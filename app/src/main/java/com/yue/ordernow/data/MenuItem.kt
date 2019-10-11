@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yue.ordernow.utils.currencyFormat
 
 @Entity(tableName = "menu-items")
 data class MenuItem(
@@ -13,12 +14,14 @@ data class MenuItem(
     @ColumnInfo(name = "price")
     var price: Float,
     @ColumnInfo(name = "category")
-    var category: String
+    val category: String
 ) : Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var menuItemId: Long = 0
+
+    fun getFormattedPrice(): String = currencyFormat(price)
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,

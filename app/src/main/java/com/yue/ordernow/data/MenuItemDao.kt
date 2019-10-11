@@ -16,7 +16,7 @@ interface MenuItemDao {
     @Query("SELECT * FROM `menu-items` ORDER BY name")
     fun getItems(): LiveData<List<MenuItem>>
 
-    @Query("SELECT * FROM `menu-items` WHERE category ='$MAIN' ORDER BY name")
+    @Query("SELECT * FROM `menu-items` WHERE category = '$MAIN' ORDER BY name")
     fun getMains(): LiveData<List<MenuItem>>
 
     @Query("SELECT * FROM `menu-items` WHERE category = '$APPETIZER' ORDER BY name")

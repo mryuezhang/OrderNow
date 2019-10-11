@@ -4,7 +4,6 @@ import android.text.InputFilter
 import android.text.Spanned
 import java.util.regex.Pattern
 
-
 fun currencyFormat(rawInput: Float): String = String.format("$%.2f", rawInput)
 
 class CurrencyFormatInputFilter : InputFilter {

@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <data>
 
+        <variable
+            name="orderButtonOnClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="customizeButtonOnclickListener"
+            type="android.view.View.OnClickListener" />
         <variable
             name="menuItem"
             type="com.yue.ordernow.data.MenuItem" />
@@ -29,7 +37,8 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:singleLine="true"
-                android:text="Item Name"
+                android:text="@{menuItem.name}"
+                tool:text="Item Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textSize="24sp"
                 app:autoSizeMaxTextSize="24sp"
@@ -45,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:singleLine="true"
-                android:text="@string/max_amount"
+                android:text="@{menuItem.getFormattedPrice()}"
+                tool:text="@string/max_amount"
                 android:textAlignment="viewStart"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="@+id/item_name"
@@ -66,6 +76,7 @@
                 android:padding="8dp"
                 android:text="@string/place_order"
                 android:textSize="14sp"
+                android:onClick="@{orderButtonOnClickListener}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price" />
@@ -81,6 +92,7 @@
                 android:minHeight="0dp"
                 android:padding="8dp"
                 android:text="@string/customize"
+                android:onClick="@{customizeButtonOnclickListener}"
                 app:layout_constraintBottom_toBottomOf="@+id/button_order"
                 app:layout_constraintStart_toEndOf="@+id/button_order"
                 app:layout_constraintTop_toTopOf="@+id/button_order" />

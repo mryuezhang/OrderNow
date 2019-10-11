@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yue.ordernow.data.MenuItemRepository
 
-
-class RestaurantMenuViewModelFactory(
-    private val repository: MenuItemRepository
+class MenuOptionsViewModelFactory(
+    private val repository: MenuItemRepository,
+    private val category: String
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        RestaurantMenuViewModel(repository) as T
+        MenuOptionsViewModel(repository, category) as T
 }

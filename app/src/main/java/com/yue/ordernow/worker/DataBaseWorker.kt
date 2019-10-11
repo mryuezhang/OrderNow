@@ -40,8 +40,7 @@ class DataBaseWorker(
             tokens = line.split(",")
 
             try {
-                if (tokens[2] != "main")
-                    items.add(MenuItem(tokens[0], tokens[1].toFloat(), tokens[2]))
+                items.add(MenuItem(tokens[0], tokens[1].toFloat(), tokens[2]))
             } catch (e: NumberFormatException) {
                 items.add(MenuItem(tokens[0], 0.0F, tokens[2]))
             }

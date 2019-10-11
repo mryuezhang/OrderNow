@@ -3,7 +3,7 @@ package com.yue.ordernow.utils
 import android.content.Context
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
-import com.yue.ordernow.viewModels.RestaurantMenuViewModelFactory
+import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
 
 object InjectorUtils {
 
@@ -13,9 +13,12 @@ object InjectorUtils {
         )
     }
 
-    fun provideRestaurantMenuViewModelFactory(context: Context): RestaurantMenuViewModelFactory {
+    fun provideMenuOptionsViewModelFactory(
+        context: Context,
+        category: String
+    ): MenuOptionsViewModelFactory {
         val repository = getMenuItemRepository(context)
-        return RestaurantMenuViewModelFactory(repository)
+        return MenuOptionsViewModelFactory(repository, category)
     }
 
 }
