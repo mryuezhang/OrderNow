@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil.setContentView
 import com.yue.ordernow.R
 import com.yue.ordernow.data.OrderItem
+import com.yue.ordernow.databinding.ActivityOrderBinding
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
 import kotlinx.android.synthetic.main.activity_order.*
@@ -17,10 +19,9 @@ class OrderActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
     private var orders: ArrayList<OrderItem>? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_order)
+        setContentView<ActivityOrderBinding>(this, R.layout.activity_order)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -30,16 +31,15 @@ class OrderActivity : AppCompatActivity(),
         if (orders.isNullOrEmpty()) {
 
             // Inform users that there is no orders
-            val noOrderFragment = NoOrderFragment()
             supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, noOrderFragment).commit()
+                .add(R.id.fragment_container, NoOrderFragment()).commit()
         } else {
             var subtotalAmount = 0F
             var totalQuantity = 0
 
             // Calculate subtotal and total quantity
             orders!!.forEach { orderItem ->
-                subtotalAmount += orderItem.item.price
+                subtotalAmount += orderItem.item.price * orderItem.quantity
                 totalQuantity += orderItem.quantity
             }
 
@@ -49,10 +49,11 @@ class OrderActivity : AppCompatActivity(),
             })
 
             // Display all orders
-            val orderListFragment =
-                OrderListFragment.newInstance(orders!!, subtotalAmount)
             supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, orderListFragment).commit()
+                .add(
+                    R.id.fragment_container,
+                    OrderListFragment.newInstance(orders!!, subtotalAmount)
+                ).commit()
         }
     }
 

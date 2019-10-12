@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderItemAdapter
 import com.yue.ordernow.data.OrderItem
+import com.yue.ordernow.databinding.FragmentOrderListBinding
 import com.yue.ordernow.utils.currencyFormat
-import kotlinx.android.synthetic.main.fragment_order_list.*
 
 private const val ORDERS = "orderItems"
 private const val TOTAL_AMOUNT = "total_amount"
@@ -35,28 +35,31 @@ class OrderListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_order_list, container, false)
+    ): View? {
+        val binding = FragmentOrderListBinding.inflate(inflater, container, false)
+        context ?: return binding.root
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        order_list.addItemDecoration(
+        // Add divider between each list item
+        binding.orderList.addItemDecoration(
             DividerItemDecoration(
                 activity,
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        // Set adapter
         val adapter = OrderItemAdapter()
+        binding.orderList.adapter = adapter
         adapter.submitList(orderItems)
-        order_list.adapter = adapter
 
-        subtotal.text = currencyFormat(subtotalAmount!!)
-        tax.text =
+        // Set texts
+        binding.subtotal.text = currencyFormat(subtotalAmount!!)
+        binding.tax.text =
             currencyFormat(subtotalAmount!! * 0.13F) //TODO change hardcoded tax rate to something more flexible
-        total_amount.text = currencyFormat(subtotalAmount!! * 1.13F)
-    }
+        binding.totalAmount.text = currencyFormat(subtotalAmount!! * 1.13F)
 
+        return binding.root
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -74,14 +77,7 @@ class OrderListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_clear -> {
-
-            // update recycler view
             orderItems?.clear()
-            order_list.adapter?.notifyDataSetChanged()
-
-            // update text view
-            subtotalAmount = 0F
-            subtotal.text = currencyFormat(subtotalAmount!!)
 
             // replace fragment
             listener?.onOrderListFragmentInteraction()
@@ -96,7 +92,6 @@ class OrderListFragment : Fragment() {
     interface OnOrderListFragmentInteractionListener {
         fun onOrderListFragmentInteraction()
     }
-
 
     companion object {
 
