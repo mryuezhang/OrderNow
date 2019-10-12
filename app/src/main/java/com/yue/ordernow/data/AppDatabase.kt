@@ -11,11 +11,11 @@ import androidx.work.WorkManager
 import com.yue.ordernow.utils.DATABASE_NAME
 import com.yue.ordernow.worker.DataBaseWorker
 
-@Database(entities = [MenuItem::class], version = 1, exportSchema = false)
+@Database(entities = [MenuItem::class, Order::class], version = 1, exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao
-//    abstract fun orderDao(): OrderDao
+    abstract fun orderDao(): OrderDao
 
     companion object {
 

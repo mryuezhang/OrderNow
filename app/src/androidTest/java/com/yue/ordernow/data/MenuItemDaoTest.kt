@@ -34,7 +34,7 @@ class MenuItemDaoTest {
     }
 
     @Test
-    fun testGetPlants() {
+    fun testGetMenuItems() {
         val menuItemList = getValue(menuItemDao.getItems())
         Assert.assertThat(menuItemList.size, Matchers.equalTo(3))
 

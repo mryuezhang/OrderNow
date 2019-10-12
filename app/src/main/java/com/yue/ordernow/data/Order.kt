@@ -8,14 +8,14 @@ import java.util.*
 @Entity(tableName = "orders")
 data class Order(
     @ColumnInfo(name = "order-items")
-    val orderItems: ArrayList<OrderItem>
+    var orderItems: ArrayList<OrderItem>
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var menuItemId: Long = 0
+    var orderId: Long = 0
 
     @ColumnInfo(name = "time-created")
-    private val timeCreated: Calendar = Calendar.getInstance()
+    var timeCreated: Calendar = Calendar.getInstance()
 
     @ColumnInfo(name = "subtotal")
     var subtotalAmount = 0.0F
@@ -23,7 +23,7 @@ data class Order(
     @ColumnInfo(name = "total-quantity")
     var totalQuantity = 0
 
-    @ColumnInfo(name = "order number")
+    @ColumnInfo(name = "order-number")
     var orderNumber: Int = if (timeCreated.get(Calendar.DAY_OF_MONTH) ==
         lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
     ) { // if this and previous order are made within the same day
@@ -41,9 +41,6 @@ data class Order(
         this.subtotalAmount = subtotal
         this.totalQuantity = totalQuantity
     }
-
-    override fun toString(): String =
-        "#${orderNumber}, created at ${timeCreated.time}, $orderItems"
 
     companion object {
         var lastOrderCreatedTime: Calendar? = null

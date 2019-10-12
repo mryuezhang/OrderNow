@@ -2,8 +2,8 @@ package com.yue.ordernow.data
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.util.*
-import kotlin.collections.ArrayList
 
 class Converter {
 
@@ -17,9 +17,11 @@ class Converter {
         Calendar.getInstance().apply { timeInMillis = value }
 
     @TypeConverter
-    fun menuItemArrayListToString(menuItems: List<MenuItem>): String = gson.toJson(menuItems)
+    fun menuItemArrayListToString(orderItems: ArrayList<OrderItem>): String =
+        gson.toJson(orderItems)
 
     @TypeConverter
-    fun stringToMenuItemArrayList(string: String): ArrayList<MenuItem> =
-        gson.fromJson(string, ArrayList<MenuItem>()::class.java)
+    fun stringToMenuItemArrayList(string: String): ArrayList<OrderItem> =
+        gson.fromJson(string, object : TypeToken<ArrayList<OrderItem>>() {}.type)
+
 }

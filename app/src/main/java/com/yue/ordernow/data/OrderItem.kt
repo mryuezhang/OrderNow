@@ -20,10 +20,6 @@ data class OrderItem(val item: MenuItem, var quantity: Int, val note: String) : 
 
     override fun describeContents(): Int = 0
 
-    override fun toString(): String {
-        return "OrderItem(item=$item, quantity=${quantity}, note=${note})"
-    }
-
     fun getFormattedAmount(): String = currencyFormat(item.price * quantity)
 
     companion object CREATOR : Parcelable.Creator<OrderItem> {
