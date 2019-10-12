@@ -15,10 +15,10 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
+import com.yue.ordernow.adapters.MenuItemAdapter
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.fragments.AddNoteDialogFragment
-import com.yue.ordernow.list.MenuItemAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 

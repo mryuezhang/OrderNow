@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.yue.ordernow.R
+import com.yue.ordernow.adapters.OrderItemAdapter
 import com.yue.ordernow.data.OrderItem
-import com.yue.ordernow.list.OrderListAdapter
 import com.yue.ordernow.utils.currencyFormat
 import kotlinx.android.synthetic.main.fragment_order_list.*
 
@@ -42,14 +41,16 @@ class OrderListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        order_list.layoutManager = LinearLayoutManager(activity)
         order_list.addItemDecoration(
             DividerItemDecoration(
                 activity,
                 DividerItemDecoration.VERTICAL
             )
         )
-        order_list.adapter = OrderListAdapter(orderItems!!)
+        val adapter = OrderItemAdapter()
+        adapter.submitList(orderItems)
+        order_list.adapter = adapter
+
         subtotal.text = currencyFormat(subtotalAmount!!)
         tax.text =
             currencyFormat(subtotalAmount!! * 0.13F) //TODO change hardcoded tax rate to something more flexible

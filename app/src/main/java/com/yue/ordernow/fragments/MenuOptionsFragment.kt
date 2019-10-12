@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.yue.ordernow.activities.MainActivity
+import com.yue.ordernow.adapters.MenuItemAdapter
 import com.yue.ordernow.databinding.FragmentMenuOptionsBinding
-import com.yue.ordernow.list.MenuItemAdapter
 import com.yue.ordernow.utils.InjectorUtils
 import com.yue.ordernow.viewModels.MenuOptionsViewModel
 

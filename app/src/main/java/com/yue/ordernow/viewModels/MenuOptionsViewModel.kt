@@ -9,7 +9,7 @@ import com.yue.ordernow.utils.BREAKFAST
 import com.yue.ordernow.utils.MAIN
 
 class MenuOptionsViewModel internal constructor(
-    val menuItemRepository: MenuItemRepository,
+    menuItemRepository: MenuItemRepository,
     category: String
 ) :
     ViewModel() {

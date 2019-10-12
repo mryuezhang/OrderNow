@@ -2,6 +2,7 @@ package com.yue.ordernow.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.yue.ordernow.utils.currencyFormat
 
 data class OrderItem(val item: MenuItem, var quantity: Int, val note: String) : Parcelable {
 
@@ -22,6 +23,8 @@ data class OrderItem(val item: MenuItem, var quantity: Int, val note: String) : 
     override fun toString(): String {
         return "OrderItem(item=$item, quantity=${quantity}, note=${note})"
     }
+
+    fun getFormattedAmount(): String = currencyFormat(item.price * quantity)
 
     companion object CREATOR : Parcelable.Creator<OrderItem> {
         override fun createFromParcel(parcel: Parcel): OrderItem {

@@ -1,4 +1,4 @@
-package com.yue.ordernow.list
+package com.yue.ordernow.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
