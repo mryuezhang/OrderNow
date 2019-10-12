@@ -7,6 +7,8 @@ import kotlin.collections.ArrayList
 
 class Converter {
 
+    private val gson = Gson()
+
     @TypeConverter
     fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
 
@@ -15,9 +17,9 @@ class Converter {
         Calendar.getInstance().apply { timeInMillis = value }
 
     @TypeConverter
-    fun menuItemArrayListToString(menuItems: ArrayList<MenuItem>): String = Gson().toJson(menuItems)
+    fun menuItemArrayListToString(menuItems: List<MenuItem>): String = gson.toJson(menuItems)
 
     @TypeConverter
     fun stringToMenuItemArrayList(string: String): ArrayList<MenuItem> =
-        Gson().fromJson(string, ArrayList<MenuItem>()::class.java)
+        gson.fromJson(string, ArrayList<MenuItem>()::class.java)
 }

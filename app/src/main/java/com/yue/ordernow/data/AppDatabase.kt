@@ -15,6 +15,7 @@ import com.yue.ordernow.worker.DataBaseWorker
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao
+//    abstract fun orderDao(): OrderDao
 
     companion object {
 

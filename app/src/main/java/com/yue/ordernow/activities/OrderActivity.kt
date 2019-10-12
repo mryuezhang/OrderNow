@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import com.yue.ordernow.R
+import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.ActivityOrderBinding
 import com.yue.ordernow.fragments.NoOrderFragment
@@ -18,6 +19,7 @@ import java.util.*
 class OrderActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
     private var orders: ArrayList<OrderItem>? = null
+    private var order: Order? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,9 @@ class OrderActivity : AppCompatActivity(),
                 t.item.name.compareTo(t2.item.name)
             })
 
+            // Create Order object
+            order = Order(orders!!, subtotalAmount, totalQuantity)
+
             // Display all orders
             supportFragmentManager.beginTransaction()
                 .add(
@@ -67,7 +72,10 @@ class OrderActivity : AppCompatActivity(),
                 return true
             }
             R.id.action_send -> {
-//                Log.i(tag, order.toString())
+//                order?.let {
+//                    OrderRepository.getInstance().insertOrder(it)
+//                }
+
             }
         }
         return super.onOptionsItemSelected(item)

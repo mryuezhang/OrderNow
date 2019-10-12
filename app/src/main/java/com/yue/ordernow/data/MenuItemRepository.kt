@@ -2,7 +2,6 @@ package com.yue.ordernow.data
 
 class MenuItemRepository private constructor(private val menuItemDao: MenuItemDao) {
 
-
     fun getItems() = menuItemDao.getItems()
 
     fun getMains() = menuItemDao.getMains()
