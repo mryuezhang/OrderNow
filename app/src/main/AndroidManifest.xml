@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.OrderActivity"
+            android:name=".activities.OrderSummaryActivity"
             android:launchMode="singleTop"
             android:label="Current Order"
             android:theme="@style/AppTheme.NoActionBar"

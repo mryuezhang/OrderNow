@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.yue.ordernow.activities.OrderActivity">
+    tools:context="com.yue.ordernow.activities.OrderSummaryActivity">
 
 </menu>

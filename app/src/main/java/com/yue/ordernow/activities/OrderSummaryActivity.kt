@@ -8,18 +8,38 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import com.yue.ordernow.R
 import com.yue.ordernow.data.Order
-import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.ActivityOrderBinding
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
+import com.yue.ordernow.utils.OrderSummaryActivityArgs
 import kotlinx.android.synthetic.main.activity_order.*
 import java.util.*
 
 
-class OrderActivity : AppCompatActivity(),
+class OrderSummaryActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
-    private var orders: ArrayList<OrderItem>? = null
-    private var order: Order? = null
+    private val args by lazy {
+        OrderSummaryActivityArgs.create(intent)
+    }
+
+    private val order: Order by lazy {
+        var subtotalAmount = 0F
+        var totalQuantity = 0
+
+        // Calculate subtotal and total quantity
+        args.orderItems.forEach { orderItem ->
+            subtotalAmount += orderItem.item.price * orderItem.quantity
+            totalQuantity += orderItem.quantity
+        }
+
+        // Sort all order items
+        args.orderItems.sortWith(Comparator { t, t2 ->
+            t.item.name.compareTo(t2.item.name)
+        })
+
+        // Create Order object
+        Order(args.orderItems, subtotalAmount, totalQuantity)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,37 +47,16 @@ class OrderActivity : AppCompatActivity(),
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Get orders from intent
-        orders = intent.getParcelableArrayListExtra(ORDERS)
-
-        if (orders.isNullOrEmpty()) {
-
+        if (args.orderItems.isNullOrEmpty()) {
             // Inform users that there is no orders
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, NoOrderFragment()).commit()
         } else {
-            var subtotalAmount = 0F
-            var totalQuantity = 0
-
-            // Calculate subtotal and total quantity
-            orders!!.forEach { orderItem ->
-                subtotalAmount += orderItem.item.price * orderItem.quantity
-                totalQuantity += orderItem.quantity
-            }
-
-            // Sort all order items
-            orders!!.sortWith(Comparator { t, t2 ->
-                t.item.name.compareTo(t2.item.name)
-            })
-
-            // Create Order object
-            order = Order(orders!!, subtotalAmount, totalQuantity)
-
             // Display all orders
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    OrderListFragment.newInstance(orders!!, subtotalAmount)
+                    OrderListFragment.newInstance(args.orderItems, order.subtotalAmount)
                 ).commit()
         }
     }
@@ -66,7 +65,7 @@ class OrderActivity : AppCompatActivity(),
         when (item.itemId) {
             android.R.id.home -> {
                 val intent = Intent()
-                intent.putParcelableArrayListExtra(ORDERS, orders)
+                intent.putParcelableArrayListExtra(ORDERS, args.orderItems)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true
@@ -90,8 +89,8 @@ class OrderActivity : AppCompatActivity(),
 
     companion object {
         fun getStartActivityIntent(context: Context) =
-            Intent(context, OrderActivity::class.java)
+            Intent(context, OrderSummaryActivity::class.java)
 
-        private const val tag = "OrderActivity"
+        private const val tag = "OrderSummaryActivity"
     }
 }

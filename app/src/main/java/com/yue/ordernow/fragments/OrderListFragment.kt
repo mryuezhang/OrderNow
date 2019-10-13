@@ -18,14 +18,14 @@ private const val TOTAL_AMOUNT = "total_amount"
 
 class OrderListFragment : Fragment() {
 
-    private var orderItems: ArrayList<OrderItem>? = null
-    private var subtotalAmount: Float? = null
-    private var listener: OnOrderListFragmentInteractionListener? = null
+    private lateinit var orderItems: ArrayList<OrderItem>
+    private var subtotalAmount: Float = 0.0f
+    private lateinit var listener: OnOrderListFragmentInteractionListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            orderItems = it.getParcelableArrayList(ORDERS)
+            orderItems = it.getParcelableArrayList(ORDERS)!!
             subtotalAmount = it.getFloat(TOTAL_AMOUNT)
         }
         setHasOptionsMenu(true)
@@ -53,10 +53,10 @@ class OrderListFragment : Fragment() {
         adapter.submitList(orderItems)
 
         // Set texts
-        binding.subtotal.text = currencyFormat(subtotalAmount!!)
+        binding.subtotal.text = currencyFormat(subtotalAmount)
         binding.tax.text =
-            currencyFormat(subtotalAmount!! * 0.13F) //TODO change hardcoded tax rate to something more flexible
-        binding.totalAmount.text = currencyFormat(subtotalAmount!! * 1.13F)
+            currencyFormat(subtotalAmount * 0.13f) //TODO change hardcoded tax rate to something more flexible
+        binding.totalAmount.text = currencyFormat(subtotalAmount * 1.13f)
 
         return binding.root
     }
@@ -77,10 +77,10 @@ class OrderListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.action_clear -> {
-            orderItems?.clear()
+            orderItems.clear()
 
             // replace fragment
-            listener?.onOrderListFragmentInteraction()
+            listener.onOrderListFragmentInteraction()
             true
         }
         R.id.action_send -> {

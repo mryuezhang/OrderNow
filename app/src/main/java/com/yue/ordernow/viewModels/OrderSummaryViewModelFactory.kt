@@ -1,0 +1,3 @@
+package com.yue.ordernow.viewModels
+
+class OrderSummaryViewModelFactory

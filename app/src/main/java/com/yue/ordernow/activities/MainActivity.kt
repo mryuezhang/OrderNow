@@ -19,6 +19,7 @@ import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.ActivityMainBinding
 import com.yue.ordernow.fragments.AddNoteDialogFragment
+import com.yue.ordernow.utils.OrderSummaryActivityArgs
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -118,9 +119,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
     }
 
     private fun startOrderActivity() {
-        val orderActivityIntent = OrderActivity.getStartActivityIntent(this)
-        orderActivityIntent.putParcelableArrayListExtra(ORDERS, orderItems)
-        startActivityForResult(orderActivityIntent, CONFIRM_ORDERS)
+        OrderSummaryActivityArgs(orderItems).launchForResult(this, CONFIRM_ORDERS)
     }
 
 }
