@@ -1,7 +1,5 @@
 package com.yue.ordernow.fragments
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment

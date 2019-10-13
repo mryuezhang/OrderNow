@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
     MenuItemAdapter.MenuItemListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    val orderItems = ArrayList<OrderItem>()
+    private val orderItems = ArrayList<OrderItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-            startOrderActivity()
+            OrderSummaryActivityArgs(orderItems).launchForResult(this, CONFIRM_ORDERS)
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -90,6 +90,8 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         orderItems.add(orderItem)
     }
 
+    //  AddNoteDialogFragment.AddNoteDialogListener method
+
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
 
@@ -101,6 +103,8 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
                 .show()
         }
     }
+
+    // MenuItemAdapter.MenuItemListener methods
 
     override fun onOrderButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
@@ -117,9 +121,4 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
                 .show(supportFragmentManager, "")
         }
     }
-
-    private fun startOrderActivity() {
-        OrderSummaryActivityArgs(orderItems).launchForResult(this, CONFIRM_ORDERS)
-    }
-
 }

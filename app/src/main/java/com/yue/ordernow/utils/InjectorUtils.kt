@@ -5,6 +5,7 @@ import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
+import com.yue.ordernow.viewModels.OrderSummaryViewModelFactory
 
 object InjectorUtils {
 
@@ -24,4 +25,6 @@ object InjectorUtils {
     ): MenuOptionsViewModelFactory =
         MenuOptionsViewModelFactory(getMenuItemRepository(context), category)
 
+    fun provideOrderSummaryViewModelFactory(context: Context): OrderSummaryViewModelFactory =
+        OrderSummaryViewModelFactory(getOrderRepository(context))
 }

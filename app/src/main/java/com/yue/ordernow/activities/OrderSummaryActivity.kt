@@ -1,9 +1,9 @@
 package com.yue.ordernow.activities
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import com.yue.ordernow.R
@@ -11,15 +11,22 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.ActivityOrderBinding
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
+import com.yue.ordernow.utils.InjectorUtils
 import com.yue.ordernow.utils.OrderSummaryActivityArgs
+import com.yue.ordernow.viewModels.OrderSummaryViewModel
 import kotlinx.android.synthetic.main.activity_order.*
 import java.util.*
 
 
 class OrderSummaryActivity : AppCompatActivity(),
     OrderListFragment.OnOrderListFragmentInteractionListener {
+
     private val args by lazy {
         OrderSummaryActivityArgs.create(intent)
+    }
+
+    private val viewModel: OrderSummaryViewModel by viewModels {
+        InjectorUtils.provideOrderSummaryViewModelFactory(this)
     }
 
     private val order: Order by lazy {
@@ -71,26 +78,15 @@ class OrderSummaryActivity : AppCompatActivity(),
                 return true
             }
             R.id.action_send -> {
-//                order?.let {
-//                    OrderRepository.getInstance().insertOrder(it)
-//                }
-
+                viewModel.saveToDatabase(order)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onOrderListFragmentInteraction() {
-
         val noOrderFragment = NoOrderFragment()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, noOrderFragment).commit()
-    }
-
-    companion object {
-        fun getStartActivityIntent(context: Context) =
-            Intent(context, OrderSummaryActivity::class.java)
-
-        private const val tag = "OrderSummaryActivity"
     }
 }

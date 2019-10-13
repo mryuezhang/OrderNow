@@ -19,18 +19,11 @@ private const val CATEGORY = "category"
 
 class MenuOptionsFragment : Fragment() {
 
-    private lateinit var viewModel: MenuOptionsViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            val category = it.getString(CATEGORY)!!
-            val vm: MenuOptionsViewModel by viewModels {
-                InjectorUtils.provideMenuOptionsViewModelFactory(requireContext(), category)
-            }
-
-            viewModel = vm
-        }
+    private val viewModel: MenuOptionsViewModel by viewModels {
+        InjectorUtils.provideMenuOptionsViewModelFactory(
+            requireContext(),
+            arguments!!.getString(CATEGORY)!!
+        )
     }
 
     override fun onCreateView(
@@ -41,6 +34,7 @@ class MenuOptionsFragment : Fragment() {
         val binding = FragmentMenuOptionsBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
+        // Set adapter
         val adapter = MenuItemAdapter(activity as MainActivity)
         binding.menuOptions.adapter = adapter
         subscribeUi(adapter)
