@@ -30,24 +30,8 @@ class OrderSummaryActivity : AppCompatActivity(),
         InjectorUtils.provideOrderSummaryViewModelFactory(this)
     }
 
-    private val order: Order by lazy {
-        var subtotalAmount = 0f
-        var totalQuantity = 0
-
-        // Calculate subtotal and total quantity
-        args.orderItems.forEach { orderItem ->
-            subtotalAmount += orderItem.item.price * orderItem.quantity
-            totalQuantity += orderItem.quantity
-        }
-
-        // Sort all order items
-        args.orderItems.sortWith(Comparator { t, t2 ->
-            t.item.name.compareTo(t2.item.name)
-        })
-
-        // Create Order object
-        Order.newInstance(args.orderItems, subtotalAmount, totalQuantity)
-    }
+    private var subtotalAmount = 0f
+    private var totalQuantity = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +44,18 @@ class OrderSummaryActivity : AppCompatActivity(),
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, NoOrderFragment()).commit()
         } else {
+
+            // Calculate needed data
+            args.orderItems.forEach { orderItem ->
+                subtotalAmount += orderItem.item.price * orderItem.quantity
+                totalQuantity += orderItem.quantity
+            }
+
             // Display all orders
             supportFragmentManager.beginTransaction()
                 .add(
                     R.id.fragment_container,
-                    OrderListFragment.newInstance(args.orderItems, order.subtotalAmount)
+                    OrderListFragment.newInstance(args.orderItems, subtotalAmount)
                 ).commit()
         }
     }
@@ -79,7 +70,19 @@ class OrderSummaryActivity : AppCompatActivity(),
                 return true
             }
             R.id.action_send -> {
-                viewModel.saveToDatabase(order)
+                // Sort all order items
+                args.orderItems.sortWith(Comparator { t, t2 ->
+                    t.item.name.compareTo(t2.item.name)
+                })
+
+                // Create order object and save it to data base
+                viewModel.saveToDatabase(
+                    Order.newInstance(
+                        args.orderItems,
+                        subtotalAmount,
+                        totalQuantity
+                    )
+                )
                 finish()
             }
         }
