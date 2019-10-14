@@ -8,13 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import com.yue.ordernow.R
 import com.yue.ordernow.data.Order
-import com.yue.ordernow.databinding.ActivityOrderBinding
+import com.yue.ordernow.databinding.ActivityOrderSummaryBinding
 import com.yue.ordernow.fragments.NoOrderFragment
 import com.yue.ordernow.fragments.OrderListFragment
 import com.yue.ordernow.utils.InjectorUtils
 import com.yue.ordernow.utils.OrderSummaryActivityArgs
+import com.yue.ordernow.utils.OrderSummaryActivityArgs.Companion.ARG_ORDERS
 import com.yue.ordernow.viewModels.OrderSummaryViewModel
-import kotlinx.android.synthetic.main.activity_order.*
+import kotlinx.android.synthetic.main.activity_order_summary.*
 import java.util.*
 
 
@@ -30,7 +31,7 @@ class OrderSummaryActivity : AppCompatActivity(),
     }
 
     private val order: Order by lazy {
-        var subtotalAmount = 0F
+        var subtotalAmount = 0f
         var totalQuantity = 0
 
         // Calculate subtotal and total quantity
@@ -45,12 +46,12 @@ class OrderSummaryActivity : AppCompatActivity(),
         })
 
         // Create Order object
-        Order(args.orderItems, subtotalAmount, totalQuantity)
+        Order.newInstance(args.orderItems, subtotalAmount, totalQuantity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView<ActivityOrderBinding>(this, R.layout.activity_order)
+        setContentView<ActivityOrderSummaryBinding>(this, R.layout.activity_order_summary)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -72,13 +73,14 @@ class OrderSummaryActivity : AppCompatActivity(),
         when (item.itemId) {
             android.R.id.home -> {
                 val intent = Intent()
-                intent.putParcelableArrayListExtra(ORDERS, args.orderItems)
+                intent.putParcelableArrayListExtra(ARG_ORDERS, args.orderItems)
                 setResult(Activity.RESULT_OK, intent)
                 finish()
                 return true
             }
             R.id.action_send -> {
                 viewModel.saveToDatabase(order)
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

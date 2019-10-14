@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="@integer/grid_columns"
             tools:context=".activities.MainActivity"
-            tools:listitem="@layout/menu_item" />
+            tools:listitem="@layout/list_item_menu_item" />
 
     </FrameLayout>
 </layout>

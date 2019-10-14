@@ -42,6 +42,7 @@ class MenuOptionsFragment : Fragment() {
         return binding.root
     }
 
+
     private fun subscribeUi(adapter: MenuItemAdapter) {
         viewModel.menuItems.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)

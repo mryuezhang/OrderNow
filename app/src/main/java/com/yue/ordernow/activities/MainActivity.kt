@@ -20,12 +20,12 @@ import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.ActivityMainBinding
 import com.yue.ordernow.fragments.AddNoteDialogFragment
 import com.yue.ordernow.utils.OrderSummaryActivityArgs
+import com.yue.ordernow.utils.OrderSummaryActivityArgs.Companion.ARG_ORDERS
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
 
 private const val CONFIRM_ORDERS = 1000
-const val ORDERS = "orderItems"
 
 class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogListener,
     MenuItemAdapter.MenuItemListener {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         if (requestCode == CONFIRM_ORDERS) {
             if (resultCode == Activity.RESULT_OK) {
                 orderItems.clear()
-                orderItems.addAll(data!!.getParcelableArrayListExtra(ORDERS))
+                orderItems.addAll(data!!.getParcelableArrayListExtra(ARG_ORDERS))
             }
         }
     }
@@ -90,17 +90,20 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         orderItems.add(orderItem)
     }
 
+    private fun showShortSnackbar(message: String) {
+        Snackbar.make(drawer_layout, message, Snackbar.LENGTH_SHORT)
+            .show()
+    }
+
     //  AddNoteDialogFragment.AddNoteDialogListener method
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
 
         if (orderItem.quantity == 1) {
-            Snackbar.make(drawer_layout, "Item has been added to order", Snackbar.LENGTH_SHORT)
-                .show()
+            showShortSnackbar("Item has been added to order")
         } else {
-            Snackbar.make(drawer_layout, "Items have been added to order", Snackbar.LENGTH_SHORT)
-                .show()
+            showShortSnackbar("Items have been added to order")
         }
     }
 
@@ -109,9 +112,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
     override fun onOrderButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
             addOrder(OrderItem(it, 1, ""))
-
-            Snackbar.make(drawer_layout, "Item has been added to order", Snackbar.LENGTH_SHORT)
-                .show()
+            showShortSnackbar("Item has been added to order")
         }
     }
 

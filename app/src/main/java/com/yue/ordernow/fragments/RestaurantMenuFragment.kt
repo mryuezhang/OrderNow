@@ -69,8 +69,4 @@ class RestaurantMenuFragment : Fragment() {
             return POSITION_NONE
         }
     }
-
-    companion object {
-        private const val tag = "RestaurantMenuFragment"
-    }
 }

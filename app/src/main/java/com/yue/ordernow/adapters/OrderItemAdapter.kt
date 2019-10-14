@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.data.OrderItem
-import com.yue.ordernow.databinding.OrderItemBinding
-import com.yue.ordernow.databinding.OrderItemWithNoteBinding
+import com.yue.ordernow.databinding.ListItemOrderItemBinding
+import com.yue.ordernow.databinding.ListItemOrderItemWithNoteBinding
 
 class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderItemDiffCallback()) {
 
@@ -24,7 +24,7 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         if (viewType == TYPE_WITHOUT_NOTE) {
             OrderItemViewHolder(
-                OrderItemBinding.inflate(
+                ListItemOrderItemBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -32,7 +32,7 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
             )
         } else {
             OrderItemWithNoteViewHolder(
-                OrderItemWithNoteBinding.inflate(
+                ListItemOrderItemWithNoteBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -50,7 +50,7 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
 
     }
 
-    private inner class OrderItemViewHolder(private val binding: OrderItemBinding) :
+    private inner class OrderItemViewHolder(private val binding: ListItemOrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderItem) {
             binding.apply {
@@ -60,7 +60,7 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
         }
     }
 
-    private inner class OrderItemWithNoteViewHolder(private val binding: OrderItemWithNoteBinding) :
+    private inner class OrderItemWithNoteViewHolder(private val binding: ListItemOrderItemWithNoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: OrderItem) {
             binding.apply {

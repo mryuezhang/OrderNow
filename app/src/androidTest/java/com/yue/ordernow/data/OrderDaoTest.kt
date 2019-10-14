@@ -29,9 +29,9 @@ class OrderDaoTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         orderDao = database.orderDao()
-        order1 = Order(arrayListOf(orderItem1, orderItem2))
+        order1 = Order.newInstance(arrayListOf(orderItem1, orderItem2), 0f, 0)
         Thread.sleep(1000)
-        order2 = Order(arrayListOf(orderItem1, orderItem2))
+        order2 = Order.newInstance(arrayListOf(orderItem3, orderItem4), 0f, 0)
         orderDao.insertOrder(order2)
         orderDao.insertOrder(order1)
     }

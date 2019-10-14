@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.data.MenuItem
-import com.yue.ordernow.databinding.MenuItemBinding
+import com.yue.ordernow.databinding.ListItemMenuItemBinding
 
 class MenuItemAdapter(private val listener: MenuItemListener) :
     ListAdapter<MenuItem, RecyclerView.ViewHolder>(MenuItemDiffCallback()) {
@@ -18,7 +18,7 @@ class MenuItemAdapter(private val listener: MenuItemListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         MenuItemViewHolder(
-            MenuItemBinding.inflate(
+            ListItemMenuItemBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -30,7 +30,7 @@ class MenuItemAdapter(private val listener: MenuItemListener) :
         (holder as MenuItemViewHolder).bind(menuItem)
     }
 
-    private inner class MenuItemViewHolder(private val binding: MenuItemBinding) :
+    private inner class MenuItemViewHolder(private val binding: ListItemMenuItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setOrderButtonOnClickListener {

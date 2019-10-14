@@ -4,6 +4,8 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
 
     fun getAllOrders() = orderDao.getAllOrders()
 
+    suspend fun deleteAllOrders() = orderDao.deleteAllOrders()
+
     suspend fun insertOrder(order: Order) = orderDao.insertOrder(order)
 
     companion object {

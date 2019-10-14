@@ -31,7 +31,6 @@ class OrderListFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,6 +70,7 @@ class OrderListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.menu_order_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
