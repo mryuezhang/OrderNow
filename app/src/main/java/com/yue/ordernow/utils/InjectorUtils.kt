@@ -4,6 +4,7 @@ import android.content.Context
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
+import com.yue.ordernow.viewModels.MainViewModelFactory
 import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
 import com.yue.ordernow.viewModels.OrderHistoryViewModelFactory
 import com.yue.ordernow.viewModels.OrderSummaryViewModelFactory
@@ -19,6 +20,8 @@ object InjectorUtils {
         OrderRepository.getInstance(
             AppDatabase.getInstance(context.applicationContext).orderDao()
         )
+
+    fun provideMainViewModelFactory(): MainViewModelFactory = MainViewModelFactory()
 
     fun provideMenuOptionsViewModelFactory(
         context: Context,

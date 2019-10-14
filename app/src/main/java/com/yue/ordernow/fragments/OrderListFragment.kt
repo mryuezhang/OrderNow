@@ -29,6 +29,7 @@ class OrderListFragment : Fragment() {
             subtotalAmount = it.getFloat(TOTAL_AMOUNT)
         }
         setHasOptionsMenu(true)
+        retainInstance = true
     }
 
     override fun onCreateView(
@@ -70,7 +71,6 @@ class OrderListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
         inflater.inflate(R.menu.menu_order_list, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }

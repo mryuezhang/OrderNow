@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.DialogFragment
@@ -19,8 +20,10 @@ import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.ActivityMainBinding
 import com.yue.ordernow.fragments.AddNoteDialogFragment
+import com.yue.ordernow.utils.InjectorUtils
 import com.yue.ordernow.utils.OrderSummaryActivityArgs
 import com.yue.ordernow.utils.OrderSummaryActivityArgs.Companion.ARG_ORDERS
+import com.yue.ordernow.viewModels.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -31,7 +34,10 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
     MenuItemAdapter.MenuItemListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private val orderItems = ArrayList<OrderItem>()
+
+    private val viewModel: MainViewModel by viewModels {
+        InjectorUtils.provideMainViewModelFactory()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +59,8 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CONFIRM_ORDERS) {
             if (resultCode == Activity.RESULT_OK) {
-                orderItems.clear()
-                orderItems.addAll(data!!.getParcelableArrayListExtra(ARG_ORDERS))
+                viewModel.orderItems.clear()
+                viewModel.orderItems.addAll(data!!.getParcelableArrayListExtra(ARG_ORDERS))
             }
         }
     }
@@ -66,7 +72,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-            OrderSummaryActivityArgs(orderItems).launchForResult(this, CONFIRM_ORDERS)
+            OrderSummaryActivityArgs(viewModel.orderItems).launchForResult(this, CONFIRM_ORDERS)
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -119,7 +125,7 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
     }
 
     private fun addOrder(orderItem: OrderItem) {
-        for (it in orderItems) {
+        for (it in viewModel.orderItems) {
             if (it.item == orderItem.item && it.note == orderItem.note) {
 
                 // combine the two orderItems
@@ -128,6 +134,6 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
             }
         }
 
-        orderItems.add(orderItem)
+        viewModel.orderItems.add(orderItem)
     }
 }

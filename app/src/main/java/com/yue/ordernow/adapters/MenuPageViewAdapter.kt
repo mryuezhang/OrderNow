@@ -18,13 +18,16 @@ class MenuPageViewAdapter(
     fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
+    private val fragments: Map<Int, () -> Fragment> = mapOf(
+        APPETIZER_PAGE_INDEX to { MenuOptionsFragment.newInstance(APPETIZER) },
+        BREAKFAST_PAGE_INDEX to { MenuOptionsFragment.newInstance(BREAKFAST) },
+        MAIN_PAGE_INDEX to { MenuOptionsFragment.newInstance(MAIN) },
+        DRINK_PAGE_INDEX to { MenuOptionsFragment.newInstance(DRINK) }
+    )
 
-    override fun createFragment(position: Int): Fragment = when (position) {
-        0 -> MenuOptionsFragment.newInstance(APPETIZER)
-        1 -> MenuOptionsFragment.newInstance(BREAKFAST)
-        2 -> MenuOptionsFragment.newInstance(MAIN)
-        else -> MenuOptionsFragment.newInstance(DRINK)
-    }
+    override fun createFragment(position: Int): Fragment =
+        fragments[position]?.invoke() ?: throw IndexOutOfBoundsException()
 
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = fragments.size
+
 }

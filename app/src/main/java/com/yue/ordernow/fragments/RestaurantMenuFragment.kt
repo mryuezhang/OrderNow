@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yue.ordernow.R
-import com.yue.ordernow.adapters.MenuPageViewAdapter
+import com.yue.ordernow.adapters.*
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 
 class RestaurantMenuFragment : Fragment() {
@@ -30,10 +30,10 @@ class RestaurantMenuFragment : Fragment() {
     }
 
     private fun getTabTitle(position: Int): String? = when (position) {
-        0 -> getString(R.string.appetizer_title)
-        1 -> getString(R.string.breakfast_title)
-        2 -> getString(R.string.main_title)
-        3 -> getString(R.string.drink_title)
+        APPETIZER_PAGE_INDEX -> getString(R.string.appetizer_title)
+        BREAKFAST_PAGE_INDEX -> getString(R.string.breakfast_title)
+        MAIN_PAGE_INDEX -> getString(R.string.main_title)
+        DRINK_PAGE_INDEX -> getString(R.string.drink_title)
         else -> null
     }
 }

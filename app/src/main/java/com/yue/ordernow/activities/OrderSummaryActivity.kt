@@ -42,7 +42,7 @@ class OrderSummaryActivity : AppCompatActivity(),
         if (args.orderItems.isNullOrEmpty()) {
             // Inform users that there is no orders
             supportFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, NoOrderFragment()).commit()
+                .replace(R.id.fragment_container, NoOrderFragment()).commit()
         } else {
 
             // Calculate needed data
@@ -53,7 +53,7 @@ class OrderSummaryActivity : AppCompatActivity(),
 
             // Display all orders
             supportFragmentManager.beginTransaction()
-                .add(
+                .replace(
                     R.id.fragment_container,
                     OrderListFragment.newInstance(args.orderItems, subtotalAmount)
                 ).commit()
