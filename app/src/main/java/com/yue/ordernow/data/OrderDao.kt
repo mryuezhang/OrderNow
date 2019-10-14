@@ -13,7 +13,7 @@ interface OrderDao {
     fun getAllOrders(): LiveData<List<Order>>
 
     @Query("SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT 1")
-    fun getLastOrder(): Order
+    fun getLastOrder(): LiveData<Order>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(order: Order)
