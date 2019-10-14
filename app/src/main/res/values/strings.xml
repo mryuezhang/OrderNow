@@ -42,4 +42,9 @@
     <string name="total_amount">Total Amount</string>
     <string name="tax">Tax</string>
     <string name="subtotal">Subtotal</string>
+
+    <string name="appetizer_title">Appetizer</string>
+    <string name="breakfast_title">Breakfast</string>
+    <string name="main_title">Main</string>
+    <string name="drink_title">Drink</string>
 </resources>

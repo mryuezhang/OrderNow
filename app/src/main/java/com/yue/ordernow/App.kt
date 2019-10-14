@@ -1,7 +1,6 @@
 package com.yue.ordernow
 
 import android.app.Application
-import android.util.Log
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.Order
 
@@ -20,7 +19,5 @@ class App : Application() {
                 Order.orderCount = 0
             }
         }
-
-        Log.i("FUCK", "FUCK")
     }
 }

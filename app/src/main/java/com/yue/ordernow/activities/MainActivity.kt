@@ -77,25 +77,9 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    private fun addOrder(orderItem: OrderItem) {
-        for (it in orderItems) {
-            if (it.item == orderItem.item && it.note == orderItem.note) {
-
-                // combine the two orderItems
-                it.quantity += orderItem.quantity
-                return
-            }
-        }
-
-        orderItems.add(orderItem)
-    }
-
-    private fun showShortSnackbar(message: String) {
-        Snackbar.make(drawer_layout, message, Snackbar.LENGTH_SHORT)
-            .show()
-    }
-
-    //  AddNoteDialogFragment.AddNoteDialogListener method
+    /*
+     * AddNoteDialogFragment.AddNoteDialogListener method
+     */
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
@@ -107,7 +91,9 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
         }
     }
 
-    // MenuItemAdapter.MenuItemListener methods
+    /*
+     * MenuItemAdapter.MenuItemListener methods
+     */
 
     override fun onOrderButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
@@ -121,5 +107,27 @@ class MainActivity : AppCompatActivity(), AddNoteDialogFragment.AddNoteDialogLis
             AddNoteDialogFragment(it.copy()) // MUST pass a copy here
                 .show(supportFragmentManager, "")
         }
+    }
+
+    /*
+     * Private methods
+     */
+
+    private fun showShortSnackbar(message: String) {
+        Snackbar.make(drawer_layout, message, Snackbar.LENGTH_SHORT)
+            .show()
+    }
+
+    private fun addOrder(orderItem: OrderItem) {
+        for (it in orderItems) {
+            if (it.item == orderItem.item && it.note == orderItem.note) {
+
+                // combine the two orderItems
+                it.quantity += orderItem.quantity
+                return
+            }
+        }
+
+        orderItems.add(orderItem)
     }
 }

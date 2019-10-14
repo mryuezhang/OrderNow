@@ -19,10 +19,14 @@ private const val CATEGORY = "category"
 
 class MenuOptionsFragment : Fragment() {
 
+    private val category: String by lazy {
+        arguments!!.getString(CATEGORY)!!
+    }
+
     private val viewModel: MenuOptionsViewModel by viewModels {
         InjectorUtils.provideMenuOptionsViewModelFactory(
             requireContext(),
-            arguments!!.getString(CATEGORY)!!
+            category
         )
     }
 
