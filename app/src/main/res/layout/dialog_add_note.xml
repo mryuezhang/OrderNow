@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="@string/hint_add_note"
-        android:nestedScrollingEnabled="true"
         app:layout_constraintEnd_toEndOf="@+id/add_note_title"
         app:layout_constraintStart_toStartOf="@+id/add_note_title"
         app:layout_constraintTop_toBottomOf="@+id/add_note_title">
@@ -51,7 +50,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="@string/extra_cost"
-        android:nestedScrollingEnabled="true"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="@+id/add_note_title"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
@@ -73,8 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="@string/quantity"
-        android:nestedScrollingEnabled="true"
+        android:hint="@string/title_quantity"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="@+id/add_note_title"

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.adapters.MenuItemAdapter
 import com.yue.ordernow.databinding.FragmentMenuOptionsBinding
 import com.yue.ordernow.utils.InjectorUtils
@@ -39,7 +38,7 @@ class MenuOptionsFragment : Fragment() {
         context ?: return binding.root
 
         // Set adapter
-        val adapter = MenuItemAdapter(activity as MainActivity)
+        val adapter = MenuItemAdapter(parentFragment as RestaurantMenuFragment)
         binding.menuOptions.adapter = adapter
         subscribeUi(adapter)
 

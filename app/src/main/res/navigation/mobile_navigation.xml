@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/nav_restaurant_menu"
         android:name="com.yue.ordernow.fragments.RestaurantMenuFragment"
-        android:label="@string/menu_restaurant_menu"
+        android:label="@string/title_menu"
         tools:layout="@layout/fragment_menu_options" />
 
     <fragment
         android:id="@+id/nav_order_history"
         android:name="com.yue.ordernow.fragments.OrderHistoryFragment"
-        android:label="@string/menu_order_history"
+        android:label="@string/title_order_history"
         tools:layout="@layout/fragment_order_history" />
 </navigation>

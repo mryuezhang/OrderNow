@@ -11,6 +11,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/menu_options"
+            android:paddingBottom="56dp"
+            android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -22,6 +24,5 @@
             app:spanCount="@integer/grid_columns"
             tools:context=".activities.MainActivity"
             tools:listitem="@layout/list_item_menu_item" />
-
     </FrameLayout>
 </layout>

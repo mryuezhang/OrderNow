@@ -1,7 +1,6 @@
 package com.yue.ordernow.fragments
 
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputFilter
@@ -17,10 +16,11 @@ import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.utils.CurrencyFormatInputFilter
 
 
-class AddNoteDialogFragment(private val menuItem: MenuItem) : DialogFragment() {
+class AddNoteDialogFragment(
+    private val listener: AddNoteDialogListener,
+    private val menuItem: MenuItem
+) : DialogFragment() {
 
-    // Use this instance of the interface to deliver action events
-    private lateinit var listener: AddNoteDialogListener
 
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
@@ -28,19 +28,6 @@ class AddNoteDialogFragment(private val menuItem: MenuItem) : DialogFragment() {
     interface AddNoteDialogListener {
         fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem)
     }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listener = context as AddNoteDialogListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException(
-                (context.toString() +
-                        " must implement NoticeDialogListener")
-            )
-        }
-    }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let { it ->

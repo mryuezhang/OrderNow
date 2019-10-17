@@ -7,7 +7,6 @@ import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.viewModels.MainViewModelFactory
 import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
 import com.yue.ordernow.viewModels.OrderHistoryViewModelFactory
-import com.yue.ordernow.viewModels.OrderSummaryViewModelFactory
 
 object InjectorUtils {
 
@@ -21,16 +20,15 @@ object InjectorUtils {
             AppDatabase.getInstance(context.applicationContext).orderDao()
         )
 
-    fun provideMainViewModelFactory(): MainViewModelFactory = MainViewModelFactory()
+    fun provideMainViewModelFactory(context: Context): MainViewModelFactory = MainViewModelFactory(
+        getOrderRepository(context)
+    )
 
     fun provideMenuOptionsViewModelFactory(
         context: Context,
         category: String
     ): MenuOptionsViewModelFactory =
         MenuOptionsViewModelFactory(getMenuItemRepository(context), category)
-
-    fun provideOrderSummaryViewModelFactory(context: Context): OrderSummaryViewModelFactory =
-        OrderSummaryViewModelFactory(getOrderRepository(context))
 
     fun provideOrderHistoryViewModelFactory(context: Context): OrderHistoryViewModelFactory =
         OrderHistoryViewModelFactory(getOrderRepository(context))

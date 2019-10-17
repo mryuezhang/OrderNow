@@ -3,6 +3,8 @@ package com.yue.ordernow.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yue.ordernow.utils.currencyFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 @Entity(tableName = "orders")
@@ -26,17 +28,11 @@ data class Order(
     @ColumnInfo(name = "time-created")
     var timeCreated: Calendar = Calendar.getInstance()
 
-//    @ColumnInfo(name = "order-number")
-//    var orderNumber: Int = if (timeCreated.get(Calendar.DAY_OF_MONTH) ==
-//        lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
-//    ) { // if this and previous order are made within the same day
-//        lastOrderCreatedTime = this.timeCreated
-//        ++orderCount
-//    } else { // if this order and previous order are not made within the same day, or there is no previous order
-//        lastOrderCreatedTime = this.timeCreated
-//        orderCount = 0
-//        ++orderCount
-//    }
+    fun getFormattedTime(): String =
+        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timeCreated.time)
+
+    fun getFormattedTotalAmount(): String =
+        currencyFormat((subtotalAmount * 1.13).toFloat()) //TODO chagne the hard coded tax rate
 
     companion object {
         var lastOrderCreatedTime: Calendar? = null

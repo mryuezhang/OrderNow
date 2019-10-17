@@ -48,7 +48,7 @@ class OrderHistoryFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_no_order, menu)
+        inflater.inflate(R.menu.menu_empty, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
