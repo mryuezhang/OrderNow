@@ -3,6 +3,8 @@ package com.yue.ordernow.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -28,6 +30,12 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var activityViewModel: MainViewModel
     private var isOptionMenuViable = false
+    private val slideDownAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            context,
+            R.anim.slide_down
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -128,6 +136,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
      */
 
     private fun addOrder(orderItem: OrderItem) {
+        val isAnimated = activityViewModel.totalQuantity != 0
         activityViewModel.totalQuantity += orderItem.quantity
         activityViewModel.subtotal += orderItem.quantity * orderItem.item.price
 
@@ -139,12 +148,14 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
 
                 // Update view
                 updateBottomSheetBehavior()
+                updateBottomSheetText(isAnimated)
                 return
             }
         }
 
         activityViewModel.orderItems.add(orderItem)
         updateBottomSheetBehavior()
+        updateBottomSheetText(isAnimated)
     }
 
     private fun clearOrders() {
@@ -174,15 +185,22 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
                 resources.getDimensionPixelOffset(R.dimen.bottom_sheet_peek_height)
             binding.menuPage.layoutParams = layoutParams
         }
-        updateBottomSheetText()
     }
 
-    private fun updateBottomSheetText() {
+    private fun updateBottomSheetText(isAnimated: Boolean) {
+
+        // Set new display text
         binding.bottomSheet.quantity.text = activityViewModel.totalQuantity.toString()
         binding.bottomSheet.totalAmount.text =
             currencyFormat((activityViewModel.subtotal * 1.13).toFloat())
         binding.bottomSheet.tax.text = currencyFormat((activityViewModel.subtotal * 0.13).toFloat())
         binding.bottomSheet.subtotal.text = currencyFormat(activityViewModel.subtotal)
+
+        // Set some cool animation for text change
+        if (isAnimated) {
+            binding.bottomSheet.quantity.startAnimation(slideDownAnimation)
+            binding.bottomSheet.totalAmount.startAnimation(slideDownAnimation)
+        }
     }
 
     private fun getTabTitle(position: Int): String? = when (position) {
