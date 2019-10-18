@@ -29,5 +29,4 @@ class MenuPageViewAdapter(
         fragments[position]?.invoke() ?: throw IndexOutOfBoundsException()
 
     override fun getItemCount(): Int = fragments.size
-
 }

@@ -3,6 +3,7 @@ package com.yue.ordernow.fragments
 
 import android.os.Bundle
 import android.view.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -130,7 +131,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         activityViewModel.totalQuantity += orderItem.quantity
         activityViewModel.subtotal += orderItem.quantity * orderItem.item.price
 
-        for (it in (activity as MainActivity).viewModel.orderItems) {
+        for (it in activityViewModel.orderItems) {
             if (it.item == orderItem.item && it.note == orderItem.note) {
 
                 // combine the two orderItems
@@ -142,22 +143,25 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             }
         }
 
-        (activity as MainActivity).viewModel.orderItems.add(orderItem)
+        activityViewModel.orderItems.add(orderItem)
         updateBottomSheetBehavior()
     }
 
     private fun clearOrders() {
         activityViewModel.totalQuantity = 0
         activityViewModel.subtotal = 0f
-        (activity as MainActivity).viewModel.orderItems.clear()
+        activityViewModel.orderItems.clear()
         updateBottomSheetBehavior()
     }
 
     private fun updateBottomSheetBehavior() {
-        if ((activity as MainActivity).viewModel.orderItems.isEmpty()) {
+        if (activityViewModel.orderItems.isEmpty()) {
             // Hide bottom sheet if there is no order item
             bottomSheetBehavior.isHideable = true
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            val layoutParams = binding.menuPage.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.bottomMargin = 0
+            binding.menuPage.layoutParams = layoutParams
         } else {
             // Update view
             // Note the notifyDateSetChange() needs to be called after bottom sheet behaviors are set
@@ -165,6 +169,10 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             bottomSheetBehavior.isHideable = false
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             adapter.notifyDataSetChanged()
+            val layoutParams = binding.menuPage.layoutParams as ConstraintLayout.LayoutParams
+            layoutParams.bottomMargin =
+                resources.getDimensionPixelOffset(R.dimen.bottom_sheet_peek_height)
+            binding.menuPage.layoutParams = layoutParams
         }
         updateBottomSheetText()
     }
@@ -198,6 +206,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     private inner class BottomSheetCallback : BottomSheetBehavior.BottomSheetCallback() {
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            binding.bottomSheet.body.alpha = slideOffset
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {

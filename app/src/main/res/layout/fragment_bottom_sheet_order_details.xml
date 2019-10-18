@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:theme="@style/Widget.MaterialComponents.BottomSheet"
         app:behavior_hideable="true"
-        app:behavior_peekHeight="56dp"
+        app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,6 +37,7 @@
                 android:layout_marginStart="16dp"
                 android:text="@string/title_quantity_short"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,6 +49,7 @@
                 android:layout_marginStart="4dp"
                 android:text="@string/sample_quantity"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintStart_toEndOf="@+id/textView"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -59,6 +61,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/title_total_amount"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintEnd_toStartOf="@+id/total_amount"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -71,6 +74,7 @@
                 android:layout_weight="1"
                 android:text="@string/sample_amount"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -78,8 +82,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/body"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:clickable="true"
             android:focusable="true"
@@ -94,17 +99,18 @@
                 android:text="@string/tax"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toStartOf="@+id/subtotal"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/tax" />
 
             <TextView
                 android:id="@+id/tax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/sample_amount"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/subtotal" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -113,8 +119,8 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/subtotal"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/subtotal" />
+                app:layout_constraintEnd_toStartOf="@+id/subtotal"
+                app:layout_constraintTop_toTopOf="@+id/subtotal" />
 
             <TextView
                 android:id="@+id/subtotal"
@@ -124,20 +130,21 @@
                 android:layout_weight="1"
                 android:text="@string/sample_amount"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/order_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tax" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/order_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
 </layout>

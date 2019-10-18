@@ -15,12 +15,12 @@ import com.yue.ordernow.viewModels.MenuOptionsViewModel
 
 
 private const val CATEGORY = "category"
-
 class MenuOptionsFragment : Fragment() {
 
     private val category: String by lazy {
         arguments!!.getString(CATEGORY)!!
     }
+
 
     private val viewModel: MenuOptionsViewModel by viewModels {
         InjectorUtils.provideMenuOptionsViewModelFactory(
@@ -39,12 +39,11 @@ class MenuOptionsFragment : Fragment() {
 
         // Set adapter
         val adapter = MenuItemAdapter(parentFragment as RestaurantMenuFragment)
-        binding.menuOptions.adapter = adapter
+        binding.menuOptions?.adapter = adapter
         subscribeUi(adapter)
 
         return binding.root
     }
-
 
     private fun subscribeUi(adapter: MenuItemAdapter) {
         viewModel.menuItems.observe(viewLifecycleOwner, Observer {
