@@ -35,6 +35,7 @@
     <string name="hint_add_note">Note</string>
 
     <string name="title_customize">Customize</string>
+    <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
     <string name="place_order">Order</string>
     <string name="extra_cost">Extra cost</string>

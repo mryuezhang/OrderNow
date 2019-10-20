@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yue.ordernow.R
@@ -23,7 +25,7 @@ import com.yue.ordernow.viewModels.MainViewModel
 
 
 class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogListener,
-    MenuItemAdapter.MenuItemListener {
+    MenuItemAdapter.MenuItemListener, OrderItemSwipeHelper.OrderItemSwipeListener {
 
     private val adapter = OrderItemAdapter()
     private lateinit var binding: FragmentRestaurantMenuBinding
@@ -35,6 +37,17 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             context,
             R.anim.slide_down
         )
+    }
+
+    private val slideUpAnimation: Animation by lazy {
+        AnimationUtils.loadAnimation(
+            context,
+            R.anim.slide_up
+        )
+    }
+
+    private enum class TextChangeAnimationType {
+        NONE, SLIDE_DOWN, SLIDE_UP
     }
 
     override fun onCreateView(
@@ -66,9 +79,11 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         // Set adapter
         binding.bottomSheet.orderList.adapter = adapter
         adapter.submitList(activityViewModel.orderItems)
+        ItemTouchHelper(OrderItemSwipeHelper(this)).attachToRecyclerView(binding.bottomSheet.orderList)
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.root)
         updateBottomSheetBehavior()
+        updateBottomSheetText(TextChangeAnimationType.NONE)
         binding.bottomSheet.onHeaderClickListener = OnBottomSheetHeaderClickListener()
         bottomSheetBehavior.addBottomSheetCallback(BottomSheetCallback())
 
@@ -96,19 +111,33 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
                     activityViewModel.totalQuantity
                 )
             )
-            clearOrders()
+            cancelCurrentOrder()
             true
         }
         R.id.action_clear -> {
-            clearOrders()
+            activity?.let {
+                val builder = AlertDialog.Builder(it)
+                builder.apply {
+                    setMessage("Discard order?")
+                    setPositiveButton(R.string.discard) { dialog, id ->
+                        cancelCurrentOrder()
+                    }
+                    setNegativeButton(R.string.cancel) { dialog, id ->
+                        dialog.cancel()
+                    }
+                }
+
+                // Create the AlertDialog
+                builder.create().show()
+            }
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
     /*
-    * AddNoteDialogFragment.AddNoteDialogListener method
-    */
+     * AddNoteDialogFragment.AddNoteDialogListener method
+     */
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
         addOrder(orderItem)
@@ -132,11 +161,24 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     }
 
     /*
+     * OrderItemSwipeHelper.OrderItemSwipeListener method
+     */
+    override fun onSwipe(itemPosition: Int) {
+        removeOrder(itemPosition)
+    }
+
+    /*
      * Private methods
      */
 
     private fun addOrder(orderItem: OrderItem) {
-        val isAnimated = activityViewModel.totalQuantity != 0
+        val animationType = if (activityViewModel.totalQuantity == 0) {
+            TextChangeAnimationType.NONE
+        } else {
+            TextChangeAnimationType.SLIDE_DOWN
+        }
+
+        // Calculate the quantity and subtotal
         activityViewModel.totalQuantity += orderItem.quantity
         activityViewModel.subtotal += orderItem.quantity * orderItem.item.price
 
@@ -148,17 +190,34 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
 
                 // Update view
                 updateBottomSheetBehavior()
-                updateBottomSheetText(isAnimated)
+                updateBottomSheetText(animationType)
                 return
             }
         }
 
         activityViewModel.orderItems.add(orderItem)
         updateBottomSheetBehavior()
-        updateBottomSheetText(isAnimated)
+        updateBottomSheetText(animationType)
     }
 
-    private fun clearOrders() {
+    private fun removeOrder(position: Int) {
+        val item = activityViewModel.orderItems[position]
+
+        // Calculate the quantity and subtotal
+        activityViewModel.totalQuantity -= item.quantity
+        activityViewModel.subtotal -= item.quantity * item.item.price
+
+        activityViewModel.orderItems.removeAt(position)
+        binding.bottomSheet.orderList.adapter?.notifyItemRemoved(position)
+        if (activityViewModel.totalQuantity == 0) {
+            updateBottomSheetBehavior()
+        } else {
+            updateBottomSheetText(TextChangeAnimationType.NONE)
+        }
+
+    }
+
+    private fun cancelCurrentOrder() {
         activityViewModel.totalQuantity = 0
         activityViewModel.subtotal = 0f
         activityViewModel.orderItems.clear()
@@ -187,7 +246,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         }
     }
 
-    private fun updateBottomSheetText(isAnimated: Boolean) {
+    private fun updateBottomSheetText(animationType: TextChangeAnimationType) {
 
         // Set new display text
         binding.bottomSheet.quantity.text = activityViewModel.totalQuantity.toString()
@@ -197,9 +256,14 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         binding.bottomSheet.subtotal.text = currencyFormat(activityViewModel.subtotal)
 
         // Set some cool animation for text change
-        if (isAnimated) {
+        if (animationType == TextChangeAnimationType.SLIDE_DOWN) {
             binding.bottomSheet.quantity.startAnimation(slideDownAnimation)
             binding.bottomSheet.totalAmount.startAnimation(slideDownAnimation)
+        } else if (animationType == TextChangeAnimationType.SLIDE_UP) {
+            binding.bottomSheet.quantity.startAnimation(slideUpAnimation)
+            binding.bottomSheet.totalAmount.startAnimation(slideUpAnimation)
+            binding.bottomSheet.tax.startAnimation(slideUpAnimation)
+            binding.bottomSheet.subtotal.startAnimation(slideUpAnimation)
         }
     }
 
@@ -224,7 +288,6 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     private inner class BottomSheetCallback : BottomSheetBehavior.BottomSheetCallback() {
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            binding.bottomSheet.body.alpha = slideOffset
         }
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
