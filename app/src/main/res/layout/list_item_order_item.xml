@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,8 +11,9 @@
     </data>
 
     <FrameLayout
+        android:id="@+id/list_item_order_item"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/background"
@@ -36,7 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/foreground"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="match_parent"
             android:background="?android:attr/colorBackground">
 
             <TextView
@@ -83,7 +83,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="36dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
+                android:layout_marginStart="48dp"
                 android:text="@string/unit_price"
                 android:textAlignment="textStart"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -106,7 +106,6 @@
                 tools:text="@string/sample_amount" />
 
             <TextView
-                android:id="@+id/textView11"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"
                 android:text="@string/amount"
@@ -130,9 +129,23 @@
                 app:layout_constraintTop_toBottomOf="@+id/item_name"
                 tools:text="@string/sample_amount" />
 
+            <TextView
+                android:id="@+id/note"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{orderItem.note}"
+                android:textAlignment="viewStart"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"
+                app:firstBaselineToTopHeight="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/item_name"
+                app:layout_constraintStart_toStartOf="@+id/item_name"
+                app:layout_constraintTop_toBottomOf="@+id/amount" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
-
 </layout>
-

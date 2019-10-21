@@ -49,13 +49,13 @@ class MenuItemAdapter(private val listener: MenuItemListener) :
             }
         }
     }
-}
 
-private class MenuItemDiffCallback : DiffUtil.ItemCallback<MenuItem>() {
+    private class MenuItemDiffCallback : DiffUtil.ItemCallback<MenuItem>() {
 
-    override fun areItemsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean =
-        oldItem == newItem
+        override fun areItemsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean =
+            oldItem == newItem
 
-    override fun areContentsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean =
-        oldItem == newItem
+        override fun areContentsTheSame(oldItem: MenuItem, newItem: MenuItem): Boolean =
+            oldItem == newItem
+    }
 }

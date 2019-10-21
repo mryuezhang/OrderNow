@@ -2,6 +2,7 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -55,6 +56,30 @@ class OrderHistoryFragment : Fragment() {
     private fun subscribeUi(adapter: OrderAdapter) {
         viewModel.orders.observe(viewLifecycleOwner) { orders ->
             adapter.submitList(orders)
+        }
+    }
+
+    private fun getDailyReport() {
+        viewModel.dailyOrders.observe(viewLifecycleOwner) {
+            Log.i("Daily", it.toString())
+        }
+    }
+
+    private fun getWeeklyReport() {
+        viewModel.weeklyOrders.observe(viewLifecycleOwner) {
+            Log.i("Weekly", it.toString())
+        }
+    }
+
+    private fun getMonthlyReport() {
+        viewModel.monthlyOrders.observe(viewLifecycleOwner) {
+            Log.i("Monthly", it.toString())
+        }
+    }
+
+    private fun getYearlyReport() {
+        viewModel.yearlyOrders.observe(viewLifecycleOwner) {
+            Log.i("Yearly", it.toString())
         }
     }
 }

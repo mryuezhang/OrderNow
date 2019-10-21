@@ -53,4 +53,10 @@
     <string name="breakfast_title">Breakfast</string>
     <string name="main_title">Main</string>
     <string name="drink_title">Drink</string>
+
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
+    <string name="this_year">This Year</string>
+    <string name="career_over">Career Over</string>
 </resources>

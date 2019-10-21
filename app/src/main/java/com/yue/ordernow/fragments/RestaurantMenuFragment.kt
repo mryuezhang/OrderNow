@@ -25,7 +25,7 @@ import com.yue.ordernow.viewModels.MainViewModel
 
 
 class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogListener,
-    MenuItemAdapter.MenuItemListener, OrderItemSwipeHelper.OrderItemSwipeListener {
+    MenuItemAdapter.MenuItemListener, OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
 
     private val adapter = OrderItemAdapter()
     private lateinit var binding: FragmentRestaurantMenuBinding
@@ -79,7 +79,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         // Set adapter
         binding.bottomSheet.orderList.adapter = adapter
         adapter.submitList(activityViewModel.orderItems)
-        ItemTouchHelper(OrderItemSwipeHelper(this)).attachToRecyclerView(binding.bottomSheet.orderList)
+        ItemTouchHelper(OrderItemAdapter.OrderItemSwipeHelper(this)).attachToRecyclerView(binding.bottomSheet.orderList)
 
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.root)
         updateBottomSheetBehavior()
