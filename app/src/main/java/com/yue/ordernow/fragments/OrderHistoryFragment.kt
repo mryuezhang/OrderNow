@@ -31,7 +31,7 @@ class OrderHistoryFragment : Fragment() {
         val binding = FragmentOrderHistoryBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        val adapter = OrderAdapter()
+        val adapter = OrderAdapter(context!!)
         binding.orderHistory.adapter = adapter
         binding.orderHistory.addItemDecoration(
             DividerItemDecoration(

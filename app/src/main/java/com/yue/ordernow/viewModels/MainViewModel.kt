@@ -13,6 +13,7 @@ class MainViewModel internal constructor(
     val orderItems = ArrayList<OrderItem>()
     var subtotal = 0f
     var totalQuantity = 0
+    var isTakeout = false
 
     fun saveToDatabase(order: Order) {
         viewModelScope.launch {

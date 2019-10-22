@@ -9,7 +9,7 @@ import java.util.*
 class OrderHistoryViewModel internal constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
-    private val now = Calendar.getInstance()
+    val now = Calendar.getInstance()
     val orders = orderRepository.getAllOrders()
     val dailyOrders = orderRepository.getDailyOrders(now)
     val weeklyOrders = orderRepository.getWeeklyOrders(now)

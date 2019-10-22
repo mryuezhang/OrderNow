@@ -23,9 +23,11 @@ class MainActivity : AppCompatActivity() {
         InjectorUtils.provideMainViewModelFactory(applicationContext)
     }
 
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
 
         appBarConfiguration = AppBarConfiguration(

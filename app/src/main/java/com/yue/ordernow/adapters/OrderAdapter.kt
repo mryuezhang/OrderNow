@@ -1,14 +1,17 @@
 package com.yue.ordernow.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.yue.ordernow.R
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.ListItemOrderHistoryBinding
 
-class OrderAdapter : ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
+class OrderAdapter(private val context: Context) :
+    ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         OrderViewHolder(
@@ -30,6 +33,11 @@ class OrderAdapter : ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallba
             binding.apply {
                 order = item
                 executePendingBindings()
+                this.orderType.text = if (item.isTakeout) {
+                    context.getString(R.string.take_out)
+                } else {
+                    context.getString(R.string.dining_in)
+                }
             }
         }
     }

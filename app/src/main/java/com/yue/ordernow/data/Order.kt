@@ -19,7 +19,11 @@ data class Order(
     var totalQuantity: Int,
 
     @ColumnInfo(name = "order-number")
-    var orderNumber: Int
+    var orderNumber: Int,
+
+    @ColumnInfo(name = "is-takeout")
+    var isTakeout: Boolean
+
 ) {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -41,7 +45,8 @@ data class Order(
         fun newInstance(
             orderItems: ArrayList<OrderItem>,
             subtotal: Float,
-            totalQuantity: Int
+            totalQuantity: Int,
+            isTakeout: Boolean
         ): Order {
             val now = Calendar.getInstance()
             if (now.get(Calendar.DAY_OF_MONTH) ==
@@ -55,7 +60,7 @@ data class Order(
                 ++orderCount
             }
 
-            return Order(orderItems, subtotal, totalQuantity, orderCount)
+            return Order(orderItems, subtotal, totalQuantity, orderCount, isTakeout)
         }
     }
 }

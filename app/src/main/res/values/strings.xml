@@ -48,6 +48,9 @@
     <string name="title_total_amount">Total</string>
     <string name="tax">Tax</string>
     <string name="subtotal">Subtotal</string>
+    <string name="order_type">Order Type</string>
+    <string name="dining_in">Dining-in</string>
+    <string name="take_out">Take-out</string>
 
     <string name="appetizer_title">Appetizer</string>
     <string name="breakfast_title">Breakfast</string>
