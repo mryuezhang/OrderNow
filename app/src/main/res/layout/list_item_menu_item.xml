@@ -23,7 +23,9 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
         app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
+        app:cardUseCompatPadding="true"
+        app:strokeColor="?attr/colorButtonNormal"
+        app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

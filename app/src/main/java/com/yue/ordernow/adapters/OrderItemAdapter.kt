@@ -19,13 +19,28 @@ import com.yue.ordernow.fragments.RestaurantMenuFragment
 class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderItemDiffCallback()) {
 
     companion object {
-        const val TYPE_WITHOUT_NOTE = 0
+        const val TYPE_DEFAULT = 0
         const val TYPE_WITH_NOTE = 1
+        const val TYPE_WITH_EXTRA_COST = 2
+        const val TYPE_WITH_NOTE_AND_EXTRA_COST = 3
     }
 
-    override fun getItemViewType(position: Int): Int = when (getItem(position).note) {
-        "" -> TYPE_WITHOUT_NOTE
-        else -> TYPE_WITH_NOTE
+    override fun getItemViewType(position: Int): Int {
+        val orderItem = getItem(position)
+
+        if (orderItem.extraCost != 0f && orderItem.note == "") {
+            return TYPE_WITH_EXTRA_COST
+        }
+
+        if (orderItem.extraCost == 0f && orderItem.note != "") {
+            return TYPE_WITH_NOTE
+        }
+
+        if (orderItem.extraCost != 0f && orderItem.note != "") {
+            return TYPE_WITH_NOTE_AND_EXTRA_COST
+        }
+
+        return TYPE_DEFAULT
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -35,9 +50,20 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
             false
         )
 
-        // Hide note field from UI if order item does not contain any note
-        if (viewType == TYPE_WITHOUT_NOTE) {
-            binding.note.height = 0
+        // Hide certain UI components based on view types
+        when (viewType) {
+            TYPE_WITH_NOTE -> {
+                binding.extraCostTitle.height = 0
+                binding.extraCost.height = 0
+            }
+            TYPE_WITH_EXTRA_COST -> {
+                binding.note.height = 0
+            }
+            TYPE_DEFAULT -> {
+                binding.extraCostTitle.height = 0
+                binding.extraCost.height = 0
+                binding.note.height = 0
+            }
         }
 
         return OrderItemViewHolder(binding)

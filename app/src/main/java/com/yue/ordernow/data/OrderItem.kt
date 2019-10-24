@@ -4,23 +4,39 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.yue.ordernow.utils.currencyFormat
 
-data class OrderItem(val item: MenuItem, var quantity: Int, val note: String) : Parcelable {
+data class OrderItem(val item: MenuItem, var quantity: Int, var note: String) : Parcelable {
+    var extraCost: Float = 0f
+
+    constructor(item: MenuItem, quantity: Int, note: String, extraCharge: Float) : this(
+        item,
+        quantity,
+        note
+    ) {
+        this.extraCost = extraCharge
+    }
 
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(MenuItem::class.java.classLoader) as MenuItem,
         parcel.readInt(),
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readFloat()
     )
 
     override fun writeToParcel(parcel: Parcel, flag: Int) {
         parcel.writeParcelable(item, flag)
         parcel.writeInt(quantity)
         parcel.writeString(note)
+        parcel.writeFloat(extraCost)
     }
 
     override fun describeContents(): Int = 0
 
-    fun getFormattedAmount(): String = currencyFormat(item.price * quantity)
+    fun getAmount(): Float = item.price * quantity + extraCost
+
+    fun getFormattedExtraCost(): String = currencyFormat(extraCost)
+
+    fun getFormattedAmount(): String = currencyFormat(item.price * quantity + extraCost)
+
 
     companion object CREATOR : Parcelable.Creator<OrderItem> {
         override fun createFromParcel(parcel: Parcel): OrderItem {

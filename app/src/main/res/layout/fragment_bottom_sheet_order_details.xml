@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="?android:attr/colorBackground"
+        android:background="?attr/colorSurface"
         android:orientation="vertical"
         android:theme="@style/Widget.MaterialComponents.BottomSheet"
         app:behavior_hideable="true"
@@ -25,8 +25,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="@dimen/bottom_sheet_peek_height"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/shape_bottom_sheet"
             android:onClick="@{onHeaderClickListener}"
             android:orientation="horizontal">
 
@@ -34,9 +35,10 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="24dp"
                 android:text="@string/title_quantity_short"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/design_default_color_background"
                 android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +51,7 @@
                 android:layout_marginStart="4dp"
                 android:text="@string/sample_quantity"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/design_default_color_background"
                 android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintStart_toEndOf="@+id/textView"
@@ -61,6 +64,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/title_total_amount"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/design_default_color_background"
                 android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintEnd_toStartOf="@+id/total_amount"
@@ -70,11 +74,12 @@
                 android:id="@+id/total_amount"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="24dp"
                 android:layout_weight="1"
                 android:text="@string/sample_amount"
                 android:textAlignment="textEnd"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@color/design_default_color_background"
                 android:textStyle="bold"
                 app:firstBaselineToTopHeight="36dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -90,7 +95,7 @@
                 android:id="@+id/orderType"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:checkedButton="@id/dining_in"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
@@ -115,6 +120,30 @@
             </RadioGroup>
 
             <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/subtotal"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:firstBaselineToTopHeight="22dp"
+                app:layout_constraintEnd_toStartOf="@+id/subtotal"
+                app:layout_constraintTop_toTopOf="@+id/subtotal" />
+
+            <TextView
+                android:id="@+id/subtotal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:text="@string/sample_amount"
+                android:textAlignment="textEnd"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:firstBaselineToTopHeight="22dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
                 android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,30 +164,6 @@
                 app:firstBaselineToTopHeight="26dp"
                 app:layout_constraintEnd_toEndOf="@+id/subtotal"
                 app:layout_constraintTop_toBottomOf="@+id/subtotal" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/subtotal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:firstBaselineToTopHeight="22dp"
-                app:layout_constraintEnd_toStartOf="@+id/subtotal"
-                app:layout_constraintTop_toTopOf="@+id/subtotal" />
-
-            <TextView
-                android:id="@+id/subtotal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:text="@string/sample_amount"
-                android:textAlignment="textEnd"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:firstBaselineToTopHeight="22dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
             <View

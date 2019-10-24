@@ -57,25 +57,20 @@ class AddNoteDialogFragment(
             // Pass null as the parent view because its going in the dialog layout
             builder.setView(view)
                 .setPositiveButton(R.string.place_order) { _, _ ->
-                    if (extraCost.text!!.isNotEmpty()) {
-                        menuItem.price += extraCost.text.toString().toFloat()
-                    }
 
-                    if (inputNote.text!!.isNotBlank() && inputNote.text!!.isNotEmpty()) {
-                        listener.onDialogPositiveClick(
-                            this,
-                            OrderItem(
-                                menuItem,
-                                quantity.text.toString().toInt(),
-                                inputNote.text.toString()
-                            )
-                        )
-                    } else {
-                        listener.onDialogPositiveClick(
-                            this,
-                            OrderItem(menuItem, quantity.text.toString().toInt(), "")
-                        )
-                    }
+                    // Create the order item based on user inputs
+                    val orderItem =
+                        OrderItem(menuItem, quantity.text.toString().toInt(), "").apply {
+                            if (inputNote.text!!.isNotBlank() && inputNote.text!!.isNotEmpty()) {
+                                note = inputNote.text.toString()
+                            }
+                            if (extraCost.text!!.isNotEmpty()) {
+                                this.extraCost = extraCost.text.toString().toFloat()
+                            }
+                        }
+
+                    // Pass the data to the listener
+                    listener.onDialogPositiveClick(this, orderItem)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ ->
                     dialog?.cancel()

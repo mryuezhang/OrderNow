@@ -7,6 +7,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,6 +25,7 @@ import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 import com.yue.ordernow.utils.currencyFormat
 import com.yue.ordernow.viewModels.MainViewModel
 
+private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 
 class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogListener,
     MenuItemAdapter.MenuItemListener, OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
@@ -82,6 +84,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         adapter.submitList(activityViewModel.orderItems)
         ItemTouchHelper(OrderItemAdapter.OrderItemSwipeHelper(this)).attachToRecyclerView(binding.bottomSheet.orderList)
 
+        // Setup bottom sheet behavior
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.root)
         updateBottomSheetBehavior()
         updateBottomSheetText(TextChangeAnimationType.NONE)
@@ -90,8 +93,22 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         binding.bottomSheet.orderType.setOnCheckedChangeListener { radioGroup, i ->
             activityViewModel.isTakeout = i == R.id.take_out
         }
+        savedInstanceState?.getBoolean(IS_BOTTOM_SHEET_EXPAND)?.let {
+            if (it) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                showOrderDetailOptionsMenu()
+            }
+        }
 
         return binding.root
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            outState.putBoolean(IS_BOTTOM_SHEET_EXPAND, true)
+        }
+
+        super.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -189,10 +206,10 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
 
         // Calculate the quantity and subtotal
         activityViewModel.totalQuantity += orderItem.quantity
-        activityViewModel.subtotal += orderItem.quantity * orderItem.item.price
+        activityViewModel.subtotal += orderItem.getAmount()
 
         for (it in activityViewModel.orderItems) {
-            if (it.item == orderItem.item && it.note == orderItem.note) {
+            if (it.item == orderItem.item && it.note == orderItem.note && it.extraCost == orderItem.extraCost) {
 
                 // combine the two orderItems
                 it.quantity += orderItem.quantity
@@ -209,7 +226,10 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             activityViewModel.orderItems.sortBy { it.item.name }
         } else {
             activityViewModel.orderItems.add(index, orderItem)
+            binding.bottomSheet.orderList.adapter?.notifyItemInserted(index)
         }
+
+        // Update view
         updateBottomSheetBehavior()
         updateBottomSheetText(animationType)
     }
@@ -219,7 +239,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
 
         // Calculate the quantity and subtotal
         activityViewModel.totalQuantity -= item.quantity
-        activityViewModel.subtotal -= item.quantity * item.item.price
+        activityViewModel.subtotal -= item.getAmount()
 
         activityViewModel.orderItems.removeAt(position)
         binding.bottomSheet.orderList.adapter?.notifyItemRemoved(position)
@@ -252,9 +272,6 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             // Note the notifyDateSetChange() needs to be called after bottom sheet behaviors are set
             // Otherwise the bottom sheet will expend and collapse quickly, it doesn't look nice
             bottomSheetBehavior.isHideable = false
-            if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
             adapter.notifyDataSetChanged()
             val layoutParams = binding.menuPage.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.bottomMargin =
@@ -292,6 +309,19 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         else -> null
     }
 
+    private fun showDefaultOptionsMenu() {
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.title_menu)
+        isOptionMenuViable = false
+        activity?.invalidateOptionsMenu()
+    }
+
+    private fun showOrderDetailOptionsMenu() {
+        (activity as MainActivity).supportActionBar?.title =
+            getString(R.string.title_current_order)
+        isOptionMenuViable = true
+        activity?.invalidateOptionsMenu()
+    }
+
     private inner class OnBottomSheetHeaderClickListener : View.OnClickListener {
         override fun onClick(p0: View?) {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
@@ -303,22 +333,26 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     }
 
     private inner class BottomSheetCallback : BottomSheetBehavior.BottomSheetCallback() {
-
-        override fun onSlide(bottomSheet: View, slideOffset: Float) {
-        }
+        override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                (activity as MainActivity).supportActionBar?.title = getString(R.string.title_menu)
-                isOptionMenuViable = false
-                activity?.invalidateOptionsMenu()
-            } else if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                (activity as MainActivity).supportActionBar?.title =
-                    getString(R.string.title_current_order)
-                isOptionMenuViable = true
-                activity?.invalidateOptionsMenu()
+            if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                binding.bottomSheet.header.background =
+                    ContextCompat.getDrawable(context!!, R.color.colorPrimary)
+
+                // Show default options menu
+                showOrderDetailOptionsMenu()
+
+
+            } else {
+                binding.bottomSheet.header.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.shape_bottom_sheet)
+
+                // Show order detail options menu
+                if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    showDefaultOptionsMenu()
+                }
             }
         }
-
     }
 }

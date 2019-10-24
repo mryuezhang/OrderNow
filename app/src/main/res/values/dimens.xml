@@ -9,5 +9,6 @@
     <dimen name="dialog_width">280dp</dimen>
     <dimen name="menu_option_side_padding">2dp</dimen>
     <dimen name="bottom_sheet_peek_height">56dp</dimen>
+    <dimen name="expanded_bottom_sheet_top_margin">8dp</dimen>
     <dimen name="order_item_background_icon_margin">20dp</dimen>
 </resources>
