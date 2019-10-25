@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.MenuItemRepository
-import com.yue.ordernow.utils.APPETIZER
-import com.yue.ordernow.utils.BREAKFAST
-import com.yue.ordernow.utils.MAIN
+import com.yue.ordernow.utilities.APPETIZER
+import com.yue.ordernow.utilities.BREAKFAST
+import com.yue.ordernow.utilities.MAIN
 
 class MenuOptionsViewModel internal constructor(
     menuItemRepository: MenuItemRepository,

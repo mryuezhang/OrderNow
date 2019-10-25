@@ -1,9 +1,11 @@
 package com.yue.ordernow.data
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yue.ordernow.utils.currencyFormat
+import com.yue.ordernow.utilities.currencyFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +26,7 @@ data class Order(
     @ColumnInfo(name = "is-takeout")
     var isTakeout: Boolean
 
-) {
+) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var orderId: Long = 0
@@ -35,8 +37,11 @@ data class Order(
     fun getFormattedTime(): String =
         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timeCreated.time)
 
+    fun getTotalAmount(): Float =
+        (subtotalAmount * 1.13).toFloat() //TODO chagne the hard coded tax rate
+
     fun getFormattedTotalAmount(): String =
-        currencyFormat((subtotalAmount * 1.13).toFloat()) //TODO chagne the hard coded tax rate
+        currencyFormat(getTotalAmount())
 
     companion object {
         var lastOrderCreatedTime: Calendar? = null
@@ -62,5 +67,43 @@ data class Order(
 
             return Order(orderItems, subtotal, totalQuantity, orderCount, isTakeout)
         }
+
+        @JvmField
+        val CREATOR = object : Parcelable.Creator<Order> {
+            override fun createFromParcel(parcel: Parcel): Order {
+                return Order(parcel)
+            }
+
+            override fun newArray(size: Int): Array<Order?> {
+                return arrayOfNulls(size)
+            }
+        }
+    }
+
+    /*
+     * Parcelable methods
+     */
+    @Suppress("UNCHECKED_CAST")
+    constructor(parcel: Parcel) : this(
+        parcel.readArrayList(OrderItem::class.java.classLoader) as ArrayList<OrderItem>,
+        parcel.readFloat(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readByte() != 0.toByte()
+    ) {
+        orderId = parcel.readLong()
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeList(orderItems)
+        parcel.writeFloat(subtotalAmount)
+        parcel.writeInt(totalQuantity)
+        parcel.writeInt(orderNumber)
+        parcel.writeByte(if (isTakeout) 1 else 0)
+        parcel.writeLong(orderId)
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 }

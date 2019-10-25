@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yue.ordernow.utils
+package com.yue.ordernow.utilities
 
 import androidx.lifecycle.LiveData
 import java.util.concurrent.CountDownLatch

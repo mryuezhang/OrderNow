@@ -1,12 +1,14 @@
-package com.yue.ordernow.utils
+package com.yue.ordernow.utilities
 
 import android.content.Context
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
+import com.yue.ordernow.data.Report
 import com.yue.ordernow.viewModels.MainViewModelFactory
 import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
 import com.yue.ordernow.viewModels.OrderHistoryViewModelFactory
+import com.yue.ordernow.viewModels.ReportDetailViewModelFactory
 
 object InjectorUtils {
 
@@ -32,4 +34,7 @@ object InjectorUtils {
 
     fun provideOrderHistoryViewModelFactory(context: Context): OrderHistoryViewModelFactory =
         OrderHistoryViewModelFactory(getOrderRepository(context))
+
+    fun provideReportDetailViewModelFactory(report: Report): ReportDetailViewModelFactory =
+        ReportDetailViewModelFactory(report)
 }

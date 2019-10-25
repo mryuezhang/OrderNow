@@ -62,4 +62,7 @@
     <string name="this_month">This Month</string>
     <string name="this_year">This Year</string>
     <string name="career_over">Career Over</string>
+
+    <string name="display_text_placed_orders">orders were placed</string>
+    <string name="display_text_made_revenue">were made</string>
 </resources>

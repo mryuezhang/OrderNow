@@ -1,6 +1,6 @@
 package com.yue.ordernow
 
-import com.yue.ordernow.utils.*
+import com.yue.ordernow.utilities.*
 import org.junit.Test
 import java.util.*
 

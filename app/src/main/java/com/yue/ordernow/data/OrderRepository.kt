@@ -1,6 +1,6 @@
 package com.yue.ordernow.data
 
-import com.yue.ordernow.utils.*
+import com.yue.ordernow.utilities.*
 import java.util.*
 
 class OrderRepository private constructor(private val orderDao: OrderDao) {

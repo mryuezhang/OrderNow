@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.yue.ordernow.utils.DATABASE_NAME
+import com.yue.ordernow.utilities.DATABASE_NAME
 import com.yue.ordernow.worker.DataBaseWorker
 
 @Database(entities = [MenuItem::class, Order::class], version = 1, exportSchema = false)

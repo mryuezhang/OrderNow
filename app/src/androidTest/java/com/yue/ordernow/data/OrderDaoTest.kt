@@ -3,7 +3,7 @@ package com.yue.ordernow.data
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
-import com.yue.ordernow.utils.getValue
+import com.yue.ordernow.utilities.getValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers
 import org.junit.*
@@ -29,9 +29,9 @@ class OrderDaoTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         orderDao = database.orderDao()
-        order1 = Order.newInstance(arrayListOf(orderItem1, orderItem2), 0f, 0)
+        order1 = Order.newInstance(arrayListOf(orderItem1, orderItem2), 0f, 0, true)
         Thread.sleep(1000)
-        order2 = Order.newInstance(arrayListOf(orderItem3, orderItem4), 0f, 0)
+        order2 = Order.newInstance(arrayListOf(orderItem3, orderItem4), 0f, 0, true)
         orderDao.insertOrder(order2)
         orderDao.insertOrder(order1)
     }

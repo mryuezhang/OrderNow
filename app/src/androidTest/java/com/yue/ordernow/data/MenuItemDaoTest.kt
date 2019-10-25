@@ -3,7 +3,7 @@ package com.yue.ordernow.data
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
-import com.yue.ordernow.utils.getValue
+import com.yue.ordernow.utilities.getValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers
 import org.junit.*

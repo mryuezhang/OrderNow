@@ -11,7 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.yue.ordernow.R
 import com.yue.ordernow.databinding.ActivityMainBinding
-import com.yue.ordernow.utils.InjectorUtils
+import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.MainViewModel
 
 
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        binding = setContentView(this, R.layout.activity_main)
         setSupportActionBar(binding.toolbar)
 
         appBarConfiguration = AppBarConfiguration(

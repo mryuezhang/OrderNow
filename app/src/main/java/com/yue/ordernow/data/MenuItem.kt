@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.yue.ordernow.utils.currencyFormat
+import com.yue.ordernow.utilities.currencyFormat
 
 @Entity(tableName = "menu-items")
 data class MenuItem(

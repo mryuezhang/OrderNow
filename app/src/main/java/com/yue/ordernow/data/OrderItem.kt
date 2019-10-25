@@ -2,7 +2,7 @@ package com.yue.ordernow.data
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.yue.ordernow.utils.currencyFormat
+import com.yue.ordernow.utilities.currencyFormat
 
 data class OrderItem(val item: MenuItem, var quantity: Int, var note: String) : Parcelable {
     var extraCost: Float = 0f

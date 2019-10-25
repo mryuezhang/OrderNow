@@ -1,4 +1,4 @@
-package com.yue.ordernow.utils
+package com.yue.ordernow.utilities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

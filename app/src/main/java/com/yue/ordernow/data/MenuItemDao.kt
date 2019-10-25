@@ -5,10 +5,10 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.yue.ordernow.utils.APPETIZER
-import com.yue.ordernow.utils.BREAKFAST
-import com.yue.ordernow.utils.DRINK
-import com.yue.ordernow.utils.MAIN
+import com.yue.ordernow.utilities.APPETIZER
+import com.yue.ordernow.utilities.BREAKFAST
+import com.yue.ordernow.utilities.DRINK
+import com.yue.ordernow.utilities.MAIN
 
 @Dao
 interface MenuItemDao {

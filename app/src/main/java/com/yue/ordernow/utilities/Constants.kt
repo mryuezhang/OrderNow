@@ -1,4 +1,4 @@
-package com.yue.ordernow.utils
+package com.yue.ordernow.utilities
 
 const val DATABASE_NAME = "com.yue.ordernow"
 

@@ -3,10 +3,10 @@ package com.yue.ordernow.adapters
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.yue.ordernow.fragments.MenuOptionsFragment
-import com.yue.ordernow.utils.APPETIZER
-import com.yue.ordernow.utils.BREAKFAST
-import com.yue.ordernow.utils.DRINK
-import com.yue.ordernow.utils.MAIN
+import com.yue.ordernow.utilities.APPETIZER
+import com.yue.ordernow.utilities.BREAKFAST
+import com.yue.ordernow.utilities.DRINK
+import com.yue.ordernow.utilities.MAIN
 
 
 const val APPETIZER_PAGE_INDEX = 0

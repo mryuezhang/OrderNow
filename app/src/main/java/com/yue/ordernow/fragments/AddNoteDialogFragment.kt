@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.yue.ordernow.R
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
-import com.yue.ordernow.utils.CurrencyFormatInputFilter
+import com.yue.ordernow.utilities.CurrencyFormatInputFilter
 
 
 class AddNoteDialogFragment(
