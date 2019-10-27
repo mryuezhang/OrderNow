@@ -8,6 +8,10 @@
         <variable
             name="orderItem"
             type="com.yue.ordernow.data.OrderItem" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <FrameLayout
@@ -38,7 +42,9 @@
             android:id="@+id/foreground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:attr/colorBackground">
+            android:background="?android:attr/colorBackground"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{onClickListener}">
 
             <TextView
                 android:id="@+id/item_name"

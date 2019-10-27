@@ -2,13 +2,16 @@ package com.yue.ordernow.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.ListItemOrderHistoryBinding
+import com.yue.ordernow.fragments.ReportDetailFragmentDirections
 
 class OrderAdapter(private val context: Context) :
     ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
@@ -29,6 +32,14 @@ class OrderAdapter(private val context: Context) :
 
     private inner class OrderViewHolder(private val binding: ListItemOrderHistoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.setOnClickListener {
+                binding.order?.let { order ->
+                    navigateToPlant(order, it)
+                }
+            }
+        }
+
         fun bind(item: Order) {
             binding.apply {
                 order = item
@@ -39,6 +50,17 @@ class OrderAdapter(private val context: Context) :
                     context.getString(R.string.dining_in)
                 }
             }
+        }
+
+        private fun navigateToPlant(
+            order: Order,
+            it: View
+        ) {
+            val direction =
+                ReportDetailFragmentDirections.actionReportDetailFragmentToOrderDetailFragment(
+                    order
+                )
+            it.findNavController().navigate(direction)
         }
     }
 }

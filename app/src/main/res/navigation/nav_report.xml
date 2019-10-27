@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/report_navigation"
+    app:startDestination="@id/reportDetailFragment">
+
+    <fragment
+        android:id="@+id/reportDetailFragment"
+        android:name="com.yue.ordernow.fragments.ReportDetailFragment"
+        android:label="ReportDetailFragment"
+        tools:layout="@layout/fragment_report_detail">
+        <action
+            android:id="@+id/action_reportDetailFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.yue.ordernow.fragments.OrderDetailFragment"
+        android:label="OrderDetailFragment">
+
+        <argument
+            android:name="order"
+            app:argType="com.yue.ordernow.data.Order" />
+    </fragment>
+</navigation>

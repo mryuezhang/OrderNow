@@ -3,7 +3,6 @@ package com.yue.ordernow.adapters
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -34,15 +33,19 @@ class ReportAdapter(private val context: Context) :
 
     private inner class ReportViewHolder(private val binding: ListItemReportBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.setOnClickListener {
+                binding.report?.let { report ->
+                    val intent = Intent(context, ReportDetailActivity::class.java)
+                    intent.putExtra(REPORT, report)
+                    context.startActivity(intent)
+                }
+            }
+        }
+
         fun bind(item: Report) {
             binding.apply {
                 report = item
-                onClickListener = View.OnClickListener {
-                    val intent = Intent(context, ReportDetailActivity::class.java)
-                    intent.putExtra(REPORT, item)
-                    context.startActivity(intent)
-                }
-
                 executePendingBindings()
 
                 // Set text using string resource here instead of using data binding for translatability

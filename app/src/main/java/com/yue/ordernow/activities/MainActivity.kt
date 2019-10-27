@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_restaurant_menu, R.id.nav_order_history
+                R.id.nav_restaurant_menu, R.id.nav_dashboard
             ), binding.drawerLayout
         )
 

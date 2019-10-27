@@ -24,15 +24,15 @@ data class Order(
     var orderNumber: Int,
 
     @ColumnInfo(name = "is-takeout")
-    var isTakeout: Boolean
+    var isTakeout: Boolean,
+
+    @ColumnInfo(name = "time-created")
+    var timeCreated: Calendar = Calendar.getInstance()
 
 ) : Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var orderId: Long = 0
-
-    @ColumnInfo(name = "time-created")
-    var timeCreated: Calendar = Calendar.getInstance()
 
     fun getFormattedTime(): String =
         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timeCreated.time)
@@ -56,16 +56,18 @@ data class Order(
             val now = Calendar.getInstance()
             if (now.get(Calendar.DAY_OF_MONTH) ==
                 lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
-            ) { // if this and previous order are made within the same day
+            ) {
+                // if this and previous order are made within the same day
                 lastOrderCreatedTime = now
                 ++orderCount
-            } else { // if this order and previous order are not made within the same day, or there is no previous order
+            } else {
+                // if this order and previous order are not made within the same day, or there is no previous order
                 lastOrderCreatedTime = now
                 orderCount = 0
                 ++orderCount
             }
 
-            return Order(orderItems, subtotal, totalQuantity, orderCount, isTakeout)
+            return Order(orderItems, subtotal, totalQuantity, orderCount, isTakeout, now)
         }
 
         @JvmField
@@ -89,7 +91,8 @@ data class Order(
         parcel.readFloat(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        Calendar.getInstance().apply { timeInMillis = parcel.readLong() }
     ) {
         orderId = parcel.readLong()
     }
@@ -100,6 +103,7 @@ data class Order(
         parcel.writeInt(totalQuantity)
         parcel.writeInt(orderNumber)
         parcel.writeByte(if (isTakeout) 1 else 0)
+        parcel.writeLong(timeCreated.timeInMillis)
         parcel.writeLong(orderId)
     }
 

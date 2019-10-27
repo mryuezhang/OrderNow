@@ -2,6 +2,7 @@ package com.yue.ordernow.adapters
 
 import android.graphics.Canvas
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +17,12 @@ import com.yue.ordernow.databinding.ListItemOrderItemBinding
 import com.yue.ordernow.fragments.RestaurantMenuFragment
 
 
-class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderItemDiffCallback()) {
+class OrderItemAdapter(private val listener: OrderItemOnClickListener?) :
+    ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderItemDiffCallback()) {
+
+    interface OrderItemOnClickListener {
+        fun onClick(orderItem: OrderItem, position: Int)
+    }
 
     companion object {
         const val TYPE_DEFAULT = 0
@@ -72,14 +78,17 @@ class OrderItemAdapter : ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderIt
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val menuItem = getItem(position)
-        (holder as OrderItemViewHolder).bind(menuItem)
+        (holder as OrderItemViewHolder).bind(menuItem, position)
     }
 
     inner class OrderItemViewHolder(val binding: ListItemOrderItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: OrderItem) {
+        fun bind(item: OrderItem, position: Int) {
             binding.apply {
                 orderItem = item
+                onClickListener = View.OnClickListener {
+                    listener?.onClick(item, position)
+                }
                 executePendingBindings()
             }
         }

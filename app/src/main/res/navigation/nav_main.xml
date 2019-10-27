@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_menu_options" />
 
     <fragment
-        android:id="@+id/nav_order_history"
-        android:name="com.yue.ordernow.fragments.OrderHistoryFragment"
+        android:id="@+id/nav_dashboard"
+        android:name="com.yue.ordernow.fragments.DashboardFragment"
         android:label="@string/title_order_history"
-        tools:layout="@layout/fragment_order_history" />
+        tools:layout="@layout/fragment_dashboard" />
 </navigation>

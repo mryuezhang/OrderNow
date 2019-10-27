@@ -2,7 +2,6 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,16 +11,16 @@ import com.yue.ordernow.adapters.ReportAdapter
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentDashboardBinding
 import com.yue.ordernow.utilities.InjectorUtils
-import com.yue.ordernow.viewModels.OrderHistoryViewModel
+import com.yue.ordernow.viewModels.DashboardViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
 /**
  * A simple [Fragment] subclass.
  */
-class OrderHistoryFragment : Fragment() {
-    private val viewModel: OrderHistoryViewModel by viewModels {
-        InjectorUtils.provideOrderHistoryViewModelFactory(requireContext())
+class DashboardFragment : Fragment() {
+    private val viewModel: DashboardViewModel by viewModels {
+        InjectorUtils.provideDashboardViewModelFactory(requireContext())
     }
 
     private lateinit var adapter: ReportAdapter
@@ -43,7 +42,6 @@ class OrderHistoryFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
         inflater.inflate(R.menu.menu_empty, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -56,19 +54,19 @@ class OrderHistoryFragment : Fragment() {
             it.forEach { order ->
                 if (order.timeCreated.get(Calendar.DAY_OF_YEAR) == viewModel.now.get(Calendar.DAY_OF_YEAR)) {
                     reportToday.quantity++
-                    reportToday.amount += order.getTotalAmount()
+                    reportToday.amount += order.subtotalAmount
                     reportToday.orders.add(order)
                 }
 
                 if (order.timeCreated.get(Calendar.WEEK_OF_YEAR) == viewModel.now.get(Calendar.WEEK_OF_YEAR)) {
                     reportWeek.quantity++
-                    reportWeek.amount += order.getTotalAmount()
+                    reportWeek.amount += order.subtotalAmount
                     reportWeek.orders.add(order)
                 }
 
                 if (order.timeCreated.get(Calendar.MONTH) == viewModel.now.get(Calendar.MONTH)) {
                     reportMonth.quantity++
-                    reportMonth.amount += order.getTotalAmount()
+                    reportMonth.amount += order.subtotalAmount
                     reportMonth.orders.add(order)
                 }
             }
@@ -76,30 +74,6 @@ class OrderHistoryFragment : Fragment() {
             reportList.add(reportWeek)
             reportList.add(reportMonth)
             adapter.submitList(reportList)
-        }
-    }
-
-    private fun getDailyReport() {
-        viewModel.dailyOrders.observe(viewLifecycleOwner) {
-            Log.i("Daily", it.toString())
-        }
-    }
-
-    private fun getWeeklyReport() {
-        viewModel.weeklyOrders.observe(viewLifecycleOwner) {
-            Log.i("Weekly", it.toString())
-        }
-    }
-
-    private fun getMonthlyReport() {
-        viewModel.monthlyOrders.observe(viewLifecycleOwner) {
-            Log.i("Monthly", it.toString())
-        }
-    }
-
-    private fun getYearlyReport() {
-        viewModel.yearlyOrders.observe(viewLifecycleOwner) {
-            Log.i("Yearly", it.toString())
         }
     }
 }

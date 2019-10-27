@@ -33,12 +33,12 @@
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 android:text="@string/today"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textSize="18sp"
-                app:firstBaselineToTopHeight="24dp"
+                android:textSize="14sp"
+                app:firstBaselineToTopHeight="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{String.valueOf(report.quantity)}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
+                android:textSize="36sp"
                 app:firstBaselineToTopHeight="46dp"
                 app:layout_constraintStart_toStartOf="@id/title"
                 app:layout_constraintTop_toBottomOf="@id/title"
@@ -59,43 +59,48 @@
                 android:id="@+id/textView15"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/display_text_placed_orders"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"
-                app:firstBaselineToTopHeight="46dp"
-                app:layout_constraintEnd_toEndOf="@id/title"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/quantity"
-                app:layout_constraintTop_toTopOf="@+id/quantity" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/quantity"
+                app:layout_constraintTop_toBottomOf="@+id/quantity" />
 
             <TextView
                 android:id="@+id/amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="30sp"
-                app:firstBaselineToTopHeight="46dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/quantity"
-                app:layout_constraintTop_toBottomOf="@id/quantity"
+                android:layout_marginStart="32dp"
                 android:text="@{report.formattedAmount}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="36sp"
+                app:firstBaselineToTopHeight="46dp"
+                app:layout_constraintStart_toEndOf="@+id/textView13"
+                app:layout_constraintTop_toTopOf="@+id/quantity"
                 tools:text="@string/sample_amount" />
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:text="@string/display_text_made_revenue"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintStart_toStartOf="@+id/amount" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/orders"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 app:firstBaselineToTopHeight="46dp"
-                app:layout_constraintEnd_toEndOf="@id/title"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@id/amount"
-                app:layout_constraintTop_toTopOf="@+id/amount" />
+                app:layout_constraintStart_toEndOf="@+id/quantity"
+                app:layout_constraintTop_toTopOf="@+id/quantity" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

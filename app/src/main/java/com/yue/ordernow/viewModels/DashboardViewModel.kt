@@ -6,7 +6,7 @@ import com.yue.ordernow.data.OrderRepository
 import kotlinx.coroutines.launch
 import java.util.*
 
-class OrderHistoryViewModel internal constructor(
+class DashboardViewModel internal constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
     val now = Calendar.getInstance()

@@ -11,6 +11,9 @@
             android:id="@+id/reports"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="3"
             tools:listitem="@layout/list_item_report" />

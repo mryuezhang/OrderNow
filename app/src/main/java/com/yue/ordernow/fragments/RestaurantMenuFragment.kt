@@ -24,13 +24,19 @@ import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 import com.yue.ordernow.utilities.currencyFormat
 import com.yue.ordernow.viewModels.MainViewModel
+import java.util.ArrayList
+import kotlin.Comparator
 
 private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 
-class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogListener,
-    MenuItemAdapter.MenuItemListener, OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
+class RestaurantMenuFragment : Fragment(),
+    CustomOrderDialogFragment.CustomOrderDialogListener,
+    ModifyOrderDialogFragment.ModifyOrderDialogListener,
+    MenuItemAdapter.MenuItemListener,
+    OrderItemAdapter.OrderItemOnClickListener,
+    OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
 
-    private val adapter = OrderItemAdapter()
+    private val adapter = OrderItemAdapter(this)
     private lateinit var binding: FragmentRestaurantMenuBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var activityViewModel: MainViewModel
@@ -97,7 +103,9 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        if (::bottomSheetBehavior.isInitialized && bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+        if (::bottomSheetBehavior.isInitialized &&
+            bottomSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED
+        ) {
             outState.putBoolean(IS_BOTTOM_SHEET_EXPAND, true)
         }
 
@@ -110,6 +118,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         menu.findItem(R.id.action_clear).isVisible = isOptionMenuViable
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
             // Sort all order items
@@ -118,9 +127,13 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
             })
 
             // Create order object and save it to data base
+            // Note: clone the array list of order items here is a must
+            // since inserting into data base is a asyc call, and we are clearing
+            // out all the data right after with removeCurrentOrder(). Otherwise
+            // empty array lists will be inserted into database
             activityViewModel.saveToDatabase(
                 Order.newInstance(
-                    activityViewModel.orderItems,
+                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
                     activityViewModel.subtotal,
                     activityViewModel.totalQuantity,
                     activityViewModel.isTakeout
@@ -133,13 +146,12 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         }
         R.id.action_clear -> {
             activity?.let {
-                // Show a alert dialog to inform user
                 AlertDialog.Builder(it).apply {
-                    setMessage("Discard order?")
-                    setPositiveButton(R.string.discard) { dialog, id ->
+                    setMessage(resources.getString(R.string.title_confirm_discard_order))
+                    setPositiveButton(R.string.discard) { _, _ ->
                         removeCurrentOrder()
                     }
-                    setNegativeButton(R.string.cancel) { dialog, id ->
+                    setNegativeButton(R.string.cancel) { dialog, _ ->
                         dialog.cancel()
                     }
                 }.create().show()
@@ -150,7 +162,7 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     }
 
     /*
-     * AddNoteDialogFragment.AddNoteDialogListener method
+     * CustomOrderDialogFragment.CustomOrderDialogListener method
      */
 
     override fun onDialogPositiveClick(dialog: DialogFragment, orderItem: OrderItem) {
@@ -169,20 +181,70 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
 
     override fun onCustomizeButtonClick(menuItem: MenuItem?) {
         menuItem?.let {
-            AddNoteDialogFragment(this, it.copy()) // MUST pass a copy here
-                .show(childFragmentManager, "")
+            CustomOrderDialogFragment(this, it.copy()) // MUST pass a copy here
+                .show(childFragmentManager, CustomOrderDialogFragment.TAG)
         }
+    }
+
+    /*
+     * OrderItemOnClickListener method
+     */
+    override fun onClick(orderItem: OrderItem, position: Int) {
+        ModifyOrderDialogFragment(this, orderItem, position).show(
+            childFragmentManager,
+            ModifyOrderDialogFragment.TAG
+        )
+    }
+
+    /*
+     * ModifyOrderDialogFragment.ModifyOrderDialogListener method
+     */
+    override fun onDialogPositiveClick(
+        dialog: DialogFragment, position: Int
+    ) {
+        adapter.notifyItemChanged(position)
     }
 
     /*
      * OrderItemSwipeHelper.OrderItemSwipeListener method
      */
     override fun onSwipe(itemPosition: Int) {
-        val deletedItem = removeOrder(itemPosition)
-        Snackbar.make(binding.bottomSheet.body, "1 removed", Snackbar.LENGTH_LONG)
-            .setAction("Undo") {
-                addOrder(itemPosition, deletedItem)
+
+        val orderItem = activityViewModel.orderItems[itemPosition]
+
+        // Calculate the quantity and subtotal
+        activityViewModel.totalQuantity -= orderItem.quantity
+        activityViewModel.subtotal -= orderItem.getAmount()
+
+        // Remove the item
+        activityViewModel.orderItems.removeAt(itemPosition)
+        binding.bottomSheet.orderList.adapter?.notifyItemRemoved(itemPosition)
+
+        if (activityViewModel.orderItems.isEmpty()) {
+            activity?.let {
+                AlertDialog.Builder(it).apply {
+                    setTitle(resources.getString(R.string.title_confirm_discard_order))
+                    setMessage(resources.getString(R.string.message_discard_order))
+                    setPositiveButton(R.string.discard) { _, _ ->
+                        updateBottomSheetBehavior()
+                    }
+                    setNegativeButton(R.string.cancel) { dialog, _ ->
+                        addOrder(itemPosition, orderItem)
+                        dialog.cancel()
+                    }
+                }.create().show()
+            }
+        } else {
+            Snackbar.make(
+                binding.bottomSheet.body,
+                resources.getString(R.string.text_order_item_removed),
+                Snackbar.LENGTH_LONG
+            ).setAction(resources.getString(R.string.undo)) {
+                addOrder(itemPosition, orderItem)
             }.show()
+        }
+
+        updateBottomSheetText()
     }
 
     /*
@@ -195,8 +257,10 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         activityViewModel.subtotal += orderItem.getAmount()
 
         for (it in activityViewModel.orderItems) {
-            if (it.item == orderItem.item && it.note == orderItem.note && it.extraCost == orderItem.extraCost) {
-
+            if (it.item == orderItem.item &&
+                it.note == orderItem.note &&
+                it.extraCost == orderItem.extraCost
+            ) {
                 // combine the two orderItems
                 it.quantity += orderItem.quantity
 
@@ -218,24 +282,6 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
         // Update view
         updateBottomSheetBehavior()
         updateBottomSheetText()
-    }
-
-    private fun removeOrder(position: Int): OrderItem {
-        val item = activityViewModel.orderItems[position]
-
-        // Calculate the quantity and subtotal
-        activityViewModel.totalQuantity -= item.quantity
-        activityViewModel.subtotal -= item.getAmount()
-
-        activityViewModel.orderItems.removeAt(position)
-        binding.bottomSheet.orderList.adapter?.notifyItemRemoved(position)
-        if (activityViewModel.totalQuantity == 0) {
-            updateBottomSheetBehavior()
-        } else {
-            updateBottomSheetText()
-        }
-
-        return item
     }
 
     private fun removeCurrentOrder() {
@@ -294,26 +340,34 @@ class RestaurantMenuFragment : Fragment(), AddNoteDialogFragment.AddNoteDialogLi
     }
 
     private fun showDefaultOptionsMenu() {
-        (activity as MainActivity).supportActionBar?.title = getString(R.string.title_menu)
-        isOptionMenuViable = false
-        activity?.invalidateOptionsMenu()
+        activity?.let {
+            (it as MainActivity).supportActionBar?.title = getString(R.string.title_menu)
+            isOptionMenuViable = false
+            it.invalidateOptionsMenu()
+        }
     }
 
     private fun showOrderDetailOptionsMenu() {
-        (activity as MainActivity).supportActionBar?.title =
-            getString(R.string.title_current_order)
-        isOptionMenuViable = true
-        activity?.invalidateOptionsMenu()
+        activity?.let {
+            (it as MainActivity).supportActionBar?.title =
+                getString(R.string.title_current_order)
+            isOptionMenuViable = true
+            it.invalidateOptionsMenu()
+        }
     }
 
     private fun showDefaultBottomSheetShape() {
-        binding.bottomSheet.header.background =
-            ContextCompat.getDrawable(context!!, R.drawable.shape_bottom_sheet)
+        context?.let {
+            binding.bottomSheet.header.background =
+                ContextCompat.getDrawable(it, R.drawable.shape_bottom_sheet)
+        }
     }
 
     private fun showExpandedBottomSheetShape() {
-        binding.bottomSheet.header.background =
-            ContextCompat.getDrawable(context!!, R.color.colorPrimary)
+        context?.let {
+            binding.bottomSheet.header.background =
+                ContextCompat.getDrawable(it, R.color.colorPrimary)
+        }
     }
 
     private fun toggleBottomSheetState() {

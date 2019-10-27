@@ -5,9 +5,9 @@ import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
+import com.yue.ordernow.viewModels.DashboardViewModelFactory
 import com.yue.ordernow.viewModels.MainViewModelFactory
 import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
-import com.yue.ordernow.viewModels.OrderHistoryViewModelFactory
 import com.yue.ordernow.viewModels.ReportDetailViewModelFactory
 
 object InjectorUtils {
@@ -32,8 +32,8 @@ object InjectorUtils {
     ): MenuOptionsViewModelFactory =
         MenuOptionsViewModelFactory(getMenuItemRepository(context), category)
 
-    fun provideOrderHistoryViewModelFactory(context: Context): OrderHistoryViewModelFactory =
-        OrderHistoryViewModelFactory(getOrderRepository(context))
+    fun provideDashboardViewModelFactory(context: Context): DashboardViewModelFactory =
+        DashboardViewModelFactory(getOrderRepository(context))
 
     fun provideReportDetailViewModelFactory(report: Report): ReportDetailViewModelFactory =
         ReportDetailViewModelFactory(report)

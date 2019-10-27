@@ -7,11 +7,16 @@
         <variable
             name="order"
             type="com.yue.ordernow.data.Order" />
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{onClickListener}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

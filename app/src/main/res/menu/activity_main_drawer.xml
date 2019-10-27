@@ -9,8 +9,8 @@
             android:icon="@drawable/ic_restaurant_menu"
             android:title="@string/title_menu" />
         <item
-            android:id="@+id/nav_order_history"
-            android:icon="@drawable/ic_history"
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
             android:title="@string/title_order_history" />
     </group>
 
