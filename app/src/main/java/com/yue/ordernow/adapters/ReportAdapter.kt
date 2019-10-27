@@ -1,6 +1,6 @@
 package com.yue.ordernow.adapters
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +14,7 @@ import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.ListItemReportBinding
 
 
-class ReportAdapter(private val context: Context) :
+class ReportAdapter(private val activity: Activity) :
     ListAdapter<Report, RecyclerView.ViewHolder>(ReportDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -36,9 +36,10 @@ class ReportAdapter(private val context: Context) :
         init {
             binding.setOnClickListener {
                 binding.report?.let { report ->
-                    val intent = Intent(context, ReportDetailActivity::class.java)
+                    val intent = Intent(activity, ReportDetailActivity::class.java)
                     intent.putExtra(REPORT, report)
-                    context.startActivity(intent)
+                    activity.startActivity(intent)
+                    activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
         }
@@ -50,9 +51,9 @@ class ReportAdapter(private val context: Context) :
 
                 // Set text using string resource here instead of using data binding for translatability
                 title.text = when (item.type) {
-                    Report.Type.TODAY -> context.getString(R.string.today)
-                    Report.Type.THIS_WEEK -> context.getString(R.string.this_week)
-                    Report.Type.THIS_MONTH -> context.getString(R.string.this_month)
+                    Report.Type.TODAY -> activity.getString(R.string.today)
+                    Report.Type.THIS_WEEK -> activity.getString(R.string.this_week)
+                    Report.Type.THIS_MONTH -> activity.getString(R.string.this_month)
                 }
             }
         }

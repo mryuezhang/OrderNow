@@ -34,9 +34,11 @@ class DashboardFragment : Fragment() {
         val binding = FragmentDashboardBinding.inflate(inflater, container, false)
         context ?: return binding.root
 
-        adapter = ReportAdapter(activity!!)
-        binding.reports.adapter = adapter
-        subscribeUi(adapter)
+        activity?.let {
+            adapter = ReportAdapter(it)
+            binding.reports.adapter = adapter
+            subscribeUi(adapter)
+        }
 
         return binding.root
     }

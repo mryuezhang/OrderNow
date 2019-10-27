@@ -40,8 +40,9 @@ class ReportDetailFragment : Fragment() {
             Report.Type.THIS_MONTH -> resources.getString(R.string.this_month)
         }
 
-        binding.toolbar.setNavigationOnClickListener { view ->
+        binding.toolbar.setNavigationOnClickListener {
             activity?.finish()
+            activity?.overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left)
         }
 
         return binding.root
