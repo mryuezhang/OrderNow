@@ -85,7 +85,7 @@ class RestaurantMenuFragment : Fragment(),
         // Setup bottom sheet behavior
         bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheet.root)
         updateBottomSheetBehavior()
-        updateBottomSheetText()
+        setBottomSheetText()
         binding.bottomSheet.onHeaderClickListener = OnBottomSheetHeaderClickListener()
         bottomSheetBehavior.addBottomSheetCallback(BottomSheetCallback())
         binding.bottomSheet.orderType.setOnCheckedChangeListener { _, i ->
@@ -320,8 +320,7 @@ class RestaurantMenuFragment : Fragment(),
         }
     }
 
-    private fun updateBottomSheetText() {
-        // Set new display text
+    private fun setBottomSheetText() {
         binding.bottomSheet.quantity.text = activityViewModel.totalQuantity.toString()
         binding.bottomSheet.totalAmount.text =
             currencyFormat((activityViewModel.subtotal * (1 + taxRate)))
@@ -329,6 +328,11 @@ class RestaurantMenuFragment : Fragment(),
             resources.getString(R.string.title_tax, (taxRate * 100).toInt().toString())
         binding.bottomSheet.tax.text = currencyFormat((activityViewModel.subtotal * taxRate))
         binding.bottomSheet.subtotal.text = currencyFormat(activityViewModel.subtotal)
+    }
+
+    private fun updateBottomSheetText() {
+        // Set new display text
+        setBottomSheetText()
 
         // Set some cool animation for text change
         if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {

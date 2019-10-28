@@ -39,6 +39,8 @@ class ReportAdapter(private val activity: Activity) :
                     val intent = Intent(activity, ReportDetailActivity::class.java)
                     intent.putExtra(REPORT, report)
                     activity.startActivity(intent)
+
+                    // Add slide animations
                     activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
@@ -54,6 +56,11 @@ class ReportAdapter(private val activity: Activity) :
                     Report.Type.TODAY -> activity.getString(R.string.today)
                     Report.Type.THIS_WEEK -> activity.getString(R.string.this_week)
                     Report.Type.THIS_MONTH -> activity.getString(R.string.this_month)
+                }
+
+                // Disable clickability when there is no orders
+                if (item.orders.isEmpty()) {
+                    this.root.isClickable = false
                 }
             }
         }
