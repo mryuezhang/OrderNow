@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
+    <style name="AppTheme.Preference" parent="Theme.MaterialComponents.DayNight">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

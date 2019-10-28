@@ -12,6 +12,11 @@
             android:id="@+id/nav_dashboard"
             android:icon="@drawable/ic_dashboard"
             android:title="@string/title_order_history" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/title_settings" />
     </group>
+
 
 </menu>

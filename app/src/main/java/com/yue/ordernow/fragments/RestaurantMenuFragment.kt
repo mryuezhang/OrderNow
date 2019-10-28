@@ -112,6 +112,10 @@ class RestaurantMenuFragment : Fragment(),
         super.onSaveInstanceState(outState)
     }
 
+
+    /*
+     * Options menu mthods
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_confirm).isVisible = isOptionMenuViable
@@ -320,8 +324,10 @@ class RestaurantMenuFragment : Fragment(),
         // Set new display text
         binding.bottomSheet.quantity.text = activityViewModel.totalQuantity.toString()
         binding.bottomSheet.totalAmount.text =
-            currencyFormat((activityViewModel.subtotal * 1.13).toFloat())
-        binding.bottomSheet.tax.text = currencyFormat((activityViewModel.subtotal * 0.13).toFloat())
+            currencyFormat((activityViewModel.subtotal * (1 + taxRate)))
+        binding.bottomSheet.textTax.text =
+            resources.getString(R.string.title_tax, (taxRate * 100).toInt().toString())
+        binding.bottomSheet.tax.text = currencyFormat((activityViewModel.subtotal * taxRate))
         binding.bottomSheet.subtotal.text = currencyFormat(activityViewModel.subtotal)
 
         // Set some cool animation for text change
@@ -396,5 +402,9 @@ class RestaurantMenuFragment : Fragment(),
                 showDefaultOptionsMenu()
             }
         }
+    }
+
+    companion object {
+        var taxRate = 0.13f
     }
 }

@@ -3,7 +3,7 @@
     android:fillAfter="true"
     android:fillBefore="false">
     <scale
-        android:duration="300"
+        android:duration="@integer/duration_slide_down_or_up"
         android:fromXScale="1.0"
         android:fromYScale="1.5"
         android:toXScale="1.0"

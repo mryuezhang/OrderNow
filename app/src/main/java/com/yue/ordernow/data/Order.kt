@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yue.ordernow.fragments.RestaurantMenuFragment
 import com.yue.ordernow.utilities.currencyFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +27,9 @@ data class Order(
     @ColumnInfo(name = "is-takeout")
     var isTakeout: Boolean,
 
+    @ColumnInfo(name = "tax-rate")
+    var taxRate: Float,
+
     @ColumnInfo(name = "time-created")
     var timeCreated: Calendar = Calendar.getInstance()
 
@@ -38,7 +42,7 @@ data class Order(
         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timeCreated.time)
 
     fun getTotalAmount(): Float =
-        (subtotalAmount * 1.13).toFloat() //TODO chagne the hard coded tax rate
+        (subtotalAmount * (1 + taxRate))
 
     fun getFormattedTotalAmount(): String =
         currencyFormat(getTotalAmount())
@@ -67,7 +71,15 @@ data class Order(
                 ++orderCount
             }
 
-            return Order(orderItems, subtotal, totalQuantity, orderCount, isTakeout, now)
+            return Order(
+                orderItems,
+                subtotal,
+                totalQuantity,
+                orderCount,
+                isTakeout,
+                RestaurantMenuFragment.taxRate,
+                now
+            )
         }
 
         @JvmField
@@ -92,6 +104,7 @@ data class Order(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readByte() != 0.toByte(),
+        parcel.readFloat(),
         Calendar.getInstance().apply { timeInMillis = parcel.readLong() }
     ) {
         orderId = parcel.readLong()
@@ -103,6 +116,7 @@ data class Order(
         parcel.writeInt(totalQuantity)
         parcel.writeInt(orderNumber)
         parcel.writeByte(if (isTakeout) 1 else 0)
+        parcel.writeFloat(taxRate)
         parcel.writeLong(timeCreated.timeInMillis)
         parcel.writeLong(orderId)
     }

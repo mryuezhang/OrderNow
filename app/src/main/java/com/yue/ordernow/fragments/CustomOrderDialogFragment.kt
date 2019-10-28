@@ -1,10 +1,8 @@
 package com.yue.ordernow.fragments
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.InputFilter
-import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.yue.ordernow.R
@@ -70,12 +68,6 @@ class CustomOrderDialogFragment(
                 }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        // hide soft keyboard
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        super.onDismiss(dialog)
     }
 
     companion object {

@@ -5,13 +5,13 @@
     tools:context="com.yue.ordernow.activities.MainActivity">
     <item
         android:id="@+id/action_clear"
-        android:icon="@drawable/ic_clear_white_24dp"
+        android:icon="@drawable/ic_clear_white"
         android:orderInCategory="100"
         android:title="@string/action_clear_orders"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_confirm"
-        android:icon="@drawable/ic_check_white_24dp"
+        android:icon="@drawable/ic_check_white"
         android:orderInCategory="100"
         android:title="@string/action_confirm"
         app:showAsAction="ifRoom" />

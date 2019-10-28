@@ -42,7 +42,7 @@ class ReportDetailFragment : Fragment() {
 
         binding.toolbar.setNavigationOnClickListener {
             activity?.finish()
-            activity?.overridePendingTransition(R.anim.slide_out_right, R.anim.slide_in_left)
+            activity?.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
 
         return binding.root

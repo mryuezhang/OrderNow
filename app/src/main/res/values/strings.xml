@@ -30,6 +30,7 @@
 
     <string name="title_menu">Menu</string>
     <string name="title_order_history">Dashboard</string>
+    <string name="title_settings">Settings</string>
 
     <string name="title_custom_order">Customize %1$s</string>
     <string name="title_modify_order">Modify %1$s</string>
@@ -50,6 +51,7 @@
     <string name="confirm">Confirm</string>
 
     <string name="title_total_amount">Total</string>
+    <string name="title_tax">Tax (%1$s%%)</string>
     <string name="tax">Tax</string>
     <string name="subtotal">Subtotal</string>
     <string name="order_type">Order Type</string>
@@ -74,4 +76,8 @@
     <string name="message_discard_order">Order will be discarded automatically when it\'s empty</string>
     <string name="text_order_item_removed">1 removed</string>
     <string name="undo">Undo</string>
+
+    <string name="key_tax_rate">tax_rate</string>
+    <string name="title_tax_rate">Tax Rate</string>
+    <string name="default_tax_rate">13</string>
 </resources>

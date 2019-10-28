@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="grid_columns">2</integer>
+    <integer name="duration_slide_down_or_up">300</integer>
+    <integer name="duration_slide_in_or_out">300</integer>
 </resources>
