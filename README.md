@@ -21,4 +21,4 @@ in the kitchen so that chefs can read printed orders. I think I will start off w
 Screenshots
 -----------
 
-<img src="screenshots/screenshot_1.png" height="384" width="216"> <img src="screenshots/screenshot_1.png" height="384" width="216"> <img src="screenshots/screenshot_1.png" height="384" width="216"> <img src="screenshots/screenshot_1.png" height="384" width="216">
+<img src="screenshots/screenshot_1.png" height="384" width="216"> <img src="screenshots/screenshot_2.png" height="384" width="216"> <img src="screenshots/screenshot_3.png" height="384" width="216"> <img src="screenshots/screenshot_4.png" height="384" width="216">
