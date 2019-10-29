@@ -8,6 +8,15 @@ class IntegerFormatter : ValueFormatter() {
         value.toInt().toString()
 }
 
+class ValueOverBarFormatter : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String =
+        if (value != 0f) {
+            value.toInt().toString()
+        } else {
+            ""
+        }
+}
+
 class TimeFormatter : ValueFormatter() {
     override fun getFormattedValue(value: Float): String =
         "${value.toInt()}:00"

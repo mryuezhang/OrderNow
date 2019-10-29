@@ -17,3 +17,11 @@ This app is almost completed, however a major feature is yet to be added. That i
 in the kitchen so that chefs can read printed orders. I think I will start off working with 
 [Epson POS printers](https://epson.com/For-Work/Printers/POS/c/w150) and using their 
 [ePOS-Print API](https://c4b.epson-biz.com/modules/community/index.php?content_id=3).
+
+Screenshots
+-----------
+
+![Screenshot 1](screenshots/screenshot_1.png)
+![Screenshot 2](screenshots/screenshot_2.png)
+![Screenshot 3](screenshots/screenshot_3.png)
+![Screenshot 4](screenshots/screenshot_4.png)

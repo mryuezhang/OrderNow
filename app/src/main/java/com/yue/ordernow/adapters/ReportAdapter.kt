@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,8 +20,8 @@ import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.ListItemReportBinding
 import com.yue.ordernow.utilities.DayOfMonthFormatter
 import com.yue.ordernow.utilities.DayOfWeekFormatter
-import com.yue.ordernow.utilities.IntegerFormatter
 import com.yue.ordernow.utilities.TimeFormatter
+import com.yue.ordernow.utilities.ValueOverBarFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -74,31 +75,26 @@ class ReportAdapter(private val activity: Activity) :
                     this.root.isClickable = false
                     this.charts.visibility = View.GONE
                 } else {
-                    val integerFormatter = IntegerFormatter()
-
-                    val xAxis = binding.barChart.xAxis
-                    xAxis.position = XAxis.XAxisPosition.BOTTOM
-                    xAxis.setDrawGridLines(false)
-                    xAxis.granularity = 1f
-                    xAxis.valueFormatter = when {
+                    binding.barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+                    binding.barChart.xAxis.setDrawGridLines(false)
+                    binding.barChart.xAxis.granularity = 1f
+                    binding.barChart.xAxis.valueFormatter = when {
                         item.type == Report.Type.THIS_WEEK -> DayOfWeekFormatter()
                         item.type == Report.Type.TODAY -> TimeFormatter()
                         else -> DayOfMonthFormatter()
                     }
 
-                    val leftAxis = binding.barChart.axisLeft
-                    leftAxis.setDrawGridLines(false)
-                    leftAxis.granularity = 1f
-                    leftAxis.valueFormatter = integerFormatter
-
-                    val rightAxis = binding.barChart.axisRight
-                    rightAxis.setDrawGridLines(false)
-                    rightAxis.valueFormatter = integerFormatter
+                    binding.barChart.axisLeft.setDrawGridLines(false)
+                    binding.barChart.axisRight.setDrawGridLines(false)
+                    binding.barChart.axisLeft.granularity = 1f
+                    binding.barChart.axisRight.granularity = 1f
 
                     val dataSet = BarDataSet(getBarDataValues(item), "").apply {
                         setDrawIcons(false)
-                        this.valueFormatter = integerFormatter
+                        this.valueFormatter = ValueOverBarFormatter()
+                        this.color = ContextCompat.getColor(activity, R.color.colorPrimary)
                     }
+                    binding.barChart.setFitBars(true)
                     binding.barChart.description.isEnabled = false
                     binding.barChart.animateY(800)
                     binding.barChart.legend.isEnabled = false
