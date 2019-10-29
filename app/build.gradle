@@ -55,6 +55,7 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:$rootProject.viewPagerVersion"
     implementation "com.google.android.material:material:$rootProject.materialVersion"
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.github.PhilJay:MPAndroidChart:$rootProject.mpChartVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$rootProject.kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"

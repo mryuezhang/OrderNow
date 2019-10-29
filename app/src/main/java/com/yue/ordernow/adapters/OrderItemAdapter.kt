@@ -86,8 +86,13 @@ class OrderItemAdapter(private val listener: OrderItemOnClickListener?) :
         fun bind(item: OrderItem, position: Int) {
             binding.apply {
                 orderItem = item
-                onClickListener = View.OnClickListener {
-                    listener?.onClick(item, position)
+                if (listener != null) {
+                    onClickListener = View.OnClickListener {
+                        listener.onClick(item, position)
+                    }
+                } else {
+                    // Disable clickability when there is no listener
+                    this.foreground.foreground = null
                 }
                 executePendingBindings()
             }

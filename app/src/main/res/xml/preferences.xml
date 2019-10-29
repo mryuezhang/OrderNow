@@ -5,5 +5,4 @@
         app:key="@string/key_tax_rate"
         app:title="@string/title_tax_rate"
         app:useSimpleSummaryProvider="true" />
-
 </PreferenceScreen>

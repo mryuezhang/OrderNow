@@ -20,10 +20,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             resources.getString(R.string.key_tax_rate),
             resources.getString(R.string.default_tax_rate)
         )
+        taxRatePreference?.dialogLayoutResource = R.layout.dialog_change_tax_rate
         taxRatePreference?.setOnBindEditTextListener { editText ->
             editText.inputType = InputType.TYPE_CLASS_NUMBER
             editText.setSelection(editText.text.length)
         }
+
+
         taxRatePreference?.summaryProvider =
             Preference.SummaryProvider<EditTextPreference> { preference ->
                 val text = preference.text
@@ -33,6 +36,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     "$text%"
                 }
             }
+
     }
 
 }

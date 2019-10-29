@@ -22,6 +22,7 @@ import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
+import com.yue.ordernow.utilities.ZoomOutPageTransformer
 import com.yue.ordernow.utilities.currencyFormat
 import com.yue.ordernow.viewModels.MainViewModel
 import java.util.ArrayList
@@ -68,6 +69,7 @@ class RestaurantMenuFragment : Fragment(),
         TabLayoutMediator(binding.tabLayout, binding.menuPage) { tab, position ->
             tab.text = getTabTitle(position)
         }.attach()
+        binding.menuPage.setPageTransformer(ZoomOutPageTransformer())
 
         // Add divider between each list item
         binding.bottomSheet.orderList.addItemDecoration(
