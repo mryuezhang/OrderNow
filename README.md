@@ -6,12 +6,14 @@ Some of the libraries that I used worth to mentioning:
 * [Data Binding](https://developer.android.com/topic/libraries/data-binding/)
 * [Kotlin KTX](https://developer.android.com/kotlin/ktx)
 * [Lifecycles](https://developer.android.com/topic/libraries/architecture/lifecycle)
-* [LiveDate](https://developer.android.com/topic/libraries/architecture/livedata)
+* [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
 * [Navigation](https://developer.android.com/guide/navigation)
 * [Preferences](https://developer.android.com/guide/topics/ui/settings)
 * [Room](https://developer.android.com/topic/libraries/architecture/room)
 * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
 * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager)
+
+For charting parts, I used [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart).
 
 This app is almost completed, however a major feature is yet to be added. That is the connectivity to POS printers, which most likely will be located
 in the kitchen so that chefs can read printed orders. I think I will start off working with 
