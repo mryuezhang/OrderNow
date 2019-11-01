@@ -18,7 +18,7 @@ class ModifyOrderDialogFragment(
 ) : DialogFragment() {
 
     interface ModifyOrderDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, position: Int)
+        fun onDialogPositiveClick(position: Int, quantityDiff: Int, extraCostDiff: Float)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -68,15 +68,21 @@ class ModifyOrderDialogFragment(
                     if (!binding.note.text.isNullOrBlank()) {
                         orderItem.note = binding.note.text.toString()
                     }
-                    orderItem.extraCost = if (binding.extraCost.text!!.isNotEmpty()) {
+
+                    val newExtraCost = if (binding.extraCost.text!!.isNotEmpty()) {
                         binding.extraCost.text.toString().toFloat()
                     } else {
                         0f
                     }
-                    orderItem.quantity = binding.quantity.text.toString().toInt()
+                    val extraCostDiff = newExtraCost - orderItem.extraCost
+                    orderItem.extraCost = newExtraCost
+
+                    val newQuantity = binding.quantity.text.toString().toInt()
+                    val quantityDiff = newQuantity - orderItem.quantity
+                    orderItem.quantity = newQuantity
 
                     // Pass the data to the listener
-                    listener.onDialogPositiveClick(this, position)
+                    listener.onDialogPositiveClick(position, quantityDiff, extraCostDiff)
                 }
                 .setNegativeButton(R.string.cancel) { _, _ ->
                     dialog?.cancel()

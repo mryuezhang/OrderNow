@@ -17,11 +17,11 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="@{onClickListener}"
         app:cardCornerRadius="8dp"
         app:cardUseCompatPadding="true"
         app:strokeColor="?attr/colorButtonNormal"
-        app:strokeWidth="1dp"
-        android:onClick="@{onClickListener}">
+        app:strokeWidth="1dp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,8 +33,8 @@
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
                 android:text="@string/today"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="14sp"
@@ -47,10 +47,11 @@
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="24dp"
                 android:text="@{String.valueOf(report.quantity)}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="36sp"
-                app:firstBaselineToTopHeight="46dp"
+                android:textSize="24sp"
+                app:firstBaselineToTopHeight="34dp"
                 app:layout_constraintStart_toStartOf="@id/title"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 tools:text="@string/sample_quantity" />
@@ -59,6 +60,8 @@
                 android:id="@+id/textView15"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingBottom="8dp"
                 android:text="@string/display_text_placed_orders"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textSize="12sp"
@@ -72,8 +75,8 @@
                 android:layout_marginStart="32dp"
                 android:text="@{report.formattedAmount}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textSize="36sp"
-                app:firstBaselineToTopHeight="46dp"
+                android:textSize="24sp"
+                app:firstBaselineToTopHeight="34dp"
                 app:layout_constraintStart_toEndOf="@+id/textView13"
                 app:layout_constraintTop_toTopOf="@+id/quantity"
                 tools:text="@string/sample_amount" />
@@ -82,6 +85,7 @@
                 android:id="@+id/textView18"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 android:text="@string/display_text_made_revenue"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textSize="12sp"
@@ -95,8 +99,8 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/orders"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="18sp"
-                app:firstBaselineToTopHeight="46dp"
+                android:textSize="14sp"
+                app:firstBaselineToTopHeight="34dp"
                 app:layout_constraintStart_toEndOf="@+id/quantity"
                 app:layout_constraintTop_toTopOf="@+id/quantity" />
 
@@ -104,9 +108,10 @@
                 android:id="@+id/charts"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/title"
                 app:layout_constraintStart_toStartOf="@+id/quantity"

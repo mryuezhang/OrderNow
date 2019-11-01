@@ -35,6 +35,10 @@ object InjectorUtils {
     fun provideDashboardViewModelFactory(context: Context): DashboardViewModelFactory =
         DashboardViewModelFactory(getOrderRepository(context))
 
-    fun provideReportDetailViewModelFactory(report: Report): ReportDetailViewModelFactory =
-        ReportDetailViewModelFactory(report)
+    fun provideReportDetailViewModelFactory(
+        report: Report,
+        takeoutCount: Int,
+        diningInCount: Int
+    ): ReportDetailViewModelFactory =
+        ReportDetailViewModelFactory(report, takeoutCount, diningInCount)
 }

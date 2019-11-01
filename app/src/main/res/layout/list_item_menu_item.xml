@@ -24,7 +24,7 @@
         app:cardCornerRadius="8dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
-        app:strokeColor="?attr/colorButtonNormal"
+        app:strokeColor="?attr/colorControlHighlight"
         app:strokeWidth="1dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout

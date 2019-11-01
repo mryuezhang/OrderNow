@@ -1,6 +1,9 @@
 package com.yue.ordernow.utilities
 
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
+import java.text.DecimalFormat
 
 class IntegerFormatter : ValueFormatter() {
 
@@ -43,5 +46,26 @@ class DayOfMonthFormatter : ValueFormatter() {
             2f -> "3rd"
             else -> "${value.toInt() + 1}th"
         }
+}
+
+class PercentFormatter(private val pieChart: PieChart) : ValueFormatter() {
+
+    var mFormat: DecimalFormat
+
+    init {
+        mFormat = DecimalFormat("###,###,##0.0")
+    }
+
+    override fun getFormattedValue(value: Float): String {
+        return mFormat.format(value.toDouble()) + " %"
+    }
+
+    override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+        return if (pieChart.isUsePercentValuesEnabled) {
+            getFormattedValue(value)
+        } else {
+            mFormat.format(value.toDouble())
+        }
+    }
 
 }

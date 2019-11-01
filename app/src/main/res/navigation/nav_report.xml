@@ -21,7 +21,8 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.yue.ordernow.fragments.OrderDetailFragment"
-        android:label="OrderDetailFragment">
+        android:label="OrderDetailFragment"
+        tools:layout="@layout/fragment_order_detail">
 
         <argument
             android:name="order"

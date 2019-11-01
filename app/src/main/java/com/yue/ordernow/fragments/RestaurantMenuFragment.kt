@@ -206,9 +206,25 @@ class RestaurantMenuFragment : Fragment(),
      * ModifyOrderDialogFragment.ModifyOrderDialogListener method
      */
     override fun onDialogPositiveClick(
-        dialog: DialogFragment, position: Int
+        position: Int, quantityDiff: Int, extraCostDiff: Float
     ) {
         adapter.notifyItemChanged(position)
+
+        if (quantityDiff == 0) {
+            if (extraCostDiff != 0f) {
+                activityViewModel.subtotal += extraCostDiff
+            }
+        } else {
+            activityViewModel.totalQuantity += quantityDiff
+
+            if (extraCostDiff == 0f) {
+                activityViewModel.subtotal += quantityDiff * adapter.currentList[position].item.price
+            } else {
+                activityViewModel.subtotal += quantityDiff * adapter.currentList[position].item.price + extraCostDiff
+            }
+        }
+
+        setBottomSheetText()
     }
 
     /*
