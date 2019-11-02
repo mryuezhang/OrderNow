@@ -12,6 +12,7 @@
     <string name="sample_order_date">2019 10 15 18:00:00</string>
     <string name="sample_order_id">9223372036854775807</string>
     <string name="sample_order_number">9999</string>
+    <string name="sample_percentage">100.0%</string>
     <string name="no_order_text">No orderItem yet</string>
     <string name="title_order_id">Order ID</string>
     <string name="title_order_number">Order No.</string>
@@ -47,6 +48,7 @@
     <string name="amount">Amount</string>
     <string name="title_quantity">Quantity</string>
     <string name="title_quantity_short">Qty.</string>
+    <string name="title_quantity_percentage">Qty.(%)</string>
     <string name="minimal_quantity">1</string>
     <string name="confirm">Confirm</string>
 
@@ -80,4 +82,6 @@
     <string name="key_tax_rate">tax_rate</string>
     <string name="title_tax_rate">Tax Rate</string>
     <string name="default_tax_rate">13</string>
+
+    <string name="pie_centre_text">%1$s orders</string>
 </resources>

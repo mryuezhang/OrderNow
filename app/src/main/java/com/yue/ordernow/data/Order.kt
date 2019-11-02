@@ -27,6 +27,9 @@ data class Order(
     @ColumnInfo(name = "is-takeout")
     var isTakeout: Boolean,
 
+    @ColumnInfo(name = "is-paid")
+    var isPaid: Boolean,
+
     @ColumnInfo(name = "tax-rate")
     var taxRate: Float,
 
@@ -55,7 +58,8 @@ data class Order(
             orderItems: ArrayList<OrderItem>,
             subtotal: Float,
             totalQuantity: Int,
-            isTakeout: Boolean
+            isTakeout: Boolean,
+            isPaid: Boolean
         ): Order {
             val now = Calendar.getInstance()
             if (now.get(Calendar.DAY_OF_MONTH) ==
@@ -77,6 +81,7 @@ data class Order(
                 totalQuantity,
                 orderCount,
                 isTakeout,
+                isPaid,
                 RestaurantMenuFragment.taxRate,
                 now
             )
@@ -104,6 +109,7 @@ data class Order(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
         parcel.readFloat(),
         Calendar.getInstance().apply { timeInMillis = parcel.readLong() }
     ) {
@@ -116,6 +122,7 @@ data class Order(
         parcel.writeInt(totalQuantity)
         parcel.writeInt(orderNumber)
         parcel.writeByte(if (isTakeout) 1 else 0)
+        parcel.writeByte(if (isPaid) 1 else 0)
         parcel.writeFloat(taxRate)
         parcel.writeLong(timeCreated.timeInMillis)
         parcel.writeLong(orderId)

@@ -50,14 +50,12 @@ class DayOfMonthFormatter : ValueFormatter() {
 
 class PercentFormatter(private val pieChart: PieChart) : ValueFormatter() {
 
-    var mFormat: DecimalFormat
+    var mFormat: DecimalFormat = DecimalFormat("###,###,##0.0")
 
-    init {
-        mFormat = DecimalFormat("###,###,##0.0")
-    }
-
-    override fun getFormattedValue(value: Float): String {
-        return mFormat.format(value.toDouble()) + " %"
+    override fun getFormattedValue(value: Float): String = if (value != 0f) {
+        mFormat.format(value.toDouble()) + " %"
+    } else {
+        ""
     }
 
     override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {

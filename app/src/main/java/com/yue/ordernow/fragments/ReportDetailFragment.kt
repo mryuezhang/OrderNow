@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.PercentFormatter
+import com.yue.ordernow.utilities.getThemeColor
 
 class ReportDetailFragment : Fragment() {
 
@@ -43,6 +45,11 @@ class ReportDetailFragment : Fragment() {
         setupToolBar(binding.toolbar)
         setupPieChart(binding.pieChart)
         addPieChartData(binding.pieChart)
+        setupCustomLegend(
+            binding.diningInQty,
+            binding.takeoutQty,
+            binding.totalQty
+        )
 
         return binding.root
     }
@@ -73,48 +80,60 @@ class ReportDetailFragment : Fragment() {
     }
 
     private fun setupPieChart(pieChart: PieChart) {
+        val textColorPrimary = hostActivity.getThemeColor(android.R.attr.textColorPrimary)
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
         pieChart.isRotationEnabled = true
         pieChart.isHighlightPerTapEnabled = true
-        pieChart.setEntryLabelTextSize(12f)
-        pieChart.legend.isEnabled = false
-        pieChart.holeRadius = 32f
-        pieChart.transparentCircleRadius = 38f
+        pieChart.setDrawEntryLabels(false)
+        pieChart.setHoleColor(hostActivity.getThemeColor(android.R.attr.colorBackground))
         pieChart.animateY(1400, Easing.EaseInOutQuad)
+        pieChart.legend.isEnabled = false
     }
 
     private fun addPieChartData(pieChart: PieChart) {
         val dataEntries = ArrayList<PieEntry>(2).apply {
-            if (hostActivity.viewModel.takeoutCount != 0) {
-                add(
-                    PieEntry(
-                        hostActivity.viewModel.takeoutCount.toFloat(),
-                        resources.getString(R.string.take_out)
-                    )
+            add(
+                PieEntry(
+                    hostActivity.viewModel.takeoutCount.toFloat(),
+                    resources.getString(R.string.take_out)
                 )
-            }
-
-            if (hostActivity.viewModel.diningInCount != 0) {
-                add(
-                    PieEntry(
-                        hostActivity.viewModel.diningInCount.toFloat(),
-                        resources.getString(R.string.dining_in)
-                    )
+            )
+            add(
+                PieEntry(
+                    hostActivity.viewModel.diningInCount.toFloat(),
+                    resources.getString(R.string.dining_in)
                 )
-            }
+            )
         }
 
         val dataSet = PieDataSet(dataEntries, "").apply {
             setDrawIcons(false)
-            color = ContextCompat.getColor(hostActivity, R.color.colorPrimary)
+            colors = listOf(
+                ContextCompat.getColor(hostActivity, R.color.color_takeout),
+                ContextCompat.getColor(hostActivity, R.color.color_dining_in)
+            )
             valueTextColor = Color.WHITE
             valueTextSize = 12f
-            sliceSpace = 2f
+            sliceSpace = 3f
         }
+
         val data = PieData(dataSet).apply {
             setValueFormatter(PercentFormatter(pieChart))
         }
+
         pieChart.data = data
     }
+
+    private fun setupCustomLegend(
+        diningInQty: TextView,
+        takeoutQty: TextView,
+        totalQty: TextView
+    ) {
+        diningInQty.text = hostActivity.viewModel.diningInCount.toString()
+        takeoutQty.text = hostActivity.viewModel.takeoutCount.toString()
+        totalQty.text =
+            (hostActivity.viewModel.diningInCount + hostActivity.viewModel.takeoutCount).toString()
+    }
+
 }

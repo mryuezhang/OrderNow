@@ -142,7 +142,8 @@ class RestaurantMenuFragment : Fragment(),
                     activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
                     activityViewModel.subtotal,
                     activityViewModel.totalQuantity,
-                    activityViewModel.isTakeout
+                    activityViewModel.isTakeout,
+                    activityViewModel.isPaid
                 )
             )
 
@@ -310,6 +311,8 @@ class RestaurantMenuFragment : Fragment(),
         activityViewModel.totalQuantity = 0
         activityViewModel.subtotal = 0f
         activityViewModel.orderItems.clear()
+        activityViewModel.isTakeout = false
+        activityViewModel.isPaid = false
         updateBottomSheetBehavior()
     }
 

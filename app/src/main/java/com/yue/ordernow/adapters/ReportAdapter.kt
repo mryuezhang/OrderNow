@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
@@ -17,10 +18,7 @@ import com.yue.ordernow.R
 import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.ListItemReportBinding
-import com.yue.ordernow.utilities.DayOfMonthFormatter
-import com.yue.ordernow.utilities.DayOfWeekFormatter
-import com.yue.ordernow.utilities.TimeFormatter
-import com.yue.ordernow.utilities.ValueOverBarFormatter
+import com.yue.ordernow.utilities.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -74,39 +72,63 @@ class ReportAdapter(private val activity: Activity) :
                     Report.Type.THIS_MONTH -> activity.getString(R.string.this_month)
                 }
 
-                // Disable clickability when there is no orders
                 if (item.orders.isEmpty()) {
+                    // Disable clickability when there is no orders
                     this.root.isClickable = false
+
+                    // Hide chart when there is no orders
                     this.charts.visibility = View.GONE
                 } else {
-                    this.barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-                    this.barChart.xAxis.setDrawGridLines(false)
-                    this.barChart.xAxis.granularity = 1f
-                    this.barChart.xAxis.valueFormatter = when {
-                        item.type == Report.Type.THIS_WEEK -> DayOfWeekFormatter()
-                        item.type == Report.Type.TODAY -> TimeFormatter()
-                        else -> DayOfMonthFormatter()
-                    }
-
-                    this.barChart.axisLeft.setDrawGridLines(false)
-                    this.barChart.axisRight.setDrawGridLines(false)
-                    this.barChart.axisLeft.granularity = 1f
-                    this.barChart.axisRight.granularity = 1f
-
-                    val dataSet = BarDataSet(getBarDataValues(item), "").apply {
-                        setDrawIcons(false)
-                        this.valueFormatter = ValueOverBarFormatter()
-                        this.color = ContextCompat.getColor(activity, R.color.colorPrimary)
-                    }
-                    this.barChart.setFitBars(true)
-                    this.barChart.description.isEnabled = false
-                    this.barChart.animateY(800)
-                    this.barChart.legend.isEnabled = false
-                    this.barChart.data = BarData(dataSet)
-                    this.barChart.description.isEnabled = false
+                    setupBarChart(this.barChart, item)
+                    setBarChartData(this.barChart, item)
                 }
-
             }
+        }
+
+        private fun setupBarChart(barChart: BarChart, report: Report) {
+            val textPrimaryColor = activity.getThemeColor(android.R.attr.textColorPrimary)
+            barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+            barChart.xAxis.setDrawGridLines(false)
+            barChart.xAxis.granularity = 1f
+            barChart.xAxis.textColor = textPrimaryColor
+            when (report.type) {
+                Report.Type.TODAY -> {
+                    barChart.xAxis.valueFormatter = TimeFormatter()
+                    barChart.xAxis.setLabelCount(8, false)
+                }
+                Report.Type.THIS_WEEK -> {
+                    barChart.xAxis.valueFormatter = DayOfWeekFormatter()
+                    barChart.xAxis.setLabelCount(7, false)
+                }
+                Report.Type.THIS_MONTH -> {
+                    barChart.xAxis.valueFormatter = DayOfMonthFormatter()
+                    barChart.xAxis.setLabelCount(12, false)
+                }
+            }
+
+            barChart.axisLeft.setDrawGridLines(false)
+//            barChart.axisRight.setDrawGridLines(false)
+            barChart.axisLeft.granularity = 1f
+            barChart.axisRight.granularity = 1f
+            barChart.axisLeft.axisMinimum = 0f
+            barChart.axisRight.axisMinimum = 0f
+            barChart.axisLeft.textColor = textPrimaryColor
+            barChart.axisRight.textColor = textPrimaryColor
+
+            barChart.setFitBars(true)
+            barChart.description.isEnabled = false
+            barChart.animateY(800)
+            barChart.legend.isEnabled = false
+            barChart.description.isEnabled = false
+        }
+
+        private fun setBarChartData(barChart: BarChart, report: Report) {
+            val dataSet = BarDataSet(getBarDataValues(report), "").apply {
+                setDrawIcons(false)
+                this.valueFormatter = ValueOverBarFormatter()
+                this.color = ContextCompat.getColor(activity, R.color.colorPrimary)
+            }
+            barChart.data = BarData(dataSet)
         }
 
         private fun initZerosArray(report: Report): IntArray =
@@ -148,7 +170,8 @@ class ReportAdapter(private val activity: Activity) :
                         emptyDataSet[order.timeCreated.get(Calendar.HOUR_OF_DAY)]++
                     }
                     Report.Type.THIS_WEEK -> {
-                        emptyDataSet[order.timeCreated.get(Calendar.DAY_OF_WEEK)]++
+                        // Java Calendar DAY_OF_MONTH starts at 1, which is Sunday
+                        emptyDataSet[order.timeCreated.get(Calendar.DAY_OF_WEEK) - 1]++
                     }
                     Report.Type.THIS_MONTH -> {
                         // Java Calendar DAY_OF_MONTH starts at 1
@@ -176,10 +199,6 @@ class ReportAdapter(private val activity: Activity) :
             }
 
             return values
-        }
-
-        private fun setupBarChart() {
-
         }
     }
 

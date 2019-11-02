@@ -92,3 +92,6 @@ fun getDayStartAndEnd(calendar: Calendar): Pair<Long, Long> {
     }
     return Pair(dayStart.timeInMillis, dayStart.timeInMillis + DAY_IN_MILLISECONDS - 1)
 }
+
+fun toPercentage(input: Float): String =
+    String.format("%.1f%%", input * 100f)
