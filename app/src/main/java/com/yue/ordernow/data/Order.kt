@@ -47,6 +47,12 @@ data class Order(
     fun getTotalAmount(): Float =
         (subtotalAmount * (1 + taxRate))
 
+    fun getFormattedSubtotal(): String =
+        currencyFormat(subtotalAmount)
+
+    fun getFormattedTax(): String =
+        currencyFormat(subtotalAmount * taxRate)
+
     fun getFormattedTotalAmount(): String =
         currencyFormat(getTotalAmount())
 

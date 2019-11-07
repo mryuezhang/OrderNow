@@ -5,6 +5,7 @@
     <string name="action_confirm">Confirm</string>
     <string name="action_clear_orders">Clear</string>
     <string name="action_send_orders">Send</string>
+    <string name="action_sort_by">Sort by</string>
 
     <string name="sample_quantity">999</string>
     <string name="sample_amount">$9999.99</string>
@@ -56,9 +57,12 @@
     <string name="title_tax">Tax (%1$s%%)</string>
     <string name="tax">Tax</string>
     <string name="subtotal">Subtotal</string>
-    <string name="order_type">Order Type</string>
+    <string name="order_type">Type</string>
+    <string name="order_status">Status</string>
     <string name="dining_in">Dining-in</string>
     <string name="take_out">Take-out</string>
+    <string name="title_created_at">Created at</string>
+    <string name="title_about_order">Order ID %1d</string>
 
     <string name="appetizer_title">Appetizer</string>
     <string name="breakfast_title">Breakfast</string>

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderItemAdapter
 import com.yue.ordernow.databinding.FragmentOrderDetailBinding
-import com.yue.ordernow.utilities.currencyFormat
 
 class OrderDetailFragment : Fragment() {
 
@@ -23,7 +22,10 @@ class OrderDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentOrderDetailBinding.inflate(inflater, container, false)
+        val binding = FragmentOrderDetailBinding.inflate(inflater, container, false).apply {
+            this.order = args.order
+            executePendingBindings()
+        }
         context ?: return binding.root
 
         val adapter = OrderItemAdapter(null)
@@ -41,14 +43,8 @@ class OrderDetailFragment : Fragment() {
             view.findNavController().navigateUp()
         }
         binding.toolbar.title = resources.getString(R.string.title_order_detail)
-
-        binding.subtotal.text = currencyFormat(args.order.subtotalAmount)
         binding.textTax.text =
             resources.getString(R.string.title_tax, (args.order.taxRate * 100).toInt().toString())
-        binding.tax.text =
-            currencyFormat((args.order.subtotalAmount * args.order.taxRate))
-        binding.total.text =
-            currencyFormat((args.order.subtotalAmount * (1 + args.order.taxRate)))
 
         return binding.root
     }

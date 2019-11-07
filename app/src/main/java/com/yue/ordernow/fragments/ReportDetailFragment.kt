@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
@@ -21,41 +23,54 @@ import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
+import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.utilities.PercentFormatter
 import com.yue.ordernow.utilities.getThemeColor
+import com.yue.ordernow.viewModels.ReportDetailFragmentViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ReportDetailFragment : Fragment() {
 
-    private val hostActivity: ReportDetailActivity by lazy {
+    private val hostActivity by lazy {
         activity as ReportDetailActivity
     }
 
-    private lateinit var binding: FragmentReportDetailBinding
+    private val viewModel: ReportDetailFragmentViewModel by viewModels {
+        InjectorUtils.provideReportDetailFragmentViewModelFactory(
+            requireContext(),
+            hostActivity.viewModel.reportType,
+            Calendar.getInstance().apply {
+                timeInMillis = hostActivity.viewModel.timeStamp
+            }
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentReportDetailBinding.inflate(inflater, container, false)
+        val binding = FragmentReportDetailBinding.inflate(inflater, container, false).apply {
+            this.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
+            setupOrderList(this.orderList)
+            setHasOptionsMenu(true)
+            setupToolBar(this.toolbar)
+            setupPieChart(this.pieChart)
+            addPieChartData(this.pieChart)
+            setupCustomLegend(
+                this.diningInQty,
+                this.takeoutQty,
+                this.totalQty
+            )
+        }
         context ?: return binding.root
-
-        binding.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
-        setupOrderList(binding.orderList)
-        setupToolBar(binding.toolbar)
-        setupPieChart(binding.pieChart)
-        addPieChartData(binding.pieChart)
-        setupCustomLegend(
-            binding.diningInQty,
-            binding.takeoutQty,
-            binding.totalQty
-        )
 
         return binding.root
     }
 
     private fun setupToolBar(toolbar: Toolbar) {
-        toolbar.title = when (hostActivity.viewModel.report.type) {
+        toolbar.title = when (hostActivity.viewModel.reportType) {
             Report.Type.TODAY -> resources.getString(R.string.today)
             Report.Type.THIS_WEEK -> resources.getString(R.string.this_week)
             Report.Type.THIS_MONTH -> resources.getString(R.string.this_month)
@@ -68,19 +83,20 @@ class ReportDetailFragment : Fragment() {
     }
 
     private fun setupOrderList(orderList: RecyclerView) {
-        val adapter = OrderAdapter(hostActivity)
+        val adapter = OrderAdapter(requireContext())
         orderList.adapter = adapter
         orderList.addItemDecoration(
             DividerItemDecoration(
-                hostActivity,
+                requireContext(),
                 DividerItemDecoration.VERTICAL
             )
         )
-        adapter.submitList(hostActivity.viewModel.report.orders)
+        viewModel.orders.observe(viewLifecycleOwner) { orders ->
+            adapter.submitList(orders)
+        }
     }
 
     private fun setupPieChart(pieChart: PieChart) {
-        val textColorPrimary = hostActivity.getThemeColor(android.R.attr.textColorPrimary)
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
         pieChart.isRotationEnabled = true

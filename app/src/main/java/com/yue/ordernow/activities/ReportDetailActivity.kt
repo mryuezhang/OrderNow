@@ -15,9 +15,10 @@ class ReportDetailActivity : AppCompatActivity() {
 
     val viewModel: ReportDetailViewModel by viewModels {
         InjectorUtils.provideReportDetailViewModelFactory(
-            intent.getParcelableExtra(REPORT) as Report,
+            Report.Type.fromByte(intent.getByteExtra(REPORT_TYPE, 0)),
             intent.getIntExtra(TAKEOUT_COUNT, 0),
-            intent.getIntExtra(DINING_IN_COUNT, 0)
+            intent.getIntExtra(DINING_IN_COUNT, 0),
+            intent.getLongExtra(TIME_STAMP, 0)
         )
     }
 
@@ -28,8 +29,9 @@ class ReportDetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val REPORT = "report"
+        const val REPORT_TYPE = "report-typp"
         const val TAKEOUT_COUNT = "takeout"
         const val DINING_IN_COUNT = "diningIn"
+        const val TIME_STAMP = "timestamp"
     }
 }

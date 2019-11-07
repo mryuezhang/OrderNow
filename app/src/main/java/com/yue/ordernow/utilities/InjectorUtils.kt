@@ -5,10 +5,8 @@ import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
-import com.yue.ordernow.viewModels.DashboardViewModelFactory
-import com.yue.ordernow.viewModels.MainViewModelFactory
-import com.yue.ordernow.viewModels.MenuOptionsViewModelFactory
-import com.yue.ordernow.viewModels.ReportDetailViewModelFactory
+import com.yue.ordernow.viewModels.*
+import java.util.*
 
 object InjectorUtils {
 
@@ -36,9 +34,17 @@ object InjectorUtils {
         DashboardViewModelFactory(getOrderRepository(context))
 
     fun provideReportDetailViewModelFactory(
-        report: Report,
+        reportType: Report.Type,
         takeoutCount: Int,
-        diningInCount: Int
+        diningInCount: Int,
+        timeStamp: Long
     ): ReportDetailViewModelFactory =
-        ReportDetailViewModelFactory(report, takeoutCount, diningInCount)
+        ReportDetailViewModelFactory(reportType, takeoutCount, diningInCount, timeStamp)
+
+    fun provideReportDetailFragmentViewModelFactory(
+        context: Context,
+        reportType: Report.Type,
+        requestedTime: Calendar
+    ): ReportDetailFragmentViewModelFactory =
+        ReportDetailFragmentViewModelFactory(getOrderRepository(context), reportType, requestedTime)
 }

@@ -1,7 +1,6 @@
 package com.yue.ordernow.adapters
 
-import android.app.Activity
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.yue.ordernow.R
-import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.ListItemReportBinding
 import com.yue.ordernow.utilities.*
@@ -23,8 +21,14 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ReportAdapter(private val activity: Activity) :
+class ReportAdapter(private val listener: ReportClickListener) :
     ListAdapter<Report, RecyclerView.ViewHolder>(ReportDiffCallback()) {
+
+    interface ReportClickListener {
+        fun onClick(type: Report.Type, takeoutCount: Int, diningInCount: Int)
+
+        fun requestContext(): Context
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         ReportViewHolder(
@@ -48,14 +52,7 @@ class ReportAdapter(private val activity: Activity) :
         init {
             binding.setOnClickListener {
                 binding.report?.let { report ->
-                    val intent = Intent(activity, ReportDetailActivity::class.java)
-                    intent.putExtra(ReportDetailActivity.REPORT, report)
-                    intent.putExtra(ReportDetailActivity.TAKEOUT_COUNT, takeOutCount)
-                    intent.putExtra(ReportDetailActivity.DINING_IN_COUNT, diningInCount)
-                    activity.startActivity(intent)
-
-                    // Add slide animations
-                    activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    listener.onClick(report.type, takeOutCount, diningInCount)
                 }
             }
         }
@@ -67,9 +64,9 @@ class ReportAdapter(private val activity: Activity) :
 
                 // Set text using string resource here instead of using data binding for translatability
                 title.text = when (item.type) {
-                    Report.Type.TODAY -> activity.getString(R.string.today)
-                    Report.Type.THIS_WEEK -> activity.getString(R.string.this_week)
-                    Report.Type.THIS_MONTH -> activity.getString(R.string.this_month)
+                    Report.Type.TODAY -> listener.requestContext().getString(R.string.today)
+                    Report.Type.THIS_WEEK -> listener.requestContext().getString(R.string.this_week)
+                    Report.Type.THIS_MONTH -> listener.requestContext().getString(R.string.this_month)
                 }
 
                 if (item.orders.isEmpty()) {
@@ -86,7 +83,8 @@ class ReportAdapter(private val activity: Activity) :
         }
 
         private fun setupBarChart(barChart: BarChart, report: Report) {
-            val textPrimaryColor = activity.getThemeColor(android.R.attr.textColorPrimary)
+            val textPrimaryColor =
+                listener.requestContext().getThemeColor(android.R.attr.textColorPrimary)
             barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
             barChart.xAxis.setDrawGridLines(false)
             barChart.xAxis.granularity = 1f
@@ -126,7 +124,7 @@ class ReportAdapter(private val activity: Activity) :
             val dataSet = BarDataSet(getBarDataValues(report), "").apply {
                 setDrawIcons(false)
                 this.valueFormatter = ValueOverBarFormatter()
-                this.color = ContextCompat.getColor(activity, R.color.colorPrimary)
+                this.color = ContextCompat.getColor(listener.requestContext(), R.color.colorPrimary)
             }
             barChart.data = BarData(dataSet)
         }

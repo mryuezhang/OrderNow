@@ -12,7 +12,17 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         getDayEnd(calendar).timeInMillis
     )
 
+    fun getDailyUnPaidOrders(calendar: Calendar) = orderDao.getUnPaidOrdersBetween(
+        getDayStart(calendar).timeInMillis,
+        getDayEnd(calendar).timeInMillis
+    )
+
     fun getWeeklyOrders(calendar: Calendar) = orderDao.getOrdersBetween(
+        getWeekStart(calendar).timeInMillis,
+        getWeekEnd(calendar).timeInMillis
+    )
+
+    fun getWeeklyUnPaidOrders(calendar: Calendar) = orderDao.getUnPaidOrdersBetween(
         getWeekStart(calendar).timeInMillis,
         getWeekEnd(calendar).timeInMillis
     )
@@ -22,7 +32,17 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         getMonthEnd(calendar).timeInMillis
     )
 
+    fun getMonthlyUnpaidOrders(calendar: Calendar) = orderDao.getUnPaidOrdersBetween(
+        getMonthStart(calendar).timeInMillis,
+        getMonthEnd(calendar).timeInMillis
+    )
+
     fun getYearlyOrders(calendar: Calendar) = orderDao.getOrdersBetween(
+        getYearStart(calendar).timeInMillis,
+        getYearEnd(calendar).timeInMillis
+    )
+
+    fun getYearlyUnpaidOrders(calendar: Calendar) = orderDao.getUnPaidOrdersBetween(
         getYearStart(calendar).timeInMillis,
         getYearEnd(calendar).timeInMillis
     )

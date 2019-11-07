@@ -64,10 +64,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
                         android:text="@string/order_type"
                         android:textSize="12sp"
-                        app:layout_constraintEnd_toStartOf="@+id/textView17"
+                        app:layout_constraintStart_toStartOf="@+id/textView20"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -86,10 +85,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:text="@string/dining_in"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@+id/textView16"
+                        app:layout_constraintEnd_toStartOf="@+id/dining_in_qty"
                         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
                     <TextView
@@ -97,7 +97,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="@+id/textView17"
                         app:layout_constraintStart_toStartOf="@+id/textView17"
@@ -109,7 +109,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="@id/dining_in_qty"
                         app:layout_constraintStart_toStartOf="@+id/dining_in_qty"
@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="@string/take_out"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@+id/textView20"
                         app:layout_constraintTop_toBottomOf="@+id/textView20" />
@@ -155,7 +155,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="@string/title_total_amount"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="@+id/textView27"
                         app:layout_constraintTop_toBottomOf="@+id/textView27" />
@@ -164,7 +164,7 @@
                         android:id="@+id/total_qty"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@android:color/primary_text_light"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="@+id/takeout_qty"
                         app:layout_constraintStart_toStartOf="@+id/takeout_qty"

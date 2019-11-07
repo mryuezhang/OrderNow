@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.yue.ordernow.data.Report
 
 class ReportDetailViewModel internal constructor(
-    val report: Report,
+    val reportType: Report.Type,
     val takeoutCount: Int,
-    val diningInCount: Int
+    val diningInCount: Int,
+    val timeStamp: Long
 ) : ViewModel()

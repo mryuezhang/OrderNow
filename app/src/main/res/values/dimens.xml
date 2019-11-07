@@ -11,4 +11,6 @@
     <dimen name="bottom_sheet_peek_height">56dp</dimen>
     <dimen name="expanded_bottom_sheet_top_margin">8dp</dimen>
     <dimen name="order_item_background_icon_margin">20dp</dimen>
+
+    <dimen name="list_item_sort_by_height">56dp</dimen>
 </resources>
