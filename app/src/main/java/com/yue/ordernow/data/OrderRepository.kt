@@ -55,6 +55,10 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         orderDao.insertOrder(order)
     }
 
+    suspend fun updateOrder(order: Order) {
+        orderDao.updateOrder(order)
+    }
+
     companion object {
 
         // For Singleton instantiation

@@ -13,8 +13,12 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.ListItemOrderHistoryBinding
 import com.yue.ordernow.fragments.ReportDetailFragmentDirections
 
-class OrderAdapter(private val context: Context) :
+class OrderAdapter(private val context: Context, private val listener: ItemLongClickListener) :
     ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
+
+    interface ItemLongClickListener {
+        fun onLongClick(order: Order, adapter: OrderAdapter, position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         OrderViewHolder(
@@ -37,6 +41,12 @@ class OrderAdapter(private val context: Context) :
                 binding.order?.let { order ->
                     navigateToPlant(order, it)
                 }
+            }
+            binding.mainLayout.setOnLongClickListener {
+                binding.order?.let { order ->
+                    listener.onLongClick(order, this@OrderAdapter, adapterPosition)
+                }
+                true
             }
         }
 

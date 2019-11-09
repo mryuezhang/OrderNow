@@ -277,6 +277,13 @@ class RestaurantMenuFragment : Fragment(),
 
         // Clear local copy of data and refresh view
         removeCurrentOrder()
+
+        // Display a snackbar to inform user
+        Snackbar.make(
+            requireView(),
+            resources.getString(R.string.message_order_sent),
+            Snackbar.LENGTH_SHORT
+        ).show()
     }
 
     /*

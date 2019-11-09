@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.adapters.OrderAdapter
+import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
@@ -30,7 +32,7 @@ import com.yue.ordernow.viewModels.ReportDetailFragmentViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportDetailFragment : Fragment() {
+class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
 
     private val hostActivity by lazy {
         activity as ReportDetailActivity
@@ -69,6 +71,38 @@ class ReportDetailFragment : Fragment() {
         return binding.root
     }
 
+    /*
+     * OrderAdapter.ItemLongClickListener method
+     */
+
+    override fun onLongClick(order: Order, adapter: OrderAdapter, position: Int) {
+        activity?.let {
+            AlertDialog.Builder(it).apply {
+                if (order.isPaid) {
+                    setTitle(resources.getString(R.string.title_mark_order_unpaid))
+                } else {
+                    setTitle(resources.getString(R.string.title_mark_order_paid))
+                }
+                setPositiveButton(R.string.confirm) { _, _ ->
+                    order.isPaid = !order.isPaid
+
+                    // Update view
+                    adapter.notifyItemChanged(position)
+
+                    // Update database
+                    viewModel.updateOrder(order)
+                }
+                setNegativeButton(R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+            }.create().show()
+        }
+    }
+
+    /*
+     * Private methods
+     */
+
     private fun setupToolBar(toolbar: Toolbar) {
         toolbar.title = when (hostActivity.viewModel.reportType) {
             Report.Type.TODAY -> resources.getString(R.string.today)
@@ -93,7 +127,7 @@ class ReportDetailFragment : Fragment() {
     }
 
     private fun setupOrderList(orderList: RecyclerView) {
-        val adapter = OrderAdapter(requireContext())
+        val adapter = OrderAdapter(requireContext(), this)
         orderList.adapter = adapter
         orderList.addItemDecoration(
             DividerItemDecoration(

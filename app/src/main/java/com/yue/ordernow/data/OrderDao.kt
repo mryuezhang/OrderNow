@@ -22,7 +22,7 @@ interface OrderDao {
     suspend fun insertOrder(order: Order)
 
     @Update
-    fun updateOrder(order: Order)
+    suspend fun updateOrder(order: Order)
 
     @Query("DELETE FROM `orders`")
     suspend fun deleteAllOrders()
