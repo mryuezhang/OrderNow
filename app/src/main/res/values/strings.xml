@@ -89,9 +89,21 @@
     <string name="paid">Paid</string>
     <string name="unpaid">Unpaid</string>
 
+    <string name="pie_centre_text">%1$s orders</string>
+
     <string name="key_tax_rate">tax_rate</string>
     <string name="title_tax_rate">Tax Rate</string>
     <string name="default_tax_rate">13</string>
-
-    <string name="pie_centre_text">%1$s orders</string>
+    <string name="currency">Currency</string>
+    <string name="key_currency">key_currency</string>
+    <array name="currency_options">
+        <item>Dollar ($)</item>
+        <item>Euro (\u20ac)</item>
+        <item>Pound (\u00a3)</item>
+    </array>
+    <string-array name="currency_option_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

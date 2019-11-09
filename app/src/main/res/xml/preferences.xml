@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/currency_options"
+        android:entryValues="@array/currency_option_values"
+        android:key="@string/key_currency"
+        android:title="@string/currency"
+        app:useSimpleSummaryProvider="true" />
 
     <EditTextPreference
         app:key="@string/key_tax_rate"
         app:title="@string/title_tax_rate"
         app:useSimpleSummaryProvider="true" />
+
 </PreferenceScreen>

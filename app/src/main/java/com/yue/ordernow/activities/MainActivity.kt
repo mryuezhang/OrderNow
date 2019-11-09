@@ -15,6 +15,7 @@ import com.yue.ordernow.R
 import com.yue.ordernow.databinding.ActivityMainBinding
 import com.yue.ordernow.fragments.RestaurantMenuFragment.Companion.taxRate
 import com.yue.ordernow.utilities.InjectorUtils
+import com.yue.ordernow.utilities.currencySign
 import com.yue.ordernow.viewModels.MainViewModel
 
 
@@ -78,6 +79,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 } catch (e: NumberFormatException) {
 
                 }
+            }
+        }
+
+        if (p1 == resources.getString(R.string.key_currency)) {
+            currencySign = when (p0?.getString(p1, "")) {
+                "1" -> "\u20ac"
+                "2" -> "\u00a3"
+                else -> "$"
             }
         }
     }

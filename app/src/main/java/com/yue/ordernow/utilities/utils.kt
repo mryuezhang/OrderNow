@@ -5,7 +5,9 @@ import android.text.Spanned
 import java.util.*
 import java.util.regex.Pattern
 
-fun currencyFormat(rawInput: Float): String = String.format("$%.2f", rawInput)
+var currencySign = "\u0024"
+
+fun currencyFormat(rawInput: Float): String = String.format("$currencySign%.2f", rawInput)
 
 class CurrencyFormatInputFilter : InputFilter {
 
@@ -26,7 +28,7 @@ class CurrencyFormatInputFilter : InputFilter {
 
         val matcher = currencyPattern.matcher(result)
 
-        return if (!matcher.matches()) "$" + dest.subSequence(dstart, dend) else null
+        return if (!matcher.matches()) currencySign + dest.subSequence(dstart, dend) else null
 
     }
 }

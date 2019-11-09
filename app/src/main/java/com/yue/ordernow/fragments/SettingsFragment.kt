@@ -3,10 +3,7 @@ package com.yue.ordernow.fragments
 import android.os.Bundle
 import android.text.InputType
 import android.text.TextUtils
-import androidx.preference.EditTextPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
+import androidx.preference.*
 import com.yue.ordernow.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -25,8 +22,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             editText.inputType = InputType.TYPE_CLASS_NUMBER
             editText.setSelection(editText.text.length)
         }
-
-
         taxRatePreference?.summaryProvider =
             Preference.SummaryProvider<EditTextPreference> { preference ->
                 val text = preference.text
@@ -37,6 +32,12 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 }
             }
 
-    }
+        val currencyPreference: ListPreference? =
+            findPreference(resources.getString(R.string.key_currency))
+        currencyPreference?.summaryProvider =
+            Preference.SummaryProvider<ListPreference> {
+                resources.getStringArray(R.array.currency_options)[it.value.toInt()]
+            }
 
+    }
 }
