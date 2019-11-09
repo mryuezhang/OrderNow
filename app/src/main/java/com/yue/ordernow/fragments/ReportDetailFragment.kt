@@ -80,6 +80,16 @@ class ReportDetailFragment : Fragment() {
             activity?.finish()
             activity?.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
+
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_filter_list -> {
+                    filterList()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupOrderList(orderList: RecyclerView) {
@@ -152,4 +162,13 @@ class ReportDetailFragment : Fragment() {
             (hostActivity.viewModel.diningInCount + hostActivity.viewModel.takeoutCount).toString()
     }
 
+    private fun filterList() {
+        with(viewModel) {
+            if (isFiltered()) {
+                setQueryAllOrders()
+            } else {
+                setQueryUnPaidOrders()
+            }
+        }
+    }
 }

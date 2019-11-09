@@ -49,6 +49,11 @@ class OrderAdapter(private val context: Context) :
                 } else {
                     context.getString(R.string.dining_in)
                 }
+                this.unpaidIcon.visibility = if (item.isPaid) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
             }
         }
 

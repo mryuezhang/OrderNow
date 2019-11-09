@@ -5,7 +5,7 @@
     <string name="action_confirm">Confirm</string>
     <string name="action_clear_orders">Clear</string>
     <string name="action_send_orders">Send</string>
-    <string name="action_sort_by">Sort by</string>
+    <string name="action_filter_list">Filter by pay status</string>
 
     <string name="sample_quantity">999</string>
     <string name="sample_amount">$9999.99</string>
@@ -20,6 +20,10 @@
     <string name="title_placed_at">Placed at</string>
     <string name="title_order_detail">Order Detail</string>
     <string name="title_current_order">Current Order</string>
+    <string name="title_confirm_sending_order">Send order as</string>
+    <string name="title_unpaid_order">Pay later</string>
+    <string name="title_paid_order">Paid</string>
+    <string name="description_unpaid">Unpaid order</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -58,7 +62,7 @@
     <string name="tax">Tax</string>
     <string name="subtotal">Subtotal</string>
     <string name="order_type">Type</string>
-    <string name="order_status">Status</string>
+    <string name="order_pay_status">Status</string>
     <string name="dining_in">Dining-in</string>
     <string name="take_out">Take-out</string>
     <string name="title_created_at">Created at</string>
@@ -82,6 +86,8 @@
     <string name="message_discard_order">Order will be discarded automatically when it\'s empty</string>
     <string name="text_order_item_removed">1 removed</string>
     <string name="undo">Undo</string>
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
 
     <string name="key_tax_rate">tax_rate</string>
     <string name="title_tax_rate">Tax Rate</string>

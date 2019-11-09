@@ -35,7 +35,8 @@ class RestaurantMenuFragment : Fragment(),
     ModifyOrderDialogFragment.ModifyOrderDialogListener,
     MenuItemAdapter.MenuItemListener,
     OrderItemAdapter.OrderItemOnClickListener,
-    OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
+    OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener,
+    ConfirmSendingOrderDialogFragment.ConfirmSendingOrderDialogFragmentListener {
 
     private val adapter = OrderItemAdapter(this)
     private lateinit var binding: FragmentRestaurantMenuBinding
@@ -116,7 +117,7 @@ class RestaurantMenuFragment : Fragment(),
 
 
     /*
-     * Options menu mthods
+     * Options menu methods
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
@@ -124,31 +125,10 @@ class RestaurantMenuFragment : Fragment(),
         menu.findItem(R.id.action_clear).isVisible = isOptionMenuViable
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-            // Sort all order items
-            activityViewModel.orderItems.sortWith(Comparator { t, t2 ->
-                t.item.name.compareTo(t2.item.name)
-            })
-
-            // Create order object and save it to data base
-            // Note: clone the array list of order items here is a must
-            // since inserting into data base is a asyc call, and we are clearing
-            // out all the data right after with removeCurrentOrder(). Otherwise
-            // empty array lists will be inserted into database
-            activityViewModel.saveToDatabase(
-                Order.newInstance(
-                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
-                    activityViewModel.subtotal,
-                    activityViewModel.totalQuantity,
-                    activityViewModel.isTakeout,
-                    activityViewModel.isPaid
-                )
-            )
-
-            // Clear local copy of data and refresh view
-            removeCurrentOrder()
+            ConfirmSendingOrderDialogFragment(this)
+                .show(childFragmentManager, CustomOrderDialogFragment.TAG)
             true
         }
         R.id.action_clear -> {
@@ -271,6 +251,35 @@ class RestaurantMenuFragment : Fragment(),
     }
 
     /*
+     * ConfirmSendingOrderDialogFragment.ConfirmSendingOrderDialogFragmentListener method
+     */
+    @Suppress("UNCHECKED_CAST")
+    override fun onDialogPositiveClick(isPaid: Boolean) {
+        // Sort all order items
+        activityViewModel.orderItems.sortWith(Comparator { t, t2 ->
+            t.item.name.compareTo(t2.item.name)
+        })
+
+        // Create order object and save it to data base
+        // Note: clone the array list of order items here is a must
+        // since inserting into data base is a asyc call, and we are clearing
+        // out all the data right after with removeCurrentOrder(). Otherwise
+        // empty array lists will be inserted into database
+        activityViewModel.saveToDatabase(
+            Order.newInstance(
+                activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
+                activityViewModel.subtotal,
+                activityViewModel.totalQuantity,
+                activityViewModel.isTakeout,
+                isPaid
+            )
+        )
+
+        // Clear local copy of data and refresh view
+        removeCurrentOrder()
+    }
+
+    /*
      * Private methods
      */
 
@@ -312,7 +321,6 @@ class RestaurantMenuFragment : Fragment(),
         activityViewModel.subtotal = 0f
         activityViewModel.orderItems.clear()
         activityViewModel.isTakeout = false
-        activityViewModel.isPaid = false
         updateBottomSheetBehavior()
     }
 

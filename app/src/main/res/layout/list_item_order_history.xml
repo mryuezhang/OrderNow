@@ -20,17 +20,31 @@
         android:background="?android:attr/colorBackground"
         android:foreground="?android:attr/selectableItemBackground"
         android:onClick="@{onClickListener}"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
+
+        <ImageView
+            android:id="@+id/unpaid_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:baselineAlignBottom="false"
+            android:contentDescription="@string/description_unpaid"
+            android:tint="?attr/colorError"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_monetization" />
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:text="@string/title_order_id"
             app:firstBaselineToTopHeight="24dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/unpaid_icon" />
 
         <TextView
             android:id="@+id/textView2"
@@ -74,7 +88,7 @@
             android:textSize="14sp"
             app:firstBaselineToTopHeight="24dp"
             app:layout_constraintStart_toEndOf="@+id/textView2"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView6"
@@ -126,8 +140,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:text="@{order.formattedTotalAmount}"
             android:textAlignment="textStart"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
@@ -142,12 +154,11 @@
             android:id="@+id/textView11"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
             android:text="@string/order_type"
             app:firstBaselineToTopHeight="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/textView5" />
 
         <TextView
             android:id="@+id/orderType"

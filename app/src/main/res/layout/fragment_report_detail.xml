@@ -19,7 +19,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:navigationIcon="@drawable/ic_back_arrow_white"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:menu="@menu/menu_report_detail_fragment" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

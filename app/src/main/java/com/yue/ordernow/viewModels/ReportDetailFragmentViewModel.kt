@@ -45,6 +45,8 @@ class ReportDetailFragmentViewModel internal constructor(
         queryType.value = UNPAID
     }
 
+    fun isFiltered(): Boolean = queryType.value == UNPAID
+
     companion object {
         private const val ALL = 0
         private const val UNPAID = 1
