@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -19,6 +20,7 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
+import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.adapters.OrderAdapter
@@ -55,7 +57,7 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
     ): View? {
         val binding = FragmentReportDetailBinding.inflate(inflater, container, false).apply {
             this.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
-            setupOrderList(this.orderList)
+            setupOrderList(this.orderList, this.textNoUnpaidOrders)
             setHasOptionsMenu(true)
             setupToolBar(this.toolbar)
             setupPieChart(this.pieChart)
@@ -78,22 +80,56 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
     override fun onLongClick(order: Order, adapter: OrderAdapter, position: Int) {
         activity?.let {
             AlertDialog.Builder(it).apply {
-                if (order.isPaid) {
-                    setTitle(resources.getString(R.string.title_mark_order_unpaid))
-                } else {
-                    setTitle(resources.getString(R.string.title_mark_order_paid))
-                }
-                setPositiveButton(R.string.confirm) { _, _ ->
-                    order.isPaid = !order.isPaid
+                setTitle(resources.getString(R.string.title_mark_order_paid))
+                setPositiveButton(R.string.yes) { _, _ ->
+                    if (!order.isPaid) {
+                        order.isPaid = true
 
-                    // Update view
-                    adapter.notifyItemChanged(position)
+                        // Update view
+                        adapter.notifyItemChanged(position)
 
-                    // Update database
-                    viewModel.updateOrder(order)
+                        // Update database
+                        viewModel.updateOrder(order)
+
+                        Snackbar.make(
+                            requireView(),
+                            resources.getString(R.string.text_order_changed_to_paid),
+                            Snackbar.LENGTH_LONG
+                        ).setAction(resources.getString(R.string.undo)) {
+                            order.isPaid = false
+
+                            // Update view
+                            adapter.notifyItemChanged(position)
+
+                            // Update database
+                            viewModel.updateOrder(order)
+                        }.show()
+                    }
                 }
-                setNegativeButton(R.string.cancel) { dialog, _ ->
-                    dialog.cancel()
+                setNegativeButton(R.string.no) { dialog, _ ->
+                    if (order.isPaid) {
+                        order.isPaid = false
+
+                        // Update view
+                        adapter.notifyItemChanged(position)
+
+                        // Update database
+                        viewModel.updateOrder(order)
+
+                        Snackbar.make(
+                            requireView(),
+                            resources.getString(R.string.text_order_changed_to_unpaid),
+                            Snackbar.LENGTH_LONG
+                        ).setAction(resources.getString(R.string.undo)) {
+                            order.isPaid = true
+
+                            // Update view
+                            adapter.notifyItemChanged(position)
+
+                            // Update database
+                            viewModel.updateOrder(order)
+                        }.show()
+                    }
                 }
             }.create().show()
         }
@@ -126,7 +162,7 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
         }
     }
 
-    private fun setupOrderList(orderList: RecyclerView) {
+    private fun setupOrderList(orderList: RecyclerView, textView: TextView) {
         val adapter = OrderAdapter(requireContext(), this)
         orderList.adapter = adapter
         orderList.addItemDecoration(
@@ -137,6 +173,7 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
         )
         viewModel.orders.observe(viewLifecycleOwner) { orders ->
             adapter.submitList(orders)
+            textView.isGone = orders.isNotEmpty()
         }
     }
 

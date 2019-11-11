@@ -189,6 +189,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/report_summary"
                     tools:listitem="@layout/list_item_order_history" />
 
+                <TextView
+                    android:id="@+id/text_no_unpaid_orders"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="64dp"
+                    android:text="@string/text_no_unpaid_orders"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/report_summary" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>

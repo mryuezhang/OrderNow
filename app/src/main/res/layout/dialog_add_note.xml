@@ -37,9 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine|text"
-                android:lines="3"
-                android:maxLines="3"
-                android:minLines="1"
+                android:maxLength="56"
                 android:singleLine="false"
                 android:textSize="14sp" />
 
@@ -84,6 +82,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberSigned"
+                android:maxLength="3"
                 android:text="@string/minimal_quantity"
                 android:textSize="14sp" />
 

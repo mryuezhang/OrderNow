@@ -86,10 +86,14 @@
     <string name="message_discard_order">Order will be discarded automatically when it\'s empty</string>
     <string name="message_order_sent">Order has been sent</string>
     <string name="text_order_item_removed">1 removed</string>
-    <string name="title_mark_order_paid">Mark order as paid?</string>
-    <string name="title_mark_order_unpaid">Mark order as unpaid?</string>
+    <string name="title_mark_order_paid">Is order paid?</string>
+    <string name="text_no_unpaid_orders">Once you\'ve had unpaid orders, you\'ll see them listed here</string>
+    <string name="text_order_changed_to_paid">1 marked as paid</string>
+    <string name="text_order_changed_to_unpaid">1 marked as unpaid</string>
     <string name="undo">Undo</string>
     <string name="paid">Paid</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="unpaid">Unpaid</string>
 
     <string name="pie_centre_text">%1$s orders</string>
