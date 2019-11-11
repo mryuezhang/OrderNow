@@ -39,7 +39,7 @@ class MenuOptionsFragment : Fragment() {
 
         // Set adapter
         val adapter = MenuItemAdapter(parentFragment as RestaurantMenuFragment)
-        binding.menuOptions?.adapter = adapter
+        binding.menuOptions.adapter = adapter
         subscribeUi(adapter)
 
         return binding.root

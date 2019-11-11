@@ -24,8 +24,7 @@ class ReportDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: ActivityReportDetailBinding =
-            setContentView(this, R.layout.activity_report_detail)
+        setContentView<ActivityReportDetailBinding>(this, R.layout.activity_report_detail)
     }
 
     companion object {

@@ -106,7 +106,7 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
                         }.show()
                     }
                 }
-                setNegativeButton(R.string.no) { dialog, _ ->
+                setNegativeButton(R.string.no) { _, _ ->
                     if (order.isPaid) {
                         order.isPaid = false
 
