@@ -17,8 +17,8 @@
         android:label="@string/title_recent_orders"
         tools:layout="@layout/fragment_recent_orders">
         <action
-            android:id="@+id/action_reportDetailFragment_to_orderDetailFragment"
-            app:destination="@id/orderDetailNoAppBarFragment"
+            android:id="@+id/action_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -26,10 +26,9 @@
     </fragment>
 
     <fragment
-        android:id="@+id/orderDetailNoAppBarFragment"
-        android:name="com.yue.ordernow.fragments.OrderDetailNoAppBarFragment"
-        android:label="OrderDetailNoAppBarFragment"
-        tools:layout="@layout/content_order_detail">
+        android:id="@+id/orderDetailFragment"
+        android:name="com.yue.ordernow.fragments.OrderDetailFragment"
+        android:label="OrderDetailFragment">
 
         <argument
             android:name="order"
@@ -40,7 +39,43 @@
         android:id="@+id/nav_dashboard"
         android:name="com.yue.ordernow.fragments.DashboardFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_nav_dashboard_to_reportDetailFragment"
+            app:destination="@id/reportDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"></action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/reportDetailFragment"
+        android:name="com.yue.ordernow.fragments.ReportDetailFragment"
+        android:label="ReportDetailFragment"
+        tools:layout="@layout/fragment_report_detail">
+        <action
+            android:id="@+id/action_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <argument
+            android:name="@string/arg_report_type"
+            app:argType="integer" />
+        <argument
+            android:name="@string/arg_takeout_count"
+            app:argType="integer" />
+        <argument
+            android:name="@string/arg_dining_in_count"
+            app:argType="integer" />
+        <argument
+            android:name="@string/arg_time_stamp"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"

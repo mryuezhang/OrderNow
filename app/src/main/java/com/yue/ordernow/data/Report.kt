@@ -8,11 +8,11 @@ data class Report(val type: Type, var quantity: Int, var amount: Float) {
 
     fun getFormattedAmount(): String = currencyFormat(amount)
 
-    enum class Type(val value: Byte) {
+    enum class Type(val value: Int) {
         TODAY(0), THIS_WEEK(1), THIS_MONTH(2);
 
         companion object {
-            fun fromByte(value: Byte) = values().first { it.value == value }
+            fun fromInt(value: Int) = values().first { it.value == value }
         }
     }
 }

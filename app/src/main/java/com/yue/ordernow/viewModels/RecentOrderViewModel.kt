@@ -7,5 +7,9 @@ import com.yue.ordernow.data.OrderRepository
 class RecentOrderViewModel(orderRepository: OrderRepository) :
     OrderListFragmentViewModel(orderRepository) {
 
-    override val orders: LiveData<List<Order>> = orderRepository.getAllOrders()
+    override val orders: LiveData<List<Order>> = orderRepository.getLastOrders(recentOrderCount)
+
+    companion object {
+        var recentOrderCount = 100
+    }
 }

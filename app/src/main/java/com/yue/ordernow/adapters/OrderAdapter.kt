@@ -13,7 +13,10 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.ListItemOrderHistoryBinding
 import com.yue.ordernow.fragments.ReportDetailFragmentDirections
 
-class OrderAdapter(private val context: Context, private val listener: ItemLongClickListener) :
+class OrderAdapter(
+    private val context: Context,
+    private val listener: ItemLongClickListener
+) :
     ListAdapter<Order, RecyclerView.ViewHolder>(OrderDiffCallback()) {
 
     interface ItemLongClickListener {
@@ -72,9 +75,10 @@ class OrderAdapter(private val context: Context, private val listener: ItemLongC
             it: View
         ) {
             val direction =
-                ReportDetailFragmentDirections.actionReportDetailFragmentToOrderDetailFragment(
+                ReportDetailFragmentDirections.actionToOrderDetailFragment(
                     order
                 )
+
             it.findNavController().navigate(direction)
         }
     }

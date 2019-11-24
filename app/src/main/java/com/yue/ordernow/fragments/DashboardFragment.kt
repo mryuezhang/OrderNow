@@ -2,14 +2,13 @@ package com.yue.ordernow.fragments
 
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import com.yue.ordernow.R
-import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.adapters.ReportAdapter
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentDashboardBinding
@@ -18,9 +17,6 @@ import com.yue.ordernow.viewModels.DashboardViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-/**
- * A simple [Fragment] subclass.
- */
 class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
 
     private val viewModel: DashboardViewModel by viewModels {
@@ -82,19 +78,30 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     override fun onClick(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
-        activity?.let {
-            val intent = Intent(activity, ReportDetailActivity::class.java)
-            intent.putExtra(ReportDetailActivity.REPORT_TYPE, type.value)
-            intent.putExtra(ReportDetailActivity.TAKEOUT_COUNT, takeoutCount)
-            intent.putExtra(ReportDetailActivity.DINING_IN_COUNT, diningInCount)
-            intent.putExtra(ReportDetailActivity.TIME_STAMP, viewModel.now.timeInMillis)
-
-            it.startActivity(intent)
-
-            // Add slide animations
-            it.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
+//        activity?.let {
+//            val intent = Intent(activity, ReportDetailActivity::class.java)
+//            intent.putExtra(ReportDetailActivity.REPORT_TYPE, type.value)
+//            intent.putExtra(ReportDetailActivity.TAKEOUT_COUNT, takeoutCount)
+//            intent.putExtra(ReportDetailActivity.DINING_IN_COUNT, diningInCount)
+//            intent.putExtra(ReportDetailActivity.TIME_STAMP, viewModel.now.timeInMillis)
+//
+//            it.startActivity(intent)
+//
+//            // Add slide animations
+//            it.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+//        }
+        navigateToReport(type, takeoutCount, diningInCount)
     }
 
     override fun requestContext(): Context = requireContext()
+
+    private fun navigateToReport(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
+        val direction = DashboardFragmentDirections.actionNavDashboardToReportDetailFragment(
+            type.value.toInt(),
+            takeoutCount,
+            diningInCount,
+            viewModel.now.timeInMillis
+        )
+        view?.findNavController()?.navigate(direction)
+    }
 }

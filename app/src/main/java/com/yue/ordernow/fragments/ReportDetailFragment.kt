@@ -2,41 +2,37 @@ package com.yue.ordernow.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.yue.ordernow.R
-import com.yue.ordernow.activities.ReportDetailActivity
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.utilities.PercentFormatter
 import com.yue.ordernow.utilities.getThemeColor
-import com.yue.ordernow.viewModels.ReportDetailFragmentViewModel
+import com.yue.ordernow.viewModels.ReportDetailViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ReportDetailFragment : OrderListFragment() {
 
-    private val hostActivity by lazy {
-        activity as ReportDetailActivity
-    }
+    private val args: ReportDetailFragmentArgs by navArgs()
 
-    override val viewModel: ReportDetailFragmentViewModel by viewModels {
+    override val viewModel: ReportDetailViewModel by viewModels {
         InjectorUtils.provideReportDetailFragmentViewModelFactory(
             requireContext(),
-            hostActivity.viewModel.reportType,
+            Report.Type.fromInt(args.StringArgReportType),
             Calendar.getInstance().apply {
-                timeInMillis = hostActivity.viewModel.timeStamp
+                timeInMillis = args.StringArgTimeStamp
             }
         )
     }
@@ -50,7 +46,13 @@ class ReportDetailFragment : OrderListFragment() {
             this.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
             setupOrderList(this.orderList, this.textNoUnpaidOrders)
             setHasOptionsMenu(true)
-            setupToolBar(this.toolbar)
+            (activity as AppCompatActivity).supportActionBar?.title =
+                when (args.StringArgReportType) {
+                    Report.Type.TODAY.value -> resources.getString(R.string.today)
+                    Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
+                    Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
+                    else -> resources.getString(R.string.no)
+                }
             setupPieChart(this.pieChart)
             addPieChartData(this.pieChart)
             setupCustomLegend(
@@ -63,32 +65,23 @@ class ReportDetailFragment : OrderListFragment() {
         return binding.root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_report_detail_fragment, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        when (item.itemId) {
+            R.id.action_filter_list -> {
+                filterList()
+                super.onOptionsItemSelected(item)
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     /*
      * Private methods
      */
-
-    private fun setupToolBar(toolbar: Toolbar) {
-        toolbar.title = when (hostActivity.viewModel.reportType) {
-            Report.Type.TODAY -> resources.getString(R.string.today)
-            Report.Type.THIS_WEEK -> resources.getString(R.string.this_week)
-            Report.Type.THIS_MONTH -> resources.getString(R.string.this_month)
-        }
-
-        toolbar.setNavigationOnClickListener {
-            activity?.finish()
-            activity?.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-        }
-
-        toolbar.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.action_filter_list -> {
-                    filterList()
-                    true
-                }
-                else -> false
-            }
-        }
-    }
 
     private fun setupPieChart(pieChart: PieChart) {
         pieChart.setUsePercentValues(true)
@@ -96,7 +89,7 @@ class ReportDetailFragment : OrderListFragment() {
         pieChart.isRotationEnabled = true
         pieChart.isHighlightPerTapEnabled = true
         pieChart.setDrawEntryLabels(false)
-        pieChart.setHoleColor(hostActivity.getThemeColor(android.R.attr.colorBackground))
+        pieChart.setHoleColor(requireActivity().getThemeColor(android.R.attr.colorBackground))
         pieChart.animateY(1400, Easing.EaseInOutQuad)
         pieChart.legend.isEnabled = false
     }
@@ -105,13 +98,13 @@ class ReportDetailFragment : OrderListFragment() {
         val dataEntries = ArrayList<PieEntry>(2).apply {
             add(
                 PieEntry(
-                    hostActivity.viewModel.takeoutCount.toFloat(),
+                    args.StringArgTakeoutCount.toFloat(),
                     resources.getString(R.string.take_out)
                 )
             )
             add(
                 PieEntry(
-                    hostActivity.viewModel.diningInCount.toFloat(),
+                    args.StringArgDiningInCount.toFloat(),
                     resources.getString(R.string.dining_in)
                 )
             )
@@ -120,8 +113,8 @@ class ReportDetailFragment : OrderListFragment() {
         val dataSet = PieDataSet(dataEntries, "").apply {
             setDrawIcons(false)
             colors = listOf(
-                ContextCompat.getColor(hostActivity, R.color.color_takeout),
-                ContextCompat.getColor(hostActivity, R.color.color_dining_in)
+                ContextCompat.getColor(requireContext(), R.color.color_takeout),
+                ContextCompat.getColor(requireContext(), R.color.color_dining_in)
             )
             valueTextColor = Color.WHITE
             valueTextSize = 12f
@@ -140,10 +133,10 @@ class ReportDetailFragment : OrderListFragment() {
         takeoutQty: TextView,
         totalQty: TextView
     ) {
-        diningInQty.text = hostActivity.viewModel.diningInCount.toString()
-        takeoutQty.text = hostActivity.viewModel.takeoutCount.toString()
+        diningInQty.text = args.StringArgDiningInCount.toString()
+        takeoutQty.text = args.StringArgTakeoutCount.toString()
         totalQty.text =
-            (hostActivity.viewModel.diningInCount + hostActivity.viewModel.takeoutCount).toString()
+            (args.StringArgDiningInCount + args.StringArgTakeoutCount).toString()
     }
 
     private fun filterList() {

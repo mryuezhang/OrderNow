@@ -100,6 +100,11 @@
 
     <string name="pie_centre_text">%1$s orders</string>
 
+    <string name="arg_report_type">report-type</string>
+    <string name="arg_takeout_count">takeout-count</string>
+    <string name="arg_dining_in_count">dining-in-count</string>
+    <string name="arg_time_stamp">time-stamp</string>
+
     <string name="key_tax_rate">tax_rate</string>
     <string name="title_tax_rate">Tax Rate</string>
     <string name="default_tax_rate">13</string>
