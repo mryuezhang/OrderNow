@@ -39,7 +39,7 @@ class OrderAdapter(private val context: Context, private val listener: ItemLongC
         init {
             binding.setOnClickListener {
                 binding.order?.let { order ->
-                    navigateToPlant(order, it)
+                    navigateToOrder(order, it)
                 }
             }
             binding.mainLayout.setOnLongClickListener {
@@ -67,7 +67,7 @@ class OrderAdapter(private val context: Context, private val listener: ItemLongC
             }
         }
 
-        private fun navigateToPlant(
+        private fun navigateToOrder(
             order: Order,
             it: View
         ) {

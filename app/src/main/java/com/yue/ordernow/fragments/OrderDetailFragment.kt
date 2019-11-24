@@ -29,15 +29,15 @@ class OrderDetailFragment : Fragment() {
             executePendingBindings()
 
             setupToolbar(this.toolbar)
-            setupOrderItemList(this.orderItemList)
+            setupOrderItemList(this.content.orderItemList)
 
-            this.textTax.text =
+            this.content.textTax.text
                 resources.getString(
                     R.string.title_tax,
                     (args.order.taxRate * 100).toInt().toString()
                 )
 
-            this.payStatus.text = if (args.order.isPaid) {
+            this.content.payStatus.text = if (args.order.isPaid) {
                 resources.getString(R.string.paid)
             } else {
                 resources.getString(R.string.unpaid)
@@ -51,7 +51,7 @@ class OrderDetailFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home -> {
                 view!!.findNavController().navigateUp()
-                super.onOptionsItemSelected(item)
+                false
             }
             else -> false
         }

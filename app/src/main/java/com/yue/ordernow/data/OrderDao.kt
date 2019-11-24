@@ -18,6 +18,9 @@ interface OrderDao {
     @Query("SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-paid` == 0 ORDER BY `time-created`")
     fun getUnPaidOrdersBetween(start: Long, end: Long): LiveData<List<Order>>
 
+    @Query("SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num")
+    fun getLastOrders(num: Int): LiveData<List<Order>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrder(order: Order)
 

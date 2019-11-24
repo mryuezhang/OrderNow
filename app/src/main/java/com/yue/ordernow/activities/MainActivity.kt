@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_restaurant_menu, R.id.nav_dashboard,
+                R.id.nav_restaurant_menu,
+                R.id.nav_recent_orders,
+                R.id.nav_dashboard,
                 R.id.nav_settings
             ), binding.drawerLayout
         )

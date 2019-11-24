@@ -47,6 +47,8 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         getYearEnd(calendar).timeInMillis
     )
 
+    fun getLastOrders(num: Int) = orderDao.getLastOrders(num)
+
     suspend fun deleteAllOrders() {
         orderDao.deleteAllOrders()
     }

@@ -1,25 +1,21 @@
 package com.yue.ordernow.viewModels
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
-import androidx.lifecycle.viewModelScope
-import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
-import kotlinx.coroutines.launch
 import java.util.*
 
 class ReportDetailFragmentViewModel internal constructor(
-    private val orderRepository: OrderRepository,
+    val orderRepository: OrderRepository,
     reportType: Report.Type,
     requestedTime: Calendar
 ) :
-    ViewModel() {
+    OrderListFragmentViewModel(orderRepository) {
 
     private val queryType = MutableLiveData<Int>(ALL)
 
-    val orders = when (reportType) {
+    override val orders = when (reportType) {
         Report.Type.TODAY -> {
             queryType.switchMap {
                 if (it == ALL) orderRepository.getDailyOrders(requestedTime)
@@ -49,12 +45,6 @@ class ReportDetailFragmentViewModel internal constructor(
     }
 
     fun isFiltered(): Boolean = queryType.value == UNPAID
-
-    fun updateOrder(order: Order) {
-        viewModelScope.launch {
-            orderRepository.updateOrder(order)
-        }
-    }
 
     companion object {
         private const val ALL = 0

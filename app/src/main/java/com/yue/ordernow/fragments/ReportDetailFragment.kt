@@ -6,25 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.ReportDetailActivity
-import com.yue.ordernow.adapters.OrderAdapter
-import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
@@ -34,13 +25,13 @@ import com.yue.ordernow.viewModels.ReportDetailFragmentViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
+class ReportDetailFragment : OrderListFragment() {
 
     private val hostActivity by lazy {
         activity as ReportDetailActivity
     }
 
-    private val viewModel: ReportDetailFragmentViewModel by viewModels {
+    override val viewModel: ReportDetailFragmentViewModel by viewModels {
         InjectorUtils.provideReportDetailFragmentViewModelFactory(
             requireContext(),
             hostActivity.viewModel.reportType,
@@ -68,71 +59,8 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
                 this.totalQty
             )
         }
-        context ?: return binding.root
 
         return binding.root
-    }
-
-    /*
-     * OrderAdapter.ItemLongClickListener method
-     */
-
-    override fun onLongClick(order: Order, adapter: OrderAdapter, position: Int) {
-        activity?.let {
-            AlertDialog.Builder(it).apply {
-                setTitle(resources.getString(R.string.title_mark_order_paid))
-                setPositiveButton(R.string.yes) { _, _ ->
-                    if (!order.isPaid) {
-                        order.isPaid = true
-
-                        // Update view
-                        adapter.notifyItemChanged(position)
-
-                        // Update database
-                        viewModel.updateOrder(order)
-
-                        Snackbar.make(
-                            requireView(),
-                            resources.getString(R.string.text_order_changed_to_paid),
-                            Snackbar.LENGTH_LONG
-                        ).setAction(resources.getString(R.string.undo)) {
-                            order.isPaid = false
-
-                            // Update view
-                            adapter.notifyItemChanged(position)
-
-                            // Update database
-                            viewModel.updateOrder(order)
-                        }.show()
-                    }
-                }
-                setNegativeButton(R.string.no) { _, _ ->
-                    if (order.isPaid) {
-                        order.isPaid = false
-
-                        // Update view
-                        adapter.notifyItemChanged(position)
-
-                        // Update database
-                        viewModel.updateOrder(order)
-
-                        Snackbar.make(
-                            requireView(),
-                            resources.getString(R.string.text_order_changed_to_unpaid),
-                            Snackbar.LENGTH_LONG
-                        ).setAction(resources.getString(R.string.undo)) {
-                            order.isPaid = true
-
-                            // Update view
-                            adapter.notifyItemChanged(position)
-
-                            // Update database
-                            viewModel.updateOrder(order)
-                        }.show()
-                    }
-                }
-            }.create().show()
-        }
     }
 
     /*
@@ -159,21 +87,6 @@ class ReportDetailFragment : Fragment(), OrderAdapter.ItemLongClickListener {
                 }
                 else -> false
             }
-        }
-    }
-
-    private fun setupOrderList(orderList: RecyclerView, textView: TextView) {
-        val adapter = OrderAdapter(requireContext(), this)
-        orderList.adapter = adapter
-        orderList.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        viewModel.orders.observe(viewLifecycleOwner) { orders ->
-            adapter.submitList(orders)
-            textView.isGone = orders.isNotEmpty()
         }
     }
 

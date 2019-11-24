@@ -47,4 +47,7 @@ object InjectorUtils {
         requestedTime: Calendar
     ): ReportDetailFragmentViewModelFactory =
         ReportDetailFragmentViewModelFactory(getOrderRepository(context), reportType, requestedTime)
+
+    fun provideOrderHistoryViewModelFactory(context: Context): RecentOrderViewModelFactory =
+        RecentOrderViewModelFactory(getOrderRepository(context))
 }

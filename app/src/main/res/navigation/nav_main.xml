@@ -12,10 +12,36 @@
         tools:layout="@layout/fragment_menu_options" />
 
     <fragment
+        android:id="@+id/nav_recent_orders"
+        android:name="com.yue.ordernow.fragments.RecentOrdersFragment"
+        android:label="@string/title_recent_orders"
+        tools:layout="@layout/fragment_recent_orders">
+        <action
+            android:id="@+id/action_reportDetailFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailNoAppBarFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailNoAppBarFragment"
+        android:name="com.yue.ordernow.fragments.OrderDetailNoAppBarFragment"
+        android:label="OrderDetailNoAppBarFragment"
+        tools:layout="@layout/content_order_detail">
+
+        <argument
+            android:name="order"
+            app:argType="com.yue.ordernow.data.Order" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_dashboard"
         android:name="com.yue.ordernow.fragments.DashboardFragment"
-        android:label="@string/title_order_history"
+        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
+
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.yue.ordernow.fragments.SettingsFragment"
