@@ -44,6 +44,8 @@ class ReportAdapter(private val listener: ReportClickListener) :
         (holder as ReportViewHolder).bind(report)
     }
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     private inner class ReportViewHolder(private val binding: ListItemReportBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var takeOutCount = 0

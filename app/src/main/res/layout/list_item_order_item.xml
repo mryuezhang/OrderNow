@@ -28,6 +28,7 @@
 
             <ImageView
                 android:id="@+id/imageView"
+                android:contentDescription="@string/order_pay_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"

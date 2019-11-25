@@ -24,19 +24,17 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     private lateinit var adapter: ReportAdapter
-    private val reportList = ArrayList<Report>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        val binding = FragmentDashboardBinding.inflate(inflater, container, false)
-        context ?: return binding.root
-
-        adapter = ReportAdapter(this)
-        binding.reports.adapter = adapter
-        subscribeUi(adapter)
+        val binding = FragmentDashboardBinding.inflate(inflater, container, false).apply {
+            adapter = ReportAdapter(this@DashboardFragment)
+            this.reports.adapter = adapter
+            subscribeUi(adapter)
+        }
 
         return binding.root
     }
@@ -70,26 +68,16 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
                     reportMonth.orders.add(order)
                 }
             }
-            reportList.add(reportToday)
-            reportList.add(reportWeek)
-            reportList.add(reportMonth)
-            adapter.submitList(reportList)
+
+            adapter.submitList(ArrayList<Report>().apply {
+                this.add(reportToday)
+                this.add(reportWeek)
+                this.add(reportMonth)
+            })
         }
     }
 
     override fun onClick(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
-//        activity?.let {
-//            val intent = Intent(activity, ReportDetailActivity::class.java)
-//            intent.putExtra(ReportDetailActivity.REPORT_TYPE, type.value)
-//            intent.putExtra(ReportDetailActivity.TAKEOUT_COUNT, takeoutCount)
-//            intent.putExtra(ReportDetailActivity.DINING_IN_COUNT, diningInCount)
-//            intent.putExtra(ReportDetailActivity.TIME_STAMP, viewModel.now.timeInMillis)
-//
-//            it.startActivity(intent)
-//
-//            // Add slide animations
-//            it.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-//        }
         navigateToReport(type, takeoutCount, diningInCount)
     }
 
@@ -97,7 +85,7 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
 
     private fun navigateToReport(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
         val direction = DashboardFragmentDirections.actionNavDashboardToReportDetailFragment(
-            type.value.toInt(),
+            type.value,
             takeoutCount,
             diningInCount,
             viewModel.now.timeInMillis
