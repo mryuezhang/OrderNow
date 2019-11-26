@@ -27,8 +27,13 @@ class OrderDetailFragment : Fragment() {
 
             setupOrderItemList(this.orderItemList)
 
-            this.textTax.text
-            resources.getString(
+            this.orderType.text = if (args.order.isTakeout) {
+                resources.getString(R.string.take_out)
+            } else {
+                resources.getString(R.string.dining_in)
+            }
+
+            this.textTax.text = resources.getString(
                 R.string.title_tax,
                 (args.order.taxRate * 100).toInt().toString()
             )

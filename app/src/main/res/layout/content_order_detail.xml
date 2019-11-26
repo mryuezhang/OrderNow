@@ -20,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -123,7 +122,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView34"
+                        android:id="@+id/order_type"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:text="@string/take_out"
@@ -159,9 +158,9 @@
                         android:layout_height="wrap_content"
                         android:text="@string/order_pay_status"
                         app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView34"
-                        app:layout_constraintStart_toStartOf="@+id/textView34"
-                        app:layout_constraintTop_toBottomOf="@+id/textView34" />
+                        app:layout_constraintEnd_toEndOf="@+id/order_type"
+                        app:layout_constraintStart_toStartOf="@+id/order_type"
+                        app:layout_constraintTop_toBottomOf="@+id/order_type" />
 
                     <TextView
                         android:id="@+id/pay_status"
@@ -180,6 +179,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     app:layout_constraintEnd_toEndOf="parent"

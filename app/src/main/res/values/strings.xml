@@ -6,6 +6,7 @@
     <string name="action_clear_orders">Clear</string>
     <string name="action_send_orders">Send</string>
     <string name="action_filter_list">Filter by pay status</string>
+    <string name="action_search">Search</string>
 
     <string name="sample_quantity">999</string>
     <string name="sample_amount">$9999.99</string>

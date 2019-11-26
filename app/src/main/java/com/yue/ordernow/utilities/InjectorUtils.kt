@@ -40,6 +40,6 @@ object InjectorUtils {
     ): ReportDetailViewModelFactory =
         ReportDetailViewModelFactory(getOrderRepository(context), reportType, requestedTime)
 
-    fun provideOrderHistoryViewModelFactory(context: Context): RecentOrderViewModelFactory =
+    fun provideRecentOrderViewModelFactory(context: Context): RecentOrderViewModelFactory =
         RecentOrderViewModelFactory(getOrderRepository(context))
 }

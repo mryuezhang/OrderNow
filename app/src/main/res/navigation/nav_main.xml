@@ -28,7 +28,8 @@
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.yue.ordernow.fragments.OrderDetailFragment"
-        android:label="OrderDetailFragment">
+        android:label="@string/title_order_detail"
+        tools:layout="@layout/fragment_order_detail">
 
         <argument
             android:name="order"
@@ -47,7 +48,7 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"></action>
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment

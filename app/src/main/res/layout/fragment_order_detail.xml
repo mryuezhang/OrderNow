@@ -9,30 +9,14 @@
             type="com.yue.ordernow.data.Order" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:elevation="0dp">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:navigationIcon="@drawable/ic_back_arrow_white"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-        </com.google.android.material.appbar.AppBarLayout>
-
         <include
             android:id="@+id/content"
-            app:order="@{order}"
-            layout="@layout/content_order_detail" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            layout="@layout/content_order_detail"
+            android:nestedScrollingEnabled="false"
+            app:order="@{order}" />
+    </FrameLayout>
 </layout>

@@ -1,19 +1,16 @@
 package com.yue.ordernow.viewModels
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
 import java.util.*
 
 class ReportDetailViewModel internal constructor(
-    val orderRepository: OrderRepository,
+    orderRepository: OrderRepository,
     reportType: Report.Type,
     requestedTime: Calendar
 ) :
     OrderListFragmentViewModel(orderRepository) {
-
-    private val queryType = MutableLiveData<Int>(ALL)
 
     override val orders = when (reportType) {
         Report.Type.TODAY -> {
@@ -34,20 +31,5 @@ class ReportDetailViewModel internal constructor(
                 else orderRepository.getMonthlyUnpaidOrders(requestedTime)
             }
         }
-    }
-
-    fun setQueryAllOrders() {
-        queryType.value = ALL
-    }
-
-    fun setQueryUnPaidOrders() {
-        queryType.value = UNPAID
-    }
-
-    fun isFiltered(): Boolean = queryType.value == UNPAID
-
-    companion object {
-        private const val ALL = 0
-        private const val UNPAID = 1
     }
 }
