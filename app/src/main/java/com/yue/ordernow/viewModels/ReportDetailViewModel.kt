@@ -15,20 +15,29 @@ class ReportDetailViewModel internal constructor(
     override val orders = when (reportType) {
         Report.Type.TODAY -> {
             queryType.switchMap {
-                if (it == ALL) orderRepository.getDailyOrders(requestedTime)
-                else orderRepository.getDailyUnPaidOrders(requestedTime)
+                if (it == ALL) {
+                    orderRepository.getDailyOrders(requestedTime)
+                } else {
+                    orderRepository.getDailyUnPaidOrders(requestedTime)
+                }
             }
         }
         Report.Type.THIS_WEEK -> {
             queryType.switchMap {
-                if (it == ALL) orderRepository.getWeeklyOrders(requestedTime)
-                else orderRepository.getWeeklyUnPaidOrders(requestedTime)
+                if (it == ALL) {
+                    orderRepository.getWeeklyOrders(requestedTime)
+                } else {
+                    orderRepository.getWeeklyUnPaidOrders(requestedTime)
+                }
             }
         }
         Report.Type.THIS_MONTH -> {
             queryType.switchMap {
-                if (it == ALL) orderRepository.getMonthlyOrders(requestedTime)
-                else orderRepository.getMonthlyUnpaidOrders(requestedTime)
+                if (it == ALL) {
+                    orderRepository.getMonthlyOrders(requestedTime)
+                } else {
+                    orderRepository.getMonthlyUnpaidOrders(requestedTime)
+                }
             }
         }
     }
