@@ -1,6 +1,13 @@
 package com.yue.ordernow.data
 
-import com.yue.ordernow.utilities.*
+import com.yue.ordernow.utilities.getDayEnd
+import com.yue.ordernow.utilities.getDayStart
+import com.yue.ordernow.utilities.getMonthEnd
+import com.yue.ordernow.utilities.getMonthStart
+import com.yue.ordernow.utilities.getWeekEnd
+import com.yue.ordernow.utilities.getWeekStart
+import com.yue.ordernow.utilities.getYearEnd
+import com.yue.ordernow.utilities.getYearStart
 import java.util.*
 
 class OrderRepository private constructor(private val orderDao: OrderDao) {
@@ -47,9 +54,9 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         getYearEnd(calendar).timeInMillis
     )
 
-    fun getLastOrders(num: Int) = orderDao.getLastOrders(num)
+    fun getLastOrders(num: Int) = orderDao.getOrders(num)
 
-    fun getLastUnpaidOrders(num: Int) = orderDao.getLastUnpaidOrders(num)
+    fun getLastUnpaidOrders(num: Int) = orderDao.getUnpaidOrders(num)
 
     suspend fun deleteAllOrders() {
         orderDao.deleteAllOrders()

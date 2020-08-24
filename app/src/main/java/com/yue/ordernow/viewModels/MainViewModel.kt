@@ -14,6 +14,7 @@ class MainViewModel internal constructor(
     var subtotal = 0f
     var totalQuantity = 0
     var isTakeout = false
+    var orderer = ""
 
     fun saveToDatabase(order: Order) {
         viewModelScope.launch {

@@ -21,10 +21,10 @@ class OrderItemAdapter(private val listener: OrderItemOnClickListener?) :
     ListAdapter<OrderItem, RecyclerView.ViewHolder>(OrderItemDiffCallback()) {
 
     interface OrderItemOnClickListener {
-        fun onClick(orderItem: OrderItem, position: Int)
+        fun onOrderItemClick(orderItem: OrderItem, position: Int)
     }
 
-    companion object {
+    private companion object {
         const val TYPE_DEFAULT = 0
         const val TYPE_WITH_NOTE = 1
         const val TYPE_WITH_EXTRA_COST = 2
@@ -88,7 +88,7 @@ class OrderItemAdapter(private val listener: OrderItemOnClickListener?) :
                 orderItem = item
                 if (listener != null) {
                     onClickListener = View.OnClickListener {
-                        listener.onClick(item, position)
+                        listener.onOrderItemClick(item, position)
                     }
                 } else {
                     // Disable clickability when there is no listener

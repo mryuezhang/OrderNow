@@ -1,7 +1,9 @@
 package com.yue.ordernow.utilities
 
+import android.app.Activity
 import android.content.Context
 import android.util.TypedValue
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
@@ -16,4 +18,11 @@ fun Context.getThemeColor(@AttrRes id: Int): Int {
         resolvedAttr.data
     }
     return ContextCompat.getColor(this, colorRes)
+}
+
+fun Activity.hideSoftKeyboard() {
+    currentFocus?.let {
+        ContextCompat.getSystemService(this, InputMethodManager::class.java)
+            ?.hideSoftInputFromWindow(it.windowToken, 0)
+    }
 }

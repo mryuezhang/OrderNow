@@ -2,9 +2,14 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -17,16 +22,21 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.MainActivity
-import com.yue.ordernow.adapters.*
+import com.yue.ordernow.adapters.APPETIZER_PAGE_INDEX
+import com.yue.ordernow.adapters.BREAKFAST_PAGE_INDEX
+import com.yue.ordernow.adapters.DRINK_PAGE_INDEX
+import com.yue.ordernow.adapters.MAIN_PAGE_INDEX
+import com.yue.ordernow.adapters.MenuItemAdapter
+import com.yue.ordernow.adapters.MenuPageViewAdapter
+import com.yue.ordernow.adapters.OrderItemAdapter
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
-import com.yue.ordernow.utilities.ZoomOutPageTransformer
 import com.yue.ordernow.utilities.currencyFormat
+import com.yue.ordernow.utilities.hideSoftKeyboard
 import com.yue.ordernow.viewModels.MainViewModel
-import java.util.ArrayList
-import kotlin.Comparator
+import java.util.*
 
 private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 
@@ -70,7 +80,6 @@ class RestaurantMenuFragment : Fragment(),
         TabLayoutMediator(binding.tabLayout, binding.menuPage) { tab, position ->
             tab.text = getTabTitle(position)
         }.attach()
-        binding.menuPage.setPageTransformer(ZoomOutPageTransformer())
 
         // Add divider between each list item
         binding.bottomSheet.orderList.addItemDecoration(
@@ -92,8 +101,23 @@ class RestaurantMenuFragment : Fragment(),
         binding.bottomSheet.onHeaderClickListener = OnBottomSheetHeaderClickListener()
         bottomSheetBehavior.addBottomSheetCallback(BottomSheetCallback())
         binding.bottomSheet.orderType.setOnCheckedChangeListener { _, i ->
-            activityViewModel.isTakeout = i == R.id.take_out
+            activityViewModel.isTakeout = (i == R.id.take_out)
+            clearInputIndications()
         }
+        binding.bottomSheet.orderer.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                activityViewModel.orderer = v.text.toString().trim()
+                v.clearFocus()
+            }
+            false
+        }
+        binding.bottomSheet.orderer.setOnFocusChangeListener { v, hasFocus ->
+            if (!hasFocus) {
+                activityViewModel.orderer = binding.bottomSheet.orderer.text.toString().trim()
+                requireActivity().hideSoftKeyboard()
+            }
+        }
+
         savedInstanceState?.getBoolean(IS_BOTTOM_SHEET_EXPAND)?.let {
             if (it) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -111,10 +135,8 @@ class RestaurantMenuFragment : Fragment(),
         ) {
             outState.putBoolean(IS_BOTTOM_SHEET_EXPAND, true)
         }
-
         super.onSaveInstanceState(outState)
     }
-
 
     /*
      * Options menu methods
@@ -176,7 +198,8 @@ class RestaurantMenuFragment : Fragment(),
     /*
      * OrderItemOnClickListener method
      */
-    override fun onClick(orderItem: OrderItem, position: Int) {
+    override fun onOrderItemClick(orderItem: OrderItem, position: Int) {
+        binding.bottomSheet.orderer.clearFocus()
         ModifyOrderDialogFragment(this, orderItem, position).show(
             childFragmentManager,
             ModifyOrderDialogFragment.TAG
@@ -256,24 +279,39 @@ class RestaurantMenuFragment : Fragment(),
     @Suppress("UNCHECKED_CAST")
     override fun onDialogPositiveClick(isPaid: Boolean) {
         // Sort all order items
-        activityViewModel.orderItems.sortWith(Comparator { t, t2 ->
+        activityViewModel.orderItems.sortWith { t, t2 ->
             t.item.name.compareTo(t2.item.name)
-        })
+        }
 
         // Create order object and save it to data base
         // Note: clone the array list of order items here is a must
         // since inserting into data base is a asyc call, and we are clearing
         // out all the data right after with removeCurrentOrder(). Otherwise
         // empty array lists will be inserted into database
-        activityViewModel.saveToDatabase(
-            Order.newInstance(
-                activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
-                activityViewModel.subtotal,
-                activityViewModel.totalQuantity,
-                activityViewModel.isTakeout,
-                isPaid
+        val currentOrderer = binding.bottomSheet.orderer.text.toString().trim()
+        if (currentOrderer == "") {
+            activityViewModel.saveToDatabase(
+                Order.newInstance(
+                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
+                    activityViewModel.subtotal,
+                    activityViewModel.totalQuantity,
+                    activityViewModel.isTakeout,
+                    isPaid
+                )
             )
-        )
+        } else {
+            activityViewModel.saveToDatabase(
+                Order.newInstance(
+                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
+                    activityViewModel.subtotal,
+                    activityViewModel.totalQuantity,
+                    activityViewModel.isTakeout,
+                    isPaid,
+                    currentOrderer
+                )
+            )
+        }
+
 
         // Clear local copy of data and refresh view
         removeCurrentOrder()
@@ -328,6 +366,8 @@ class RestaurantMenuFragment : Fragment(),
         activityViewModel.subtotal = 0f
         activityViewModel.orderItems.clear()
         activityViewModel.isTakeout = false
+        activityViewModel.orderer = ""
+        binding.bottomSheet.orderer.text.clear()
         updateBottomSheetBehavior()
     }
 
@@ -348,11 +388,14 @@ class RestaurantMenuFragment : Fragment(),
             bottomSheetBehavior.isHideable = false
             adapter.notifyDataSetChanged()
 
-            // Add bottom margin when bottom sheet is showing
+            // Add bottom margin when bottom sheet is showingm
             val layoutParams = binding.menuPage.layoutParams as ConstraintLayout.LayoutParams
             layoutParams.bottomMargin =
                 resources.getDimensionPixelOffset(R.dimen.bottom_sheet_peek_height)
             binding.menuPage.layoutParams = layoutParams
+
+            binding.bottomSheet.orderType.check(if (activityViewModel.isTakeout) R.id.take_out else R.id.dining_in)
+            binding.bottomSheet.orderer.setText(activityViewModel.orderer)
         }
     }
 
@@ -424,6 +467,12 @@ class RestaurantMenuFragment : Fragment(),
         }
     }
 
+    private fun clearInputIndications() {
+        // Hide soft keyboard and clear focus
+        requireActivity().hideSoftKeyboard()
+        binding.bottomSheet.orderer.clearFocus()
+    }
+
     private inner class OnBottomSheetHeaderClickListener : View.OnClickListener {
         override fun onClick(p0: View?) {
             toggleBottomSheetState()
@@ -434,6 +483,7 @@ class RestaurantMenuFragment : Fragment(),
         override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         override fun onStateChanged(bottomSheet: View, newState: Int) {
+            clearInputIndications()
             if (newState == BottomSheetBehavior.STATE_EXPANDED) {
                 showExpandedBottomSheetShape()
                 showOrderDetailOptionsMenu()

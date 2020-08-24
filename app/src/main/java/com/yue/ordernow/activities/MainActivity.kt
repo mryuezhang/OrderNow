@@ -21,11 +21,9 @@ import com.yue.ordernow.viewModels.MainViewModel
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var appBarConfiguration: AppBarConfiguration
-
     val viewModel: MainViewModel by viewModels {
         InjectorUtils.provideMainViewModelFactory(applicationContext)
     }
-
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +51,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         if (!stringTaxRate.isNullOrBlank()) {
             taxRate = stringTaxRate.toFloat() / 100
         }
-
     }
 
     override fun onResume() {
@@ -79,13 +76,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 try {
                     taxRate = it.toFloat() / 100
                 } catch (e: NumberFormatException) {
-
+                    taxRate = 0f
                 }
             }
         }
 
         if (p1 == resources.getString(R.string.key_currency)) {
-            currencySign = when (p0?.getString(p1, "")) {
+            currencySign = when (p0?.getString(p1, "3")) {
                 "1" -> "\u20ac"
                 "2" -> "\u00a3"
                 else -> "$"

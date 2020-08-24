@@ -15,268 +15,206 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/nestedScrollView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/shape_round_corner_rect"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/textView22"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_created_at"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/order_id"
-                        app:layout_constraintStart_toStartOf="@+id/order_id"
-                        app:layout_constraintTop_toBottomOf="@+id/order_id" />
-
-                    <TextView
-                        android:id="@+id/created_at"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="@{order.formattedTime}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@+id/textView22"
-                        app:layout_constraintStart_toStartOf="@+id/textView22"
-                        app:layout_constraintTop_toBottomOf="@+id/textView22"
-                        tools:text="@string/sample_order_date" />
-
-                    <TextView
-                        android:id="@+id/textView24"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/title_order_number"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintStart_toEndOf="@+id/order_id"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/order_number"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(order.orderNumber)}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView24"
-                        app:layout_constraintStart_toStartOf="@+id/textView24"
-                        app:layout_constraintTop_toBottomOf="@+id/textView24"
-                        tools:text="@string/sample_order_number" />
-
-                    <TextView
-                        android:id="@+id/textView31"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_quantity"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView24"
-                        app:layout_constraintStart_toStartOf="@+id/order_number"
-                        app:layout_constraintTop_toBottomOf="@+id/order_number" />
-
-                    <TextView
-                        android:id="@+id/textView32"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(order.totalQuantity)}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView31"
-                        app:layout_constraintStart_toStartOf="@+id/textView31"
-                        app:layout_constraintTop_toBottomOf="@+id/textView31"
-                        tools:text="@string/sample_quantity" />
-
-                    <TextView
-                        android:id="@+id/textView33"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
-                        android:text="@string/order_type"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/textView24"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/order_type"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/take_out"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView33"
-                        app:layout_constraintStart_toStartOf="@+id/textView33"
-                        app:layout_constraintTop_toBottomOf="@+id/textView33" />
-
-                    <TextView
-                        android:id="@+id/order_id"
-                        android:layout_width="172dp"
-                        android:layout_height="wrap_content"
-                        android:text="@{String.valueOf(order.orderId)}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintStart_toStartOf="@+id/textView35"
-                        app:layout_constraintTop_toBottomOf="@+id/textView35"
-                        tools:text="@string/sample_order_id" />
-
-                    <TextView
-                        android:id="@+id/textView35"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_order_id"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView19"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/order_pay_status"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/order_type"
-                        app:layout_constraintStart_toStartOf="@+id/order_type"
-                        app:layout_constraintTop_toBottomOf="@+id/order_type" />
-
-                    <TextView
-                        android:id="@+id/pay_status"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                        app:firstBaselineToTopHeight="24dp"
-                        app:layout_constraintEnd_toEndOf="@+id/textView19"
-                        app:layout_constraintStart_toStartOf="@+id/textView19"
-                        app:layout_constraintTop_toBottomOf="@+id/textView19"
-                        tools:text="@string/paid" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/order_item_list"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                    tools:listitem="@layout/list_item_order_item" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/created_at"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_round_corner_rect_borderless"
-            android:elevation="32dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="@{order.formattedTime}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintEnd_toStartOf="@+id/order_type"
+            app:layout_constraintStart_toEndOf="@+id/order_number"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sample_order_date" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/title_order_number_symbol"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="24sp"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textAlignment="textStart"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="24sp"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintStart_toEndOf="@+id/textView24"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sample_order_number" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/title_items"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintStart_toEndOf="@+id/textView32"
+            app:layout_constraintTop_toTopOf="@+id/textView32" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@{String.valueOf(order.totalQuantity)}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            tools:text="@string/sample_quantity" />
+
+        <TextView
+            android:id="@+id/order_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/take_out"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/pay_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/orderer"
+            tools:text="@string/paid" />
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subtotal"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintStart_toStartOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/orderer" />
+
+        <TextView
+            android:id="@+id/subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@{order.formattedSubtotal}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/textView14"
+            tools:text="@string/sample_amount" />
+
+        <TextView
+            android:id="@+id/text_tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintStart_toStartOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/textView14"
+            android:text="@string/tax" />
+
+        <TextView
+            android:id="@+id/tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{order.formattedTax}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintEnd_toEndOf="@+id/subtotal"
+            app:layout_constraintTop_toBottomOf="@+id/subtotal"
+            tools:text="@string/sample_amount" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_tax" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_total_amount"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:firstBaselineToTopHeight="28dp"
+            app:layout_constraintStart_toStartOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{order.formattedTotalAmount}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:firstBaselineToTopHeight="28dp"
+            app:layout_constraintEnd_toEndOf="@+id/tax"
+            app:layout_constraintTop_toTopOf="@+id/textView21"
+            tools:text="@string/sample_amount" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/order_item_list"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21"
+            tools:listitem="@layout/list_item_order_item" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/subtotal"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintBottom_toTopOf="@id/text_tax"
-                app:layout_constraintStart_toStartOf="@id/text_tax" />
+        <TextView
+            android:id="@+id/tax_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample_percentage"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:firstBaselineToTopHeight="24dp"
+            app:layout_constraintStart_toStartOf="@+id/textView32"
+            app:layout_constraintTop_toTopOf="@+id/text_tax" />
 
-            <TextView
-                android:id="@+id/subtotal"
-                android:layout_width="wrap_content"
-                android:layout_height="19dp"
-                android:text="@{order.formattedSubtotal}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintBottom_toTopOf="@id/tax"
-                app:layout_constraintEnd_toEndOf="@id/tax"
-                app:layout_constraintTop_toTopOf="@+id/textView14"
-                tools:text="@string/sample_amount" />
-
-            <TextView
-                android:id="@+id/text_tax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintBottom_toTopOf="@+id/divider3"
-                app:layout_constraintStart_toStartOf="@+id/textView21"
-                tools:text="@string/tax" />
-
-            <TextView
-                android:id="@+id/tax"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{order.formattedTax}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                app:layout_constraintBottom_toBottomOf="@id/text_tax"
-                app:layout_constraintEnd_toEndOf="@id/total"
-                tools:text="@string/sample_amount" />
-
-            <View
-                android:id="@+id/divider3"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginBottom="4dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toTopOf="@+id/textView21"
-                app:layout_constraintEnd_toEndOf="@+id/total"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView21" />
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/title_total_amount"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:text="@{order.formattedTotalAmount}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/textView21"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text="@string/sample_amount" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
+        <TextView
+            android:id="@+id/orderer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textSize="24sp"
+            app:firstBaselineToTopHeight="36dp"
+            app:layout_constraintEnd_toStartOf="@+id/pay_status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/order_number"
+            tools:text="@string/sample_orderer" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -29,7 +29,25 @@ abstract class OrderListFragment : Fragment(), OrderAdapter.ItemLongClickListene
         orderList.adapter = adapter
 
         viewModel.orders.observe(viewLifecycleOwner) { orders ->
-            adapter.submitList(orders)
+            val items = ArrayList<OrderAdapter.ListItem>()
+
+            if (orders.isNotEmpty()) {
+                items.add(OrderAdapter.Header(orders.first().getCreatedDate(true)))
+                if (orders.first().getCreatedDate() == orders.last().getCreatedDate()) {
+                    items.addAll(orders)
+                } else {
+                    orders.forEachIndexed { index, order ->
+                        items.add(order)
+                        if (index + 1 < orders.size &&
+                            orders[index + 1].getCreatedDate() != order.getCreatedDate()
+                        ) {
+                            items.add(OrderAdapter.Header(orders[index + 1].getCreatedDate(true)))
+                        }
+                    }
+                }
+            }
+
+            adapter.submitList(items)
             emptyTextView.isGone = orders.isNotEmpty()
         }
     }

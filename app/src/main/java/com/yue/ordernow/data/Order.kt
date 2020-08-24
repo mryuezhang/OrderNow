@@ -5,6 +5,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.fragments.RestaurantMenuFragment
 import com.yue.ordernow.utilities.currencyFormat
 import java.text.SimpleDateFormat
@@ -34,15 +35,25 @@ data class Order(
     var taxRate: Float,
 
     @ColumnInfo(name = "time-created")
-    var timeCreated: Calendar = Calendar.getInstance()
+    var timeCreated: Calendar = Calendar.getInstance(),
 
-) : Parcelable {
+    @ColumnInfo(name = "orderer")
+    var orderer: String?
+) : Parcelable, OrderAdapter.ListItem {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var orderId: Long = 0
 
     fun getFormattedTime(): String =
-        SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(timeCreated.time)
+        SimpleDateFormat("MMM d, yyyy 'at' HH:mm", Locale.getDefault()).format(timeCreated.time)
+
+    fun getCreatedDate(withDayOfWeek: Boolean = false): String =
+        if (withDayOfWeek) {
+            SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
+        } else {
+            SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
+        }
+
 
     fun getTotalAmount(): Float =
         (subtotalAmount * (1 + taxRate))
@@ -60,6 +71,23 @@ data class Order(
         var lastOrderCreatedTime: Calendar? = null
         var orderCount = 0
 
+        private fun timeStamp(): Calendar {
+            val now = Calendar.getInstance()
+            if (now.get(Calendar.DAY_OF_MONTH) ==
+                lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
+            ) {
+                // if this and previous order are made within the same day
+                lastOrderCreatedTime = now
+                orderCount++
+            } else {
+                // if this order and previous order are not made within the same day, or there is no previous order
+                lastOrderCreatedTime = now
+                orderCount = 0
+                orderCount++
+            }
+            return now
+        }
+
         fun newInstance(
             orderItems: ArrayList<OrderItem>,
             subtotal: Float,
@@ -67,20 +95,7 @@ data class Order(
             isTakeout: Boolean,
             isPaid: Boolean
         ): Order {
-            val now = Calendar.getInstance()
-            if (now.get(Calendar.DAY_OF_MONTH) ==
-                lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
-            ) {
-                // if this and previous order are made within the same day
-                lastOrderCreatedTime = now
-                ++orderCount
-            } else {
-                // if this order and previous order are not made within the same day, or there is no previous order
-                lastOrderCreatedTime = now
-                orderCount = 0
-                ++orderCount
-            }
-
+            val timeStamp = timeStamp()
             return Order(
                 orderItems,
                 subtotal,
@@ -89,7 +104,31 @@ data class Order(
                 isTakeout,
                 isPaid,
                 RestaurantMenuFragment.taxRate,
-                now
+                timeStamp,
+                null
+            )
+        }
+
+
+        fun newInstance(
+            orderItems: ArrayList<OrderItem>,
+            subtotal: Float,
+            totalQuantity: Int,
+            isTakeout: Boolean,
+            isPaid: Boolean,
+            orderer: String
+        ): Order {
+            val timeStamp = timeStamp()
+            return Order(
+                orderItems,
+                subtotal,
+                totalQuantity,
+                orderCount,
+                isTakeout,
+                isPaid,
+                RestaurantMenuFragment.taxRate,
+                timeStamp,
+                orderer
             )
         }
 
@@ -117,7 +156,8 @@ data class Order(
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readFloat(),
-        Calendar.getInstance().apply { timeInMillis = parcel.readLong() }
+        Calendar.getInstance().apply { timeInMillis = parcel.readLong() },
+        parcel.readString()
     ) {
         orderId = parcel.readLong()
     }
@@ -131,6 +171,7 @@ data class Order(
         parcel.writeByte(if (isPaid) 1 else 0)
         parcel.writeFloat(taxRate)
         parcel.writeLong(timeCreated.timeInMillis)
+        parcel.writeString(orderer)
         parcel.writeLong(orderId)
     }
 

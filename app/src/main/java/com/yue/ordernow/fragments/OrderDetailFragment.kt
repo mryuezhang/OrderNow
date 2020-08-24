@@ -20,38 +20,39 @@ class OrderDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = ContentOrderDetailBinding.inflate(inflater, container, false).apply {
-            this.order = args.order
-            executePendingBindings()
+    ): View? = ContentOrderDetailBinding.inflate(inflater, container, false).run {
+        this.order = args.order
+        executePendingBindings()
 
-            setupOrderItemList(this.orderItemList)
+        setupOrderItemList(this.orderItemList)
 
-            this.orderType.text = if (args.order.isTakeout) {
-                resources.getString(R.string.take_out)
-            } else {
-                resources.getString(R.string.dining_in)
-            }
-
-            this.textTax.text = resources.getString(
-                R.string.title_tax,
-                (args.order.taxRate * 100).toInt().toString()
-            )
-
-            this.payStatus.text = if (args.order.isPaid) {
-                resources.getString(R.string.paid)
-            } else {
-                resources.getString(R.string.unpaid)
-            }
+        this.orderType.text = if (args.order.isTakeout) {
+            resources.getString(R.string.take_out)
+        } else {
+            resources.getString(R.string.dining_in)
         }
 
-        return binding.root
+        this.orderNumber.text = formatOrderNumber(args.order.orderNumber)
+
+        this.orderer.text = args.order.orderer
+
+        this.taxRate.text = resources.getString(
+            R.string.title_tax,
+            (args.order.taxRate * 100).toInt().toString()
+        )
+
+        this.payStatus.text = if (args.order.isPaid) {
+            resources.getString(R.string.paid)
+        } else {
+            resources.getString(R.string.unpaid)
+        }
+
+        this.root
     }
 
     /*
    * Private methods
    */
-
     private fun setupOrderItemList(list: RecyclerView) {
         val adapter = OrderItemAdapter(null)
         list.adapter = adapter
@@ -63,5 +64,11 @@ class OrderDetailFragment : Fragment() {
             )
         )
         adapter.submitList(args.order.orderItems)
+    }
+
+    private fun formatOrderNumber(orderNumber: Int) = when {
+        orderNumber in 0..9 -> "00$orderNumber"
+        orderNumber in 10..99 -> "0$orderNumber"
+        else -> orderNumber.toString()
     }
 }

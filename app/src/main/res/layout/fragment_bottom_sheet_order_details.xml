@@ -15,6 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorSurface"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:theme="@style/Widget.MaterialComponents.BottomSheet"
         app:behavior_hideable="true"
@@ -108,6 +111,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
                     android:text="@string/dining_in"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     android:textSize="16sp" />
 
                 <RadioButton
@@ -116,6 +120,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="0dp"
                     android:text="@string/take_out"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     android:textSize="16sp" />
             </RadioGroup>
 
@@ -149,11 +154,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                tool:text="@string/tax"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 app:firstBaselineToTopHeight="26dp"
                 app:layout_constraintEnd_toStartOf="@+id/subtotal"
-                app:layout_constraintTop_toTopOf="@+id/tax" />
+                app:layout_constraintTop_toTopOf="@+id/tax"
+                tool:text="@string/tax" />
 
             <TextView
                 android:id="@+id/tax"
@@ -167,15 +172,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/subtotal" />
 
 
+            <EditText
+                android:id="@+id/orderer"
+                style="@style/Base.Widget.MaterialComponents.TextInputEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:hint="@string/hint_orderer"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:maxLength="30"
+                android:maxLines="1"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/orderType" />
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
                 android:background="?attr/dividerHorizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/orderType" />
+                app:layout_constraintTop_toBottomOf="@+id/orderer" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/order_list"
@@ -192,11 +215,14 @@
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/body"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

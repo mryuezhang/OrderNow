@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.yue.ordernow.adapters.MenuItemAdapter
 import com.yue.ordernow.databinding.FragmentMenuOptionsBinding
 import com.yue.ordernow.utilities.InjectorUtils
@@ -18,7 +17,7 @@ private const val CATEGORY = "category"
 class MenuOptionsFragment : Fragment() {
 
     private val category: String by lazy {
-        arguments!!.getString(CATEGORY)!!
+        requireArguments().getString(CATEGORY)!!
     }
 
 
@@ -46,7 +45,7 @@ class MenuOptionsFragment : Fragment() {
     }
 
     private fun subscribeUi(adapter: MenuItemAdapter) {
-        viewModel.menuItems.observe(viewLifecycleOwner, Observer {
+        viewModel.menuItems.observe(viewLifecycleOwner, {
             adapter.submitList(it)
         })
     }
