@@ -13,7 +13,7 @@
     <string name="sample_item_name">Item Name</string>
     <string name="sample_order_date">Oct.22, 2019 at 12:20</string>
     <string name="sample_order_id">9223372036854775807</string>
-    <string name="sample_order_number">9999</string>
+    <string name="sample_order_number">999</string>
     <string name="sample_percentage">100.0%</string>
     <string name="sample_orderer">ABCDEFGHIJZLMNO</string>
     <string name="no_order_text">No orderItem yet</string>
@@ -58,6 +58,7 @@
     <string name="amount">Amount</string>
     <string name="title_quantity">Quantity</string>
     <string name="title_items">items</string>
+    <string name="title_quantity_symbpl">\u00d7</string>
     <string name="title_quantity_short">Qty.</string>
     <string name="title_quantity_percentage">Qty.(%)</string>
     <string name="minimal_quantity">1</string>

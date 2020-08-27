@@ -32,7 +32,7 @@ abstract class OrderListFragment : Fragment(), OrderAdapter.ItemLongClickListene
             val items = ArrayList<OrderAdapter.ListItem>()
 
             if (orders.isNotEmpty()) {
-                items.add(OrderAdapter.Header(orders.first().getCreatedDate(true)))
+                items.add(OrderAdapter.Header(orders.first().getCreatedDate()))
                 if (orders.first().getCreatedDate() == orders.last().getCreatedDate()) {
                     items.addAll(orders)
                 } else {
@@ -41,7 +41,7 @@ abstract class OrderListFragment : Fragment(), OrderAdapter.ItemLongClickListene
                         if (index + 1 < orders.size &&
                             orders[index + 1].getCreatedDate() != order.getCreatedDate()
                         ) {
-                            items.add(OrderAdapter.Header(orders[index + 1].getCreatedDate(true)))
+                            items.add(OrderAdapter.Header(orders[index + 1].getCreatedDate()))
                         }
                     }
                 }

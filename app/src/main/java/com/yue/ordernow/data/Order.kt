@@ -44,15 +44,17 @@ data class Order(
     @ColumnInfo(name = "id")
     var orderId: Long = 0
 
-    fun getFormattedTime(): String =
+    fun getFormattedCreatedTime(): String =
         SimpleDateFormat("MMM d, yyyy 'at' HH:mm", Locale.getDefault()).format(timeCreated.time)
 
-    fun getCreatedDate(withDayOfWeek: Boolean = false): String =
-        if (withDayOfWeek) {
-            SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
-        } else {
-            SimpleDateFormat("MMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
-        }
+    fun getFormattedCreatedTimeWithDayOfWeek(): String =
+        SimpleDateFormat(
+            "EEEE, MMMM d, yyyy 'at' HH:mm",
+            Locale.getDefault()
+        ).format(timeCreated.time)
+
+    fun getCreatedDate(): String =
+        SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
 
 
     fun getTotalAmount(): Float =

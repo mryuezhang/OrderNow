@@ -2,7 +2,12 @@ package com.yue.ordernow.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -113,8 +118,8 @@ class ReportDetailFragment : OrderListFragment() {
         val dataSet = PieDataSet(dataEntries, "").apply {
             setDrawIcons(false)
             colors = listOf(
-                ContextCompat.getColor(requireContext(), R.color.color_takeout),
-                ContextCompat.getColor(requireContext(), R.color.color_dining_in)
+                ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark),
+                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
             )
             valueTextColor = Color.WHITE
             valueTextSize = 12f
