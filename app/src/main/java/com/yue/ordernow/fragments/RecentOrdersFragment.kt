@@ -1,7 +1,12 @@
 package com.yue.ordernow.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.yue.ordernow.R
 import com.yue.ordernow.databinding.FragmentRecentOrdersBinding
@@ -10,6 +15,7 @@ import com.yue.ordernow.viewModels.OrderListFragmentViewModel
 
 class RecentOrdersFragment : OrderListFragment() {
 
+    private lateinit var binding: FragmentRecentOrdersBinding
     override val viewModel: OrderListFragmentViewModel by viewModels {
         InjectorUtils.provideRecentOrderViewModelFactory(
             requireContext()
@@ -21,10 +27,10 @@ class RecentOrdersFragment : OrderListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentRecentOrdersBinding.inflate(inflater, container, false).apply {
-            setupOrderList(this.historyList, this.noOrderHistoryText)
-            setHasOptionsMenu(true)
-        }
+        binding = FragmentRecentOrdersBinding.inflate(inflater, container, false)
+
+        setupOrderList(binding.historyList, binding.noOrderHistoryText)
+        setHasOptionsMenu(true)
 
         return binding.root
     }
@@ -47,8 +53,12 @@ class RecentOrdersFragment : OrderListFragment() {
         with(viewModel) {
             if (isFiltered()) {
                 setQueryAllOrders()
+                binding.noOrderHistoryText.text =
+                    resources.getString(R.string.text_no_order_history)
             } else {
                 setQueryUnPaidOrders()
+                binding.noOrderHistoryText.text =
+                    resources.getString(R.string.text_no_unpaid_orders)
             }
         }
     }

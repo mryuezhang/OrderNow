@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yue.ordernow.R
 import com.yue.ordernow.data.OrderItem
 import com.yue.ordernow.databinding.DialogAddNoteBinding
@@ -23,7 +23,7 @@ class ModifyOrderDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let { it ->
-            val builder = AlertDialog.Builder(it)
+            val builder = MaterialAlertDialogBuilder(context)
 
             // Bind the view
             val binding = DialogAddNoteBinding.inflate(it.layoutInflater)

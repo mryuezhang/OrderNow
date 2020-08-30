@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
@@ -18,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yue.ordernow.R
@@ -45,14 +45,14 @@ class RestaurantMenuFragment : Fragment(),
     ModifyOrderDialogFragment.ModifyOrderDialogListener,
     MenuItemAdapter.MenuItemListener,
     OrderItemAdapter.OrderItemOnClickListener,
-    OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener,
-    ConfirmSendingOrderDialogFragment.ConfirmSendingOrderDialogFragmentListener {
+    OrderItemAdapter.OrderItemSwipeHelper.OrderItemSwipeListener {
 
     private val adapter = OrderItemAdapter(this)
     private lateinit var binding: FragmentRestaurantMenuBinding
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var activityViewModel: MainViewModel
     private var isOptionMenuViable = false
+    private var isOrderPaid = false
     private val slideDownAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(
             context,
@@ -149,22 +149,33 @@ class RestaurantMenuFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-            ConfirmSendingOrderDialogFragment(this)
-                .show(childFragmentManager, CustomOrderDialogFragment.TAG)
+            MaterialAlertDialogBuilder(context)
+                .setTitle(resources.getString(R.string.title_confirm_sending_order))
+                .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .setPositiveButton(resources.getString(R.string.action_send_orders)) { _, _ ->
+                    sendOrder(isOrderPaid)
+                }
+                .setSingleChoiceItems(
+                    resources.getStringArray(R.array.send_order_pay_statuses),
+                    0
+                ) { _, which ->
+                    isOrderPaid = which != 0
+                }
+                .show()
             true
         }
         R.id.action_clear -> {
-            activity?.let {
-                AlertDialog.Builder(it).apply {
-                    setMessage(resources.getString(R.string.title_confirm_discard_order))
-                    setPositiveButton(R.string.discard) { _, _ ->
-                        removeCurrentOrder()
-                    }
-                    setNegativeButton(R.string.cancel) { dialog, _ ->
-                        dialog.cancel()
-                    }
-                }.create().show()
-            }
+            MaterialAlertDialogBuilder(context)
+                .setTitle(resources.getString(R.string.title_confirm_discard_order))
+                .setPositiveButton(R.string.discard) { _, _ ->
+                    removeCurrentOrder()
+                }
+                .setNegativeButton(R.string.cancel) { dialog, _ ->
+                    dialog.cancel()
+                }
+                .show()
             true
         }
         else -> super.onOptionsItemSelected(item)
@@ -247,19 +258,17 @@ class RestaurantMenuFragment : Fragment(),
         binding.bottomSheet.orderList.adapter?.notifyItemRemoved(itemPosition)
 
         if (activityViewModel.orderItems.isEmpty()) {
-            activity?.let {
-                AlertDialog.Builder(it).apply {
-                    setTitle(resources.getString(R.string.title_confirm_discard_order))
-                    setMessage(resources.getString(R.string.message_discard_order))
-                    setPositiveButton(R.string.discard) { _, _ ->
-                        updateBottomSheetBehavior()
-                    }
-                    setNegativeButton(R.string.cancel) { dialog, _ ->
-                        addOrder(itemPosition, orderItem)
-                        dialog.cancel()
-                    }
-                }.create().show()
-            }
+            MaterialAlertDialogBuilder(context).apply {
+                setTitle(resources.getString(R.string.title_confirm_discard_order))
+                setMessage(resources.getString(R.string.message_discard_order))
+                setPositiveButton(R.string.discard) { _, _ ->
+                    updateBottomSheetBehavior()
+                }
+                setNegativeButton(R.string.cancel) { dialog, _ ->
+                    addOrder(itemPosition, orderItem)
+                    dialog.cancel()
+                }
+            }.create().show()
         } else {
             Snackbar.make(
                 binding.bottomSheet.body,
@@ -274,10 +283,10 @@ class RestaurantMenuFragment : Fragment(),
     }
 
     /*
-     * ConfirmSendingOrderDialogFragment.ConfirmSendingOrderDialogFragmentListener method
+     * Private methods
      */
     @Suppress("UNCHECKED_CAST")
-    override fun onDialogPositiveClick(isPaid: Boolean) {
+    private fun sendOrder(isPaid: Boolean) {
         // Sort all order items
         activityViewModel.orderItems.sortWith { t, t2 ->
             t.item.name.compareTo(t2.item.name)
@@ -323,10 +332,6 @@ class RestaurantMenuFragment : Fragment(),
             Snackbar.LENGTH_SHORT
         ).show()
     }
-
-    /*
-     * Private methods
-     */
 
     private fun addOrder(index: Int?, orderItem: OrderItem) {
         // Calculate the quantity and subtotal
