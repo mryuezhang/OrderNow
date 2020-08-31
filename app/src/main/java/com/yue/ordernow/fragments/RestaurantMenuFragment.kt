@@ -104,14 +104,14 @@ class RestaurantMenuFragment : Fragment(),
             activityViewModel.isTakeout = (i == R.id.take_out)
             clearInputIndications()
         }
-        binding.bottomSheet.orderer.setOnEditorActionListener { v, actionId, event ->
+        binding.bottomSheet.orderer.setOnEditorActionListener { v, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 activityViewModel.orderer = v.text.toString().trim()
                 v.clearFocus()
             }
             false
         }
-        binding.bottomSheet.orderer.setOnFocusChangeListener { v, hasFocus ->
+        binding.bottomSheet.orderer.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
                 activityViewModel.orderer = binding.bottomSheet.orderer.text.toString().trim()
                 requireActivity().hideSoftKeyboard()
@@ -149,7 +149,7 @@ class RestaurantMenuFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean = when (item.itemId) {
         R.id.action_confirm -> {
-            MaterialAlertDialogBuilder(context)
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.title_confirm_sending_order))
                 .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                     dialog.cancel()
@@ -167,7 +167,7 @@ class RestaurantMenuFragment : Fragment(),
             true
         }
         R.id.action_clear -> {
-            MaterialAlertDialogBuilder(context)
+            MaterialAlertDialogBuilder(requireContext())
                 .setTitle(resources.getString(R.string.title_confirm_discard_order))
                 .setPositiveButton(R.string.discard) { _, _ ->
                     removeCurrentOrder()
@@ -258,7 +258,7 @@ class RestaurantMenuFragment : Fragment(),
         binding.bottomSheet.orderList.adapter?.notifyItemRemoved(itemPosition)
 
         if (activityViewModel.orderItems.isEmpty()) {
-            MaterialAlertDialogBuilder(context).apply {
+            MaterialAlertDialogBuilder(requireContext()).apply {
                 setTitle(resources.getString(R.string.title_confirm_discard_order))
                 setMessage(resources.getString(R.string.message_discard_order))
                 setPositiveButton(R.string.discard) { _, _ ->
@@ -269,15 +269,16 @@ class RestaurantMenuFragment : Fragment(),
                     dialog.cancel()
                 }
             }.create().show()
-        } else {
-            Snackbar.make(
-                binding.bottomSheet.body,
-                resources.getString(R.string.text_order_item_removed),
-                Snackbar.LENGTH_LONG
-            ).setAction(resources.getString(R.string.undo)) {
-                addOrder(itemPosition, orderItem)
-            }.show()
         }
+//        } else {
+//            Snackbar.make(
+//                binding.bottomSheet.header,
+//                resources.getString(R.string.text_order_item_removed),
+//                Snackbar.LENGTH_LONG
+//            ).setAction(resources.getString(R.string.undo)) {
+//                addOrder(itemPosition, orderItem)
+//            }.show()
+//        }
 
         updateBottomSheetText()
     }

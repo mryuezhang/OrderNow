@@ -44,9 +44,6 @@ data class Order(
     @ColumnInfo(name = "id")
     var orderId: Long = 0
 
-    fun getFormattedCreatedTime(): String =
-        SimpleDateFormat("MMM d, yyyy 'at' HH:mm", Locale.getDefault()).format(timeCreated.time)
-
     fun getFormattedCreatedTimeWithDayOfWeek(): String =
         SimpleDateFormat(
             "EEEE, MMMM d, yyyy 'at' HH:mm",
@@ -56,10 +53,6 @@ data class Order(
     fun getCreatedDate(): String =
         SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(timeCreated.time)
 
-
-    fun getTotalAmount(): Float =
-        (subtotalAmount * (1 + taxRate))
-
     fun getFormattedSubtotal(): String =
         currencyFormat(subtotalAmount)
 
@@ -68,6 +61,9 @@ data class Order(
 
     fun getFormattedTotalAmount(): String =
         currencyFormat(getTotalAmount())
+
+    private fun getTotalAmount(): Float =
+        (subtotalAmount * (1 + taxRate))
 
     companion object {
         var lastOrderCreatedTime: Calendar? = null

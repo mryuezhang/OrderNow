@@ -161,7 +161,11 @@ private class OrderDiffCallback : DiffUtil.ItemCallback<OrderAdapter.ListItem>()
         oldItem: OrderAdapter.ListItem,
         newItem: OrderAdapter.ListItem
     ): Boolean =
-        oldItem == newItem
+        when {
+            oldItem is OrderAdapter.Header && newItem is OrderAdapter.Header -> oldItem.text == newItem.text
+            oldItem is Order && newItem is Order -> oldItem.orderId == newItem.orderId
+            else -> false
+        }
 
     override fun areContentsTheSame(
         oldItem: OrderAdapter.ListItem,

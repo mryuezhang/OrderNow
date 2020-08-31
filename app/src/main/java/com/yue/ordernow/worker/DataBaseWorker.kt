@@ -16,7 +16,6 @@ class DataBaseWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
 
-
     override suspend fun doWork(): Result = coroutineScope {
         try {
             val database = AppDatabase.getInstance(applicationContext)
@@ -29,7 +28,6 @@ class DataBaseWorker(
     }
 
     private fun getMenuItemsFromFile(): ArrayList<MenuItem> {
-
         val items = ArrayList<MenuItem>()
         val reader =
             BufferedReader(InputStreamReader(applicationContext.resources.openRawResource(R.raw.menu_items)))

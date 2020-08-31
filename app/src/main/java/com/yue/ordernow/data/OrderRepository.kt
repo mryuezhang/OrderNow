@@ -58,6 +58,12 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
 
     fun getLastUnpaidOrders(num: Int) = orderDao.getUnpaidOrders(num)
 
+    fun getLastOrdersBySearchText(searchText: String, num: Int) =
+        orderDao.getOrdersBySearchText(searchText, num)
+
+    fun getLastUnpaidOrdersBySearchText(searchText: String, num: Int) =
+        orderDao.getUnpaidOrdersBySearchText(searchText, num)
+
     suspend fun deleteAllOrders() {
         orderDao.deleteAllOrders()
     }

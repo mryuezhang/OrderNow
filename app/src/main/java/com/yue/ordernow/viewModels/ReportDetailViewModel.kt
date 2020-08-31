@@ -10,7 +10,7 @@ class ReportDetailViewModel internal constructor(
     reportType: Report.Type,
     requestedTime: Calendar
 ) :
-    OrderListFragmentViewModel(orderRepository) {
+    AbstractOrderListFragmentViewModel(orderRepository) {
 
     override val orders = when (reportType) {
         Report.Type.TODAY -> {

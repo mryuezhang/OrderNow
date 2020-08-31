@@ -66,6 +66,19 @@ interface OrderDao {
     @Query("SELECT * FROM (SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num) WHERE `is-paid` == 0")
     fun getUnpaidOrders(num: Int): LiveData<List<Order>>
 
+
+    @Query(
+        "SELECT * FROM `orders` WHERE `orderer` LIKE :searchText OR " +
+                "`order-number` LIKE :searchText ORDER BY `time-created` DESC LIMIT :num"
+    )
+    fun getOrdersBySearchText(searchText: String, num: Int): LiveData<List<Order>>
+
+    @Query(
+        "SELECT * FROM (SELECT * FROM `orders` WHERE `orderer` LIKE :searchText OR " +
+                "`order-number` LIKE :searchText LIKE :searchText ORDER BY `time-created` DESC LIMIT :num) WHERE `is-paid` == 0"
+    )
+    fun getUnpaidOrdersBySearchText(searchText: String, num: Int): LiveData<List<Order>>
+
     /**
      * Inert an order to the database
      *

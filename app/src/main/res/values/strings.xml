@@ -98,6 +98,7 @@
     <string name="title_mark_order_paid">Is order paid?</string>
     <string name="text_no_unpaid_orders">Congrats! All the orders are paid</string>
     <string name="text_no_order_history">Once you\'ve made orders, you\'ll see them listed here</string>
+    <string name="text_no_orders">No orders</string>
     <string name="text_order_changed_to_paid">1 marked as paid</string>
     <string name="text_order_changed_to_unpaid">1 marked as unpaid</string>
     <string name="undo">Undo</string>
@@ -135,6 +136,5 @@
     <string-array name="order_statuses">
         <item>Unpaid</item>
         <item>Paid</item>
-        <item>Made by mistake</item>
     </string-array>
 </resources>

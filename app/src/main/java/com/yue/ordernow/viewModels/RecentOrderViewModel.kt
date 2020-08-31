@@ -6,13 +6,26 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderRepository
 
 class RecentOrderViewModel(orderRepository: OrderRepository) :
-    OrderListFragmentViewModel(orderRepository) {
+    AbstractOrderListFragmentViewModel(orderRepository) {
 
     override val orders: LiveData<List<Order>> = queryType.switchMap {
         if (it == ALL) {
-            orderRepository.getLastOrders(recentOrderCount)
+            searchText.switchMap { string ->
+                if (string == "") {
+                    orderRepository.getLastOrders(recentOrderCount)
+                } else {
+                    orderRepository.getLastOrdersBySearchText("%$string%", recentOrderCount)
+                }
+            }
+
         } else {
-            orderRepository.getLastUnpaidOrders(recentOrderCount)
+            searchText.switchMap { string ->
+                if (string == "") {
+                    orderRepository.getLastUnpaidOrders(recentOrderCount)
+                } else {
+                    orderRepository.getLastUnpaidOrdersBySearchText("%$string%", recentOrderCount)
+                }
+            }
         }
     }
 

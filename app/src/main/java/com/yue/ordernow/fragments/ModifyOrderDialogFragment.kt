@@ -23,7 +23,7 @@ class ModifyOrderDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let { it ->
-            val builder = MaterialAlertDialogBuilder(context)
+            val builder = MaterialAlertDialogBuilder(it)
 
             // Bind the view
             val binding = DialogAddNoteBinding.inflate(it.layoutInflater)
