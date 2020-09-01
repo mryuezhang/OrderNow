@@ -75,6 +75,28 @@ class OrderAdapter(
         }
     }
 
+    fun submitListWithHeaders(orders: List<Order>) {
+        if (orders.isNotEmpty()) {
+            val items = ArrayList<ListItem>()
+            items.add(Header(orders.first().getCreatedDate()))
+            if (orders.first().getCreatedDate() == orders.last().getCreatedDate()) {
+                items.addAll(orders)
+            } else {
+                orders.forEachIndexed { index, order ->
+                    items.add(order)
+                    if (index + 1 < orders.size &&
+                        orders[index + 1].getCreatedDate() != order.getCreatedDate()
+                    ) {
+                        items.add(Header(orders[index + 1].getCreatedDate()))
+                    }
+                }
+            }
+            submitList(items)
+        } else {
+            submitList(orders)
+        }
+    }
+
     data class Header(val text: String) : ListItem
 
     private inner class OrderViewHolder(private val binding: ListItemOrderHistoryBinding) :
@@ -139,7 +161,11 @@ private class OrderDiffCallback : DiffUtil.ItemCallback<OrderAdapter.ListItem>()
         oldItem: OrderAdapter.ListItem,
         newItem: OrderAdapter.ListItem
     ): Boolean =
-        oldItem == newItem
+        when {
+            oldItem is OrderAdapter.Header && newItem is OrderAdapter.Header -> oldItem.text == newItem.text
+            oldItem is Order && newItem is Order -> oldItem.orderId == newItem.orderId
+            else -> false
+        }
 
     override fun areContentsTheSame(
         oldItem: OrderAdapter.ListItem,

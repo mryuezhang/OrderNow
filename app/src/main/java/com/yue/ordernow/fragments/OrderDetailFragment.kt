@@ -56,7 +56,6 @@ class OrderDetailFragment : Fragment() {
     private fun setupOrderItemList(list: RecyclerView) {
         val adapter = OrderItemAdapter(null)
         list.adapter = adapter
-
         list.addItemDecoration(
             DividerItemDecoration(
                 context,

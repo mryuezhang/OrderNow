@@ -3,8 +3,8 @@ package com.yue.ordernow.fragments
 import android.app.Dialog
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.yue.ordernow.R
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.OrderItem
@@ -23,7 +23,7 @@ class CustomOrderDialogFragment(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let { it ->
-            val builder = AlertDialog.Builder(it)
+            val builder = MaterialAlertDialogBuilder(it)
 
             // Bind the view
             val binding = DialogAddNoteBinding.inflate(it.layoutInflater)

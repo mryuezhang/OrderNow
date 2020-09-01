@@ -13,7 +13,7 @@
     <string name="sample_item_name">Item Name</string>
     <string name="sample_order_date">Oct.22, 2019 at 12:20</string>
     <string name="sample_order_id">9223372036854775807</string>
-    <string name="sample_order_number">9999</string>
+    <string name="sample_order_number">999</string>
     <string name="sample_percentage">100.0%</string>
     <string name="sample_orderer">ABCDEFGHIJZLMNO</string>
     <string name="no_order_text">No orderItem yet</string>
@@ -58,6 +58,7 @@
     <string name="amount">Amount</string>
     <string name="title_quantity">Quantity</string>
     <string name="title_items">items</string>
+    <string name="title_quantity_symbpl">\u00d7</string>
     <string name="title_quantity_short">Qty.</string>
     <string name="title_quantity_percentage">Qty.(%)</string>
     <string name="minimal_quantity">1</string>
@@ -90,12 +91,14 @@
     <string name="display_text_placed_orders">were placed</string>
     <string name="display_text_made_revenue">were made</string>
     <string name="title_confirm_discard_order">Discard order?</string>
+    <string name="title_more_actions_order">This order is</string>
     <string name="message_discard_order">Order will be discarded automatically when it\'s empty</string>
     <string name="message_order_sent">Order has been sent</string>
     <string name="text_order_item_removed">1 removed</string>
     <string name="title_mark_order_paid">Is order paid?</string>
-    <string name="text_no_unpaid_orders">Once you\'ve had unpaid orders, you\'ll see them listed here</string>
+    <string name="text_no_unpaid_orders">Congrats! All the orders are paid</string>
     <string name="text_no_order_history">Once you\'ve made orders, you\'ll see them listed here</string>
+    <string name="text_no_orders">No orders</string>
     <string name="text_order_changed_to_paid">1 marked as paid</string>
     <string name="text_order_changed_to_unpaid">1 marked as unpaid</string>
     <string name="undo">Undo</string>
@@ -125,5 +128,13 @@
         <item>0</item>
         <item>1</item>
         <item>2</item>
+    </string-array>
+    <string-array name="send_order_pay_statuses">
+        <item>Pay later</item>
+        <item>Paid</item>
+    </string-array>
+    <string-array name="order_statuses">
+        <item>Unpaid</item>
+        <item>Paid</item>
     </string-array>
 </resources>

@@ -9,14 +9,15 @@ import java.util.*
 class DashboardViewModel internal constructor(
     private val orderRepository: OrderRepository
 ) : ViewModel() {
-    val now = Calendar.getInstance()
+    val now: Calendar = Calendar.getInstance()
     val orders = orderRepository.getAllOrders()
-    val dailyOrders = orderRepository.getDailyOrders(now)
-    val weeklyOrders = orderRepository.getWeeklyOrders(now)
-    val monthlyOrders = orderRepository.getMonthlyOrders(now)
-    val yearlyOrders = orderRepository.getYearlyOrders(now)
 
-    fun deleteAllOrders() {
+    //    val dailyOrders = orderRepository.getDailyOrders(now)
+//    val weeklyOrders = orderRepository.getWeeklyOrders(now)
+    val monthlyOrders = orderRepository.getMonthlyOrders(now)
+//    val yearlyOrders = orderRepository.getYearlyOrders(now)
+
+    suspend fun deleteAllOrders() {
         viewModelScope.launch {
             orderRepository.deleteAllOrders()
         }
