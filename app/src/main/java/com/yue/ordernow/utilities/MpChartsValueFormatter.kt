@@ -5,12 +5,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import java.text.DecimalFormat
 
-class IntegerFormatter : ValueFormatter() {
-
-    override fun getFormattedValue(value: Float): String =
-        value.toInt().toString()
-}
-
 class ValueOverBarFormatter : ValueFormatter() {
     override fun getFormattedValue(value: Float): String =
         if (value != 0f) {
@@ -49,8 +43,7 @@ class DayOfMonthFormatter : ValueFormatter() {
 }
 
 class PercentFormatter(private val pieChart: PieChart) : ValueFormatter() {
-
-    var mFormat: DecimalFormat = DecimalFormat("###,###,##0.0")
+    private var mFormat: DecimalFormat = DecimalFormat("###,###,##0.0")
 
     override fun getFormattedValue(value: Float): String = if (value != 0f) {
         mFormat.format(value.toDouble()) + " %"

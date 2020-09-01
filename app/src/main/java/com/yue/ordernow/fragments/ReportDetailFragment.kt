@@ -2,7 +2,9 @@ package com.yue.ordernow.fragments
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -23,9 +25,9 @@ import com.yue.ordernow.viewModels.ReportDetailViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportDetailFragment : OrderListFragment() {
-
+class ReportDetailFragment : AbstractOrderListFragment() {
     private val args: ReportDetailFragmentArgs by navArgs()
+    private lateinit var binding: FragmentReportDetailBinding
 
     override val viewModel: ReportDetailViewModel by viewModels {
         InjectorUtils.provideReportDetailFragmentViewModelFactory(
@@ -42,42 +44,27 @@ class ReportDetailFragment : OrderListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentReportDetailBinding.inflate(inflater, container, false).apply {
-            this.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
-            setupOrderList(this.orderList, this.textNoUnpaidOrders)
-            setHasOptionsMenu(true)
-            (activity as AppCompatActivity).supportActionBar?.title =
-                when (args.StringArgReportType) {
-                    Report.Type.TODAY.value -> resources.getString(R.string.today)
-                    Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
-                    Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
-                    else -> resources.getString(R.string.no)
-                }
-            setupPieChart(this.pieChart)
-            addPieChartData(this.pieChart)
-            setupCustomLegend(
-                this.diningInQty,
-                this.takeoutQty,
-                this.totalQty
-            )
-        }
+        binding = FragmentReportDetailBinding.inflate(inflater, container, false)
 
+        binding.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
+        setupOrderList(binding.orderList, binding.textNoUnpaidOrders)
+        setHasOptionsMenu(true)
+        (activity as AppCompatActivity).supportActionBar?.title =
+            when (args.StringArgReportType) {
+                Report.Type.TODAY.value -> resources.getString(R.string.today)
+                Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
+                Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
+                else -> resources.getString(R.string.no)
+            }
+        setupPieChart(binding.pieChart)
+        addPieChartData(binding.pieChart)
+        setupCustomLegend(
+            binding.diningInQty,
+            binding.takeoutQty,
+            binding.totalQty
+        )
         return binding.root
     }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_report_detail_fragment, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean =
-        when (item.itemId) {
-            R.id.action_filter_list -> {
-                filterList()
-                super.onOptionsItemSelected(item)
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     /*
      * Private methods
@@ -113,8 +100,8 @@ class ReportDetailFragment : OrderListFragment() {
         val dataSet = PieDataSet(dataEntries, "").apply {
             setDrawIcons(false)
             colors = listOf(
-                ContextCompat.getColor(requireContext(), R.color.color_takeout),
-                ContextCompat.getColor(requireContext(), R.color.color_dining_in)
+                ContextCompat.getColor(requireContext(), R.color.colorPrimaryDark),
+                ContextCompat.getColor(requireContext(), R.color.colorPrimary)
             )
             valueTextColor = Color.WHITE
             valueTextSize = 12f
@@ -139,7 +126,7 @@ class ReportDetailFragment : OrderListFragment() {
             (args.StringArgDiningInCount + args.StringArgTakeoutCount).toString()
     }
 
-    private fun filterList() {
+    override fun filterList() {
         with(viewModel) {
             if (isFiltered()) {
                 setQueryAllOrders()
@@ -147,5 +134,10 @@ class ReportDetailFragment : OrderListFragment() {
                 setQueryUnPaidOrders()
             }
         }
+    }
+
+    override fun updateNoOrderHelpTextWhenSearching() {
+        binding.textNoUnpaidOrders.text =
+            resources.getString(R.string.text_no_orders)
     }
 }

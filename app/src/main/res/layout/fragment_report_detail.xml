@@ -113,7 +113,7 @@
                     android:layout_height="12dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/shape_round_corner_rect"
-                    android:backgroundTint="@color/color_dining_in"
+                    android:backgroundTint="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="@+id/textView20"
                     app:layout_constraintEnd_toStartOf="@+id/textView20"
                     app:layout_constraintTop_toTopOf="@+id/textView20" />
@@ -124,7 +124,7 @@
                     android:layout_height="12dp"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/shape_round_corner_rect"
-                    android:backgroundTint="@color/color_takeout"
+                    android:backgroundTint="@color/colorPrimaryDark"
                     app:layout_constraintBottom_toBottomOf="@+id/textView27"
                     app:layout_constraintEnd_toStartOf="@+id/textView27"
                     app:layout_constraintTop_toTopOf="@+id/textView27" />

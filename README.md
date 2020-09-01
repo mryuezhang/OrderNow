@@ -1,7 +1,5 @@
 # OrderNow
 
-[![CircleCI](https://circleci.com/gh/mryuezhang/OrderNow/tree/master.svg?style=svg)](https://circleci.com/gh/mryuezhang/OrderNow/tree/master)
-
 A simple point of sale system that I made for a restaurant owned by a friend of mine's family (Check out their awesome restaurant: [Asli Dinning](https://www.google.com/maps/place/Asli+Dining/@45.3653267,-75.6617247,17z/data=!3m1!4b1!4m5!3m4!1s0x4cce08bdb40084c9:0x622e1a63edcb4ccf!8m2!3d45.365323!4d-75.659536)).
 
 This app illustrates some Android development practices with [Android Jetpack](https://developer.android.com/jetpack/). 
