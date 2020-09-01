@@ -16,27 +16,40 @@ class ReportDetailViewModel internal constructor(
         Report.Type.TODAY -> {
             queryType.switchMap {
                 if (it == ALL) {
-                    orderRepository.getDailyOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getDailyOrders(requestedTime, string)
+                    }
+
                 } else {
-                    orderRepository.getDailyUnPaidOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getDailyUnPaidOrders(requestedTime, string)
+                    }
                 }
             }
         }
         Report.Type.THIS_WEEK -> {
             queryType.switchMap {
                 if (it == ALL) {
-                    orderRepository.getWeeklyOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getWeeklyOrders(requestedTime, string)
+                    }
                 } else {
-                    orderRepository.getWeeklyUnPaidOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getWeeklyUnPaidOrders(requestedTime, string)
+                    }
                 }
             }
         }
         Report.Type.THIS_MONTH -> {
             queryType.switchMap {
                 if (it == ALL) {
-                    orderRepository.getMonthlyOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getMonthlyOrders(requestedTime, string)
+                    }
                 } else {
-                    orderRepository.getMonthlyUnpaidOrders(requestedTime)
+                    searchText.switchMap { string ->
+                        orderRepository.getMonthlyUnpaidOrders(requestedTime, string)
+                    }
                 }
             }
         }

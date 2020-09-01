@@ -1,6 +1,5 @@
 package com.yue.ordernow.fragments
 
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -30,7 +29,6 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.i("QUERY", query)
                 query?.let {
                     viewModel.setSearchText(it)
                 }
@@ -44,6 +42,7 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
                 return true
             }
         })
+
         searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 updateNoOrderHelpTextWhenSearching()
@@ -118,9 +117,6 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
                                 viewModel.updateOrder(order)
                             }.show()
                         }
-                    }
-                    2 -> {
-
                     }
                 }
             }

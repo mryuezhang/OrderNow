@@ -11,20 +11,11 @@ class RecentOrderViewModel(orderRepository: OrderRepository) :
     override val orders: LiveData<List<Order>> = queryType.switchMap {
         if (it == ALL) {
             searchText.switchMap { string ->
-                if (string == "") {
-                    orderRepository.getLastOrders(recentOrderCount)
-                } else {
-                    orderRepository.getLastOrdersBySearchText("%$string%", recentOrderCount)
-                }
+                orderRepository.getLastOrders(recentOrderCount, string)
             }
-
         } else {
             searchText.switchMap { string ->
-                if (string == "") {
-                    orderRepository.getLastUnpaidOrders(recentOrderCount)
-                } else {
-                    orderRepository.getLastUnpaidOrdersBySearchText("%$string%", recentOrderCount)
-                }
+                orderRepository.getLastUnpaidOrders(recentOrderCount, string)
             }
         }
     }

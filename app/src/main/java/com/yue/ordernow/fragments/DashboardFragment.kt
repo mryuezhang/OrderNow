@@ -3,7 +3,11 @@ package com.yue.ordernow.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -45,6 +49,8 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     private fun subscribeUi(adapter: ReportAdapter) {
+        // TODO With this logic, if the current week contains days from 2 different months,
+        //  only days from the current week will be displayed. FIX THIS!
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
             val reportToday = Report(Report.Type.TODAY, 0, 0f)
             val reportWeek = Report(Report.Type.THIS_WEEK, 0, 0f)
