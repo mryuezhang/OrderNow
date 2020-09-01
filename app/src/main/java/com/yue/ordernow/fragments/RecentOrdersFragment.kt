@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.yue.ordernow.R
 import com.yue.ordernow.databinding.FragmentRecentOrdersBinding
@@ -38,10 +39,12 @@ class RecentOrdersFragment : AbstractOrderListFragment() {
                 setQueryAllOrders()
                 binding.noOrderHistoryText.text =
                     resources.getString(R.string.text_no_order_history)
+                binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
             } else {
                 setQueryUnPaidOrders()
                 binding.noOrderHistoryText.text =
                     resources.getString(R.string.text_no_unpaid_orders)
+                binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             }
         }
     }
@@ -49,5 +52,6 @@ class RecentOrdersFragment : AbstractOrderListFragment() {
     override fun updateNoOrderHelpTextWhenSearching() {
         binding.noOrderHistoryText.text =
             resources.getString(R.string.text_no_orders)
+        binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
     }
 }

@@ -49,8 +49,6 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     private fun subscribeUi(adapter: ReportAdapter) {
-        // TODO With this logic, if the current week contains days from 2 different months,
-        //  only days from the current week will be displayed. FIX THIS!
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
             val reportToday = Report(Report.Type.TODAY, 0, 0f)
             val reportWeek = Report(Report.Type.THIS_WEEK, 0, 0f)

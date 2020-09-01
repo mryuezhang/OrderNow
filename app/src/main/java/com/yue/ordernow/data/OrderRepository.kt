@@ -1,5 +1,6 @@
 package com.yue.ordernow.data
 
+import android.util.Log
 import com.yue.ordernow.utilities.getDayEnd
 import com.yue.ordernow.utilities.getDayStart
 import com.yue.ordernow.utilities.getMonthEnd
@@ -84,6 +85,23 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
             getMonthStart(calendar).timeInMillis,
             getMonthEnd(calendar).timeInMillis
         )
+
+    fun getMonthlyOrdersWithExtraDays(calendar: Calendar) =
+        if (getWeekStart(calendar).get(Calendar.MONTH) != calendar.get(Calendar.MONTH)) {
+            // If the current week contains days from 2 different months,
+            // the result should include these days from the current week that are not from the
+            // current month
+            orderDao.getOrdersBetween(
+                getWeekStart(calendar).timeInMillis,
+                getMonthEnd(calendar).timeInMillis
+            )
+        } else {
+            orderDao.getOrdersBetween(
+                getMonthStart(calendar).timeInMillis,
+                getMonthEnd(calendar).timeInMillis
+            )
+        }
+
 
     fun getMonthlyOrders(calendar: Calendar, searchText: String) = if (searchText == "") {
         orderDao.getOrdersBetween(

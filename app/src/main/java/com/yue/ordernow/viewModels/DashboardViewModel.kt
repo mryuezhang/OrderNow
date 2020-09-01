@@ -11,10 +11,9 @@ class DashboardViewModel internal constructor(
 ) : ViewModel() {
     val now: Calendar = Calendar.getInstance()
     val orders = orderRepository.getAllOrders()
-
-    //    val dailyOrders = orderRepository.getDailyOrders(now)
+//    val dailyOrders = orderRepository.getDailyOrders(now)
 //    val weeklyOrders = orderRepository.getWeeklyOrders(now)
-    val monthlyOrders = orderRepository.getMonthlyOrders(now)
+    val monthlyOrders = orderRepository.getMonthlyOrdersWithExtraDays(now)
 //    val yearlyOrders = orderRepository.getYearlyOrders(now)
 
     suspend fun deleteAllOrders() {
