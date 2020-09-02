@@ -25,7 +25,7 @@ import com.yue.ordernow.viewModels.ReportDetailViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ReportDetailFragment : AbstractOrderListFragment() {
+class ReportDetailFragment : AbstractFilterableOrderListFragment() {
     private val args: ReportDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentReportDetailBinding
 

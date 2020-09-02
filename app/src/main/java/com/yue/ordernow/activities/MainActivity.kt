@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 R.id.nav_restaurant_menu,
                 R.id.nav_recent_orders,
                 R.id.nav_dashboard,
+                R.id.nav_order_bin,
                 R.id.nav_settings
             ), binding.drawerLayout
         )

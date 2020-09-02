@@ -38,7 +38,10 @@ data class Order(
     var timeCreated: Calendar = Calendar.getInstance(),
 
     @ColumnInfo(name = "orderer")
-    var orderer: String?
+    var orderer: String?,
+
+    @ColumnInfo(name = "is-valid")
+    var isValid: Boolean
 ) : Parcelable, OrderAdapter.ListItem {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
@@ -103,7 +106,8 @@ data class Order(
                 isPaid,
                 RestaurantMenuFragment.taxRate,
                 timeStamp,
-                null
+                null,
+                true
             )
         }
 
@@ -126,7 +130,8 @@ data class Order(
                 isPaid,
                 RestaurantMenuFragment.taxRate,
                 timeStamp,
-                orderer
+                orderer,
+                true
             )
         }
 
@@ -155,7 +160,8 @@ data class Order(
         parcel.readByte() != 0.toByte(),
         parcel.readFloat(),
         Calendar.getInstance().apply { timeInMillis = parcel.readLong() },
-        parcel.readString()
+        parcel.readString(),
+        parcel.readByte() != 0.toByte()
     ) {
         orderId = parcel.readLong()
     }
@@ -171,6 +177,7 @@ data class Order(
         parcel.writeLong(timeCreated.timeInMillis)
         parcel.writeString(orderer)
         parcel.writeLong(orderId)
+        parcel.writeByte(if (isValid) 1 else 0)
     }
 
     override fun describeContents(): Int {

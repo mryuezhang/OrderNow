@@ -1,14 +1,6 @@
 package com.yue.ordernow.data
 
-import android.util.Log
-import com.yue.ordernow.utilities.getDayEnd
-import com.yue.ordernow.utilities.getDayStart
-import com.yue.ordernow.utilities.getMonthEnd
-import com.yue.ordernow.utilities.getMonthStart
-import com.yue.ordernow.utilities.getWeekEnd
-import com.yue.ordernow.utilities.getWeekStart
-import com.yue.ordernow.utilities.getYearEnd
-import com.yue.ordernow.utilities.getYearStart
+import com.yue.ordernow.utilities.*
 import java.util.*
 
 class OrderRepository private constructor(private val orderDao: OrderDao) {
@@ -102,7 +94,6 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
             )
         }
 
-
     fun getMonthlyOrders(calendar: Calendar, searchText: String) = if (searchText == "") {
         orderDao.getOrdersBetween(
             getMonthStart(calendar).timeInMillis,
@@ -153,6 +144,12 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         orderDao.getUnpaidOrdersBySearchText("%$searchText%", num)
     }
 
+    fun getInvalidOrders(searchText: String) = if (searchText == "") {
+        orderDao.getInvalidOrders()
+    } else {
+        orderDao.getInvalidOrdersBySearchText("%$searchText%")
+    }
+
     suspend fun deleteAllOrders() {
         orderDao.deleteAllOrders()
     }
@@ -170,9 +167,9 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         @Volatile
         private var instance: OrderRepository? = null
 
-        fun getInstance(gardenPlantingDao: OrderDao) =
+        fun getInstance(orderDao: OrderDao) =
             instance ?: synchronized(this) {
-                instance ?: OrderRepository(gardenPlantingDao).also { instance = it }
+                instance ?: OrderRepository(orderDao).also { instance = it }
             }
     }
 }

@@ -42,4 +42,7 @@ object InjectorUtils {
 
     fun provideRecentOrderViewModelFactory(context: Context): RecentOrderViewModelFactory =
         RecentOrderViewModelFactory(getOrderRepository(context))
+
+    fun provideOrderBinViewModelFactory(context: Context): OrderBinViewModelFactory =
+        OrderBinViewModelFactory(getOrderRepository(context))
 }

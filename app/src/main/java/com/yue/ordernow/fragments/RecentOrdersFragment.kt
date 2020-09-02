@@ -11,7 +11,7 @@ import com.yue.ordernow.databinding.FragmentRecentOrdersBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 
-class RecentOrdersFragment : AbstractOrderListFragment() {
+class RecentOrdersFragment : AbstractFilterableOrderListFragment() {
 
     private lateinit var binding: FragmentRecentOrdersBinding
     override val viewModel: AbstractOrderListFragmentViewModel by viewModels {
@@ -27,7 +27,7 @@ class RecentOrdersFragment : AbstractOrderListFragment() {
     ): View? {
         binding = FragmentRecentOrdersBinding.inflate(inflater, container, false)
 
-        setupOrderList(binding.historyList, binding.noOrderHistoryText)
+        setupOrderList(binding.content.orderList, binding.content.emptyListHelperText)
         setHasOptionsMenu(true)
 
         return binding.root
@@ -37,21 +37,21 @@ class RecentOrdersFragment : AbstractOrderListFragment() {
         with(viewModel) {
             if (isFiltered()) {
                 setQueryAllOrders()
-                binding.noOrderHistoryText.text =
+                binding.content.emptyListHelperText.text =
                     resources.getString(R.string.text_no_order_history)
-                binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                binding.content.emptyListHelperText.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
             } else {
                 setQueryUnPaidOrders()
-                binding.noOrderHistoryText.text =
+                binding.content.emptyListHelperText.text =
                     resources.getString(R.string.text_no_unpaid_orders)
-                binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                binding.content.emptyListHelperText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             }
         }
     }
 
     override fun updateNoOrderHelpTextWhenSearching() {
-        binding.noOrderHistoryText.text =
+        binding.content.emptyListHelperText.text =
             resources.getString(R.string.text_no_orders)
-        binding.noOrderHistoryText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+        binding.content.emptyListHelperText.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
     }
 }

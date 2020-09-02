@@ -9,9 +9,10 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.yue.ordernow.utilities.DATABASE_NAME
+import com.yue.ordernow.utilities.DATA_VERSION
 import com.yue.ordernow.worker.DataBaseWorker
 
-@Database(entities = [MenuItem::class, Order::class], version = 1, exportSchema = true)
+@Database(entities = [MenuItem::class, Order::class], version = DATA_VERSION, exportSchema = true)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao

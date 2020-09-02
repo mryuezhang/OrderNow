@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_white"
-        android:title="@string/action_search"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView" />
-    <item
         android:id="@+id/action_filter_list"
         android:icon="@drawable/ic_filter_list_white"
         android:title="@string/action_filter_list"

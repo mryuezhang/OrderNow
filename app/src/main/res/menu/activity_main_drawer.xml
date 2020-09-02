@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_dashboard"
             android:title="@string/title_dashboard" />
         <item
+            android:id="@+id/nav_order_bin"
+            android:icon="@drawable/ic_order_bin"
+            android:title="@string/title_order_bin" />
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/title_settings" />

@@ -26,6 +26,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_order_bin"
+        android:name="com.yue.ordernow.fragments.OrderBinFragment"
+        android:label="@string/title_order_bin"
+        tools:layout="@layout/fragment_order_bin">
+        <action
+            android:id="@+id/action_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <fragment
         android:id="@+id/orderDetailFragment"
         android:name="com.yue.ordernow.fragments.OrderDetailFragment"
         android:label="@string/title_order_detail"

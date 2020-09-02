@@ -1,11 +1,7 @@
 package com.yue.ordernow.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
 @Dao
 interface OrderDao {
@@ -23,7 +19,7 @@ interface OrderDao {
      *
      * @return A LiveData object holding the last order
      */
-    @Query("SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT 1")
+    @Query("SELECT * FROM `orders` WHERE `is-valid` != 0 ORDER BY `time-created` DESC LIMIT 1")
     fun getLastOrder(): LiveData<Order>
 
     /**
@@ -33,7 +29,7 @@ interface OrderDao {
      * @param end The end of the time period
      * @return A ListData object holding a list of orders
      */
-    @Query("SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end ORDER BY `time-created`")
+    @Query("SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-valid` != 0 ORDER BY `time-created`")
     fun getOrdersBetween(start: Long, end: Long): LiveData<List<Order>>
 
     /**
@@ -43,7 +39,7 @@ interface OrderDao {
      * @param end The end of the time period
      * @return A ListData object holding a list of orders
      */
-    @Query("SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-paid` == 0 ORDER BY `time-created`")
+    @Query("SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-valid` != 0 AND `is-paid` == 0 ORDER BY `time-created`")
     fun getUnPaidOrdersBetween(start: Long, end: Long): LiveData<List<Order>>
 
     /**
@@ -54,9 +50,7 @@ interface OrderDao {
      * @return A ListData object holding a list of orders
      */
     @Query(
-        "SELECT * FROM " +
-                "(SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end ORDER BY `time-created`) " +
-                "WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
+        "SELECT * FROM (SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-valid` != 0 ORDER BY `time-created`) WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
     )
     fun getOrdersBetweenBySearchText(
         searchText: String,
@@ -72,9 +66,7 @@ interface OrderDao {
      * @return A ListData object holding a list of orders
      */
     @Query(
-        "SELECT * FROM " +
-                "(SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-paid` == 0 ORDER BY `time-created`) " +
-                "WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
+        "SELECT * FROM (SELECT * FROM `orders` WHERE `time-created` BETWEEN :start AND :end AND `is-valid` != 0 AND `is-paid` == 0 ORDER BY `time-created`) WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
     )
     fun getUnPaidOrdersBetweenBySearchText(
         searchText: String,
@@ -88,7 +80,7 @@ interface OrderDao {
      * @param num The amount of wanted orders
      * @return A ListData object holding a list of orders
      */
-    @Query("SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num")
+    @Query("SELECT * FROM `orders` WHERE `is-valid` != 0 ORDER BY `time-created` DESC LIMIT :num")
     fun getOrders(num: Int): LiveData<List<Order>>
 
     /**
@@ -99,7 +91,7 @@ interface OrderDao {
      * @param num The amount of wanted orders
      * @return A ListData object holding a list of orders
      */
-    @Query("SELECT * FROM (SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num) WHERE `is-paid` == 0")
+    @Query("SELECT * FROM (SELECT * FROM `orders` WHERE `is-valid` != 0 ORDER BY `time-created` DESC LIMIT :num) WHERE `is-paid` == 0")
     fun getUnpaidOrders(num: Int): LiveData<List<Order>>
 
     /**
@@ -110,14 +102,12 @@ interface OrderDao {
      * @return A ListData object holding a list of orders
      */
     @Query(
-        "SELECT * FROM " +
-                "(SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num) " +
-                "WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
+        "SELECT * FROM (SELECT * FROM `orders` WHERE `is-valid` != 0 ORDER BY `time-created` DESC LIMIT :num) WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText"
     )
     fun getOrdersBySearchText(searchText: String, num: Int): LiveData<List<Order>>
 
     /**
-     * GGet the orders, which contain the given search text, from the latest orders of the given amount
+     * Get the orders, which contain the given search text, from the latest orders of the given amount
      * So let's say you passed 100 here, this function will NOT return 100 unpaid orders, it will
      * return the unpaid orders that also contains the given search text within this 100 orders
      *
@@ -125,13 +115,26 @@ interface OrderDao {
      * @return A ListData object holding a list of orders
      */
     @Query(
-        "SELECT * FROM " +
-                "(SELECT * FROM " +
-                "(SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT :num) " +
-                "WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText) " +
-                "WHERE `is-paid` == 0"
+        "SELECT * FROM (SELECT * FROM (SELECT * FROM `orders` WHERE `is-valid` != 0 ORDER BY `time-created` DESC LIMIT :num) WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText) WHERE `is-paid` == 0"
     )
     fun getUnpaidOrdersBySearchText(searchText: String, num: Int): LiveData<List<Order>>
+
+
+    /**
+     * Get all the invalid orders
+     *
+     * @return A ListData object holding a list of orders
+     */
+    @Query("SELECT * FROM `orders` WHERE `is-valid` == 0 ORDER BY `time-created`")
+    fun getInvalidOrders(): LiveData<List<Order>>
+
+    /**
+     * Get all the invalid orders, which contain the given search text
+     *
+     * @return A ListData object holding a list of orders
+     */
+    @Query("SELECT * FROM (SELECT * FROM `orders` WHERE `is-valid` == 0 ORDER BY `time-created`) WHERE `orderer` LIKE :searchText OR `order-number` LIKE :searchText")
+    fun getInvalidOrdersBySearchText(searchText: String): LiveData<List<Order>>
 
     /**
      * Inert an order to the database
