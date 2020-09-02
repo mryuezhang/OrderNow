@@ -28,10 +28,18 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
         }
 
     override fun onLongClick(order: Order, adapter: OrderAdapter, position: Int) {
+        var choice = if (order.isPaid) {
+            1
+        } else {
+            0
+        }
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(resources.getString(R.string.title_more_actions_order))
-            .setItems(resources.getStringArray(R.array.order_statuses)) { _, which ->
-                when (which) {
+            .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
+                dialog.cancel()
+            }
+            .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
+                when (choice) {
                     // Unpaid
                     0 -> {
                         if (order.isPaid) {
@@ -100,7 +108,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                             resources.getString(R.string.text_order_changed_to_paid),
                             Snackbar.LENGTH_LONG
                         ).setAction(resources.getString(R.string.undo)) {
-                            order.isPaid = false
+                            order.isValid = true
 
                             // Update view
                             adapter.notifyItemChanged(position)
@@ -110,6 +118,9 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         }.show()
                     }
                 }
+            }
+            .setSingleChoiceItems(resources.getStringArray(R.array.order_statuses), choice) { _, which ->
+                choice = which
             }
             .show()
     }

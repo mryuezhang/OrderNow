@@ -105,6 +105,7 @@
     <string name="text_order_change_to_invalid">1 marked as no longer needed</string>
     <string name="undo">Undo</string>
     <string name="paid">Paid</string>
+    <string name="ok">Ok</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="unpaid">Unpaid</string>
