@@ -142,7 +142,7 @@ interface OrderDao {
      * @param order The order that will be inserted
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertOrder(order: Order)
+    suspend fun insert(order: Order)
 
     /**
      * Update the order within the database, which has the same ID with the provided one
@@ -151,7 +151,7 @@ interface OrderDao {
      * @param order The order that will be updated
      */
     @Update
-    suspend fun updateOrder(order: Order)
+    suspend fun update(order: Order)
 
     /**
      * Delete all orders from the database

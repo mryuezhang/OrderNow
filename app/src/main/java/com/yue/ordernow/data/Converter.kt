@@ -24,4 +24,12 @@ class Converter {
     fun stringToOrderItemArrayList(string: String): ArrayList<OrderItem> =
         gson.fromJson(string, object : TypeToken<ArrayList<OrderItem>>() {}.type)
 
+    @TypeConverter
+    fun saleDataToString(saleData: Map<String, Int>): String =
+        gson.toJson(saleData)
+
+    @TypeConverter
+    fun stringToSaleData(string: String): Map<String, Int> =
+        gson.fromJson(string, object : TypeToken<Map<String, Int>>() {}.type)
+
 }

@@ -155,11 +155,11 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
     }
 
     suspend fun insertOrder(order: Order) {
-        orderDao.insertOrder(order)
+        orderDao.insert(order)
     }
 
     suspend fun updateOrder(order: Order) {
-        orderDao.updateOrder(order)
+        orderDao.update(order)
     }
 
     companion object {

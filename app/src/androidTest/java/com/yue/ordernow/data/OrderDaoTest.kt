@@ -6,11 +6,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.yue.ordernow.utilities.getValue
 import kotlinx.coroutines.runBlocking
 import org.hamcrest.Matchers
-import org.junit.After
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 
 class OrderDaoTest {
     private lateinit var database: AppDatabase
@@ -39,9 +35,9 @@ class OrderDaoTest {
         order2 = Order.newInstance(arrayListOf(orderItem3, orderItem4), 0f, 0, true, true)
 
         // Insert these orders in a different order than the order of when they're being created
-        orderDao.insertOrder(order2)
+        orderDao.insert(order2)
         Thread.sleep(1000)
-        orderDao.insertOrder(order1)
+        orderDao.insert(order1)
     }
 
     @After
