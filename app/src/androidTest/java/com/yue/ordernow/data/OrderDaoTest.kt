@@ -11,15 +11,6 @@ import org.junit.*
 class OrderDaoTest {
     private lateinit var database: AppDatabase
     private lateinit var orderDao: OrderDao
-    private val burger = MenuItem("burger", 15.00F, "main")
-    private val pizza = MenuItem("pizza", 12.00F, "main")
-    private val wings = MenuItem("wings", 8.00F, "appetizer")
-    private val orderItem1 = OrderItem(burger, 1, "no tomato")
-    private val orderItem2 = OrderItem(pizza, 1, "")
-    private val orderItem3 = OrderItem(pizza, 1, "extra cheese")
-    private val orderItem4 = OrderItem(wings, 3, "")
-    private lateinit var order1: Order
-    private lateinit var order2: Order
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -29,15 +20,11 @@ class OrderDaoTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         database = Room.inMemoryDatabaseBuilder(context, AppDatabase::class.java).build()
         orderDao = database.orderDao()
-        order1 =
-            Order.newInstance(arrayListOf(orderItem1, orderItem2), 0f, 0, false, false, "Table 2")
-        Thread.sleep(1000)
-        order2 = Order.newInstance(arrayListOf(orderItem3, orderItem4), 0f, 0, true, true)
 
         // Insert these orders in a different order than the order of when they're being created
-        orderDao.insert(order2)
+        orderDao.insert(DummyData.order2)
         Thread.sleep(1000)
-        orderDao.insert(order1)
+        orderDao.insert(DummyData.order1)
     }
 
     @After
@@ -51,7 +38,7 @@ class OrderDaoTest {
         Assert.assertThat(orders.size, Matchers.equalTo(2))
 
         // Ensure plant list is sorted by created time
-        Assert.assertThat(orders[0], Matchers.equalTo(order1))
-        Assert.assertThat(orders[1], Matchers.equalTo(order2))
+        Assert.assertThat(orders[0], Matchers.equalTo(DummyData.order1))
+        Assert.assertThat(orders[1], Matchers.equalTo(DummyData.order2))
     }
 }

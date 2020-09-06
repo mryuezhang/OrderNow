@@ -14,7 +14,7 @@ interface SaleSummaryDao {
      *
      * @return A LiveData object holding a list of all sale summaries
      */
-    @Query("SELECT * FROM `sale-summary` ORDER BY `time`")
+    @Query("SELECT * FROM `sale-summary` ORDER BY `date`")
     fun getSaleSummaries(): LiveData<List<SaleSummary>>
 
     /**
@@ -23,7 +23,7 @@ interface SaleSummaryDao {
      * @param type The type of sale summaries
      * @return A LiveData object holding a list of same-type sale summaries
      */
-    @Query("SELECT * FROM `sale-summary` WHERE `type` == :type ORDER BY `time`")
+    @Query("SELECT * FROM `sale-summary` WHERE `type` == :type ORDER BY `date`")
     fun getSaleSummaries(type: Report.Type): LiveData<List<SaleSummary>>
 
     /**
@@ -33,10 +33,11 @@ interface SaleSummaryDao {
      * weekly sale summary
      *
      * @param time A time stamp
+     * @param type The type of sale summary
      * @return A Sale summary
      */
-    @Query("SELECT * FROM `sale-summary` WHERE `time` == :time ORDER BY `time`")
-    fun getSaleSummary(time: Calendar): LiveData<SaleSummary>
+    @Query("SELECT * FROM `sale-summary` WHERE `date` == :time AND `type` == :type ORDER BY `date`")
+    fun getSaleSummary(time: Calendar, type: Report.Type): LiveData<SaleSummary>
 
     /**
      * Get a daily sale summary
@@ -44,8 +45,8 @@ interface SaleSummaryDao {
      * @param time A time stamp
      * @return A daily sale summary
      */
-    fun getDailySaleSummaries(time: Calendar): LiveData<SaleSummary> {
-        return getSaleSummary(getDayStart(time))
+    fun getDailySaleSummary(time: Calendar): LiveData<SaleSummary> {
+        return getSaleSummary(getDayStart(time), Report.Type.TODAY)
     }
 
     /**
@@ -54,8 +55,8 @@ interface SaleSummaryDao {
      * @param time A time stamp
      * @return A weekly sale summary
      */
-    fun getWeeklySaleSummaries(time: Calendar): LiveData<SaleSummary> {
-        return getSaleSummary(getWeekStart(time))
+    fun getWeeklySaleSummary(time: Calendar): LiveData<SaleSummary> {
+        return getSaleSummary(getWeekStart(time), Report.Type.THIS_WEEK)
     }
 
     /**
@@ -64,8 +65,8 @@ interface SaleSummaryDao {
      * @param time A time stamp
      * @return A monthly sale summary
      */
-    fun getMonthlySaleSummaries(time: Calendar): LiveData<SaleSummary> {
-        return getSaleSummary(getMonthStart(time))
+    fun getMonthlySaleSummary(time: Calendar): LiveData<SaleSummary> {
+        return getSaleSummary(getMonthStart(time), Report.Type.THIS_MONTH)
     }
 
     /**

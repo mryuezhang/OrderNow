@@ -45,7 +45,7 @@ data class Order(
 ) : Parcelable, OrderAdapter.ListItem {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var orderId: Long = 0
+    var id: Long = 0
 
     fun getFormattedCreatedTimeWithDayOfWeek(): String =
         SimpleDateFormat(
@@ -163,7 +163,7 @@ data class Order(
         parcel.readString(),
         parcel.readByte() != 0.toByte()
     ) {
-        orderId = parcel.readLong()
+        id = parcel.readLong()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -176,7 +176,7 @@ data class Order(
         parcel.writeFloat(taxRate)
         parcel.writeLong(timeCreated.timeInMillis)
         parcel.writeString(orderer)
-        parcel.writeLong(orderId)
+        parcel.writeLong(id)
         parcel.writeByte(if (isValid) 1 else 0)
     }
 

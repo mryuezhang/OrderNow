@@ -2,11 +2,7 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
@@ -22,13 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yue.ordernow.R
 import com.yue.ordernow.activities.MainActivity
-import com.yue.ordernow.adapters.APPETIZER_PAGE_INDEX
-import com.yue.ordernow.adapters.BREAKFAST_PAGE_INDEX
-import com.yue.ordernow.adapters.DRINK_PAGE_INDEX
-import com.yue.ordernow.adapters.MAIN_PAGE_INDEX
-import com.yue.ordernow.adapters.MenuItemAdapter
-import com.yue.ordernow.adapters.MenuPageViewAdapter
-import com.yue.ordernow.adapters.OrderItemAdapter
+import com.yue.ordernow.adapters.*
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
@@ -36,7 +26,6 @@ import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 import com.yue.ordernow.utilities.currencyFormat
 import com.yue.ordernow.utilities.hideSoftKeyboard
 import com.yue.ordernow.viewModels.MainViewModel
-import java.util.*
 
 private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 

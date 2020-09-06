@@ -163,7 +163,7 @@ private class OrderDiffCallback : DiffUtil.ItemCallback<OrderAdapter.ListItem>()
     ): Boolean =
         when {
             oldItem is OrderAdapter.Header && newItem is OrderAdapter.Header -> oldItem.text == newItem.text
-            oldItem is Order && newItem is Order -> oldItem.orderId == newItem.orderId
+            oldItem is Order && newItem is Order -> oldItem.id == newItem.id
             else -> false
         }
 

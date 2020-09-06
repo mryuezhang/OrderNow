@@ -12,11 +12,19 @@ import com.yue.ordernow.utilities.DATABASE_NAME
 import com.yue.ordernow.utilities.DATA_VERSION
 import com.yue.ordernow.worker.DataBaseWorker
 
-@Database(entities = [MenuItem::class, Order::class], version = DATA_VERSION, exportSchema = true)
+@Database(
+    entities = [
+        MenuItem::class,
+        Order::class,
+        SaleSummary::class
+    ],
+    version = DATA_VERSION,
+    exportSchema = false)
 @TypeConverters(Converter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao
     abstract fun orderDao(): OrderDao
+    abstract fun saleSummaryDao(): SaleSummaryDao
 
     companion object {
 

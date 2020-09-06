@@ -10,10 +10,10 @@ class Converter {
     private val gson = Gson()
 
     @TypeConverter
-    fun calendarToDatestamp(calendar: Calendar): Long = calendar.timeInMillis
+    fun calendarToLong(calendar: Calendar): Long = calendar.timeInMillis
 
     @TypeConverter
-    fun datestampToCalendar(value: Long): Calendar =
+    fun longToCalendar(value: Long): Calendar =
         Calendar.getInstance().apply { timeInMillis = value }
 
     @TypeConverter
@@ -25,11 +25,24 @@ class Converter {
         gson.fromJson(string, object : TypeToken<ArrayList<OrderItem>>() {}.type)
 
     @TypeConverter
+    fun reportTypeToInt(type: Report.Type): Int = type.value
+
+    @TypeConverter
+    fun intToReportType(int: Int): Report.Type = Report.Type.fromInt(int)
+
+    @TypeConverter
+    fun longListToString(list: ArrayList<Long>): String =
+        gson.toJson(list)
+
+    @TypeConverter
+    fun stringToLongList(string: String): ArrayList<Long> =
+        gson.fromJson(string, object : TypeToken<ArrayList<Long>>() {}.type)
+
+    @TypeConverter
     fun saleDataToString(saleData: Map<String, Int>): String =
         gson.toJson(saleData)
 
     @TypeConverter
     fun stringToSaleData(string: String): Map<String, Int> =
-        gson.fromJson(string, object : TypeToken<Map<String, Int>>() {}.type)
-
+        gson.fromJson(string, object : TypeToken<HashMap<String, Int>>() {}.type)
 }
