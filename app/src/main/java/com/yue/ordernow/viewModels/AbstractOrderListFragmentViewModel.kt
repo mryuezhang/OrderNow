@@ -10,14 +10,23 @@ import kotlinx.coroutines.launch
 
 abstract class AbstractOrderListFragmentViewModel(private val orderRepository: OrderRepository) :
     ViewModel() {
+    interface OrderUpdateListener {
+        fun onUpdate(order: Order)
+    }
     protected val queryType = MutableLiveData(ALL)
     protected val searchText = MutableLiveData("")
     abstract val orders: LiveData<List<Order>>
+    private var orderUpdateListener: OrderUpdateListener? = null
+
+    fun setOnOrderUpdateListener(orderUpdateListener: OrderUpdateListener) {
+        this.orderUpdateListener = orderUpdateListener
+    }
 
     fun updateOrder(order: Order) {
         viewModelScope.launch {
             orderRepository.updateOrder(order)
         }
+        orderUpdateListener?.onUpdate(order)
     }
 
     fun setQueryAllOrders() {

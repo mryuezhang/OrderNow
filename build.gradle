@@ -27,7 +27,7 @@ buildscript {
         navigationVersion = '2.3.0'
         preferenceVersion = '1.1.1'
         recyclerViewVersion = '1.1.0-alpha05'
-        roomVersion = '2.3.0-alpha01'
+        roomVersion = '2.3.0-alpha02'
         testExtJunit = '1.1.0'
         viewPagerVersion = '1.0.0'
         workVersion = '2.4.0'
@@ -39,7 +39,7 @@ buildscript {
         
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradleVersion"
+        classpath "com.android.tools.build:gradle:${gradleVersion}"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
     }

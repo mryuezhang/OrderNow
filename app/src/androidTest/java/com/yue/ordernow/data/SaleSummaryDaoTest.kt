@@ -62,6 +62,7 @@ class SaleSummaryDaoTest {
     fun testSaleSummaryUpdate() {
         runBlocking {
             DummyData.dailySaleSummary.addSaleData(DummyData.order1)
+            DummyData.dailySaleSummary.addSaleData(DummyData.order2)
             saleSummaryDao.update(DummyData.dailySaleSummary)
             val result = getValue(saleSummaryDao.getDailySaleSummary(Calendar.getInstance()))
 

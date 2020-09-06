@@ -3,26 +3,24 @@ package com.yue.ordernow.viewModels
 import androidx.lifecycle.switchMap
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
+import com.yue.ordernow.fragments.ReportDetailFragmentArgs
 import java.util.*
 
 class ReportDetailViewModel internal constructor(
     orderRepository: OrderRepository,
-    reportType: Report.Type,
-    requestedTime: Calendar
-) :
-    AbstractOrderListFragmentViewModel(orderRepository) {
-
-    override val orders = when (reportType) {
+    args: ReportDetailFragmentArgs
+) : AbstractOrderListFragmentViewModel(orderRepository) {
+    override val orders = when (Report.Type.fromInt(args.StringArgReportType)) {
         Report.Type.TODAY -> {
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getDailyOrders(requestedTime, string)
+                        orderRepository.getDailyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
 
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getDailyUnPaidOrders(requestedTime, string)
+                        orderRepository.getDailyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
                 }
             }
@@ -31,11 +29,11 @@ class ReportDetailViewModel internal constructor(
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getWeeklyOrders(requestedTime, string)
+                        orderRepository.getWeeklyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getWeeklyUnPaidOrders(requestedTime, string)
+                        orderRepository.getWeeklyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
                 }
             }
@@ -44,14 +42,18 @@ class ReportDetailViewModel internal constructor(
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getMonthlyOrders(requestedTime, string)
+                        orderRepository.getMonthlyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getMonthlyUnpaidOrders(requestedTime, string)
+                        orderRepository.getMonthlyUnpaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
                     }
                 }
             }
         }
     }
+
+    var takeOutCount = args.StringArgTakeoutCount
+    var diningInCount = args.StringArgDiningInCount
+
 }

@@ -16,14 +16,14 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.yue.ordernow.R
+import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.utilities.PercentFormatter
 import com.yue.ordernow.utilities.getThemeColor
+import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 import com.yue.ordernow.viewModels.ReportDetailViewModel
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ReportDetailFragment : AbstractFilterableOrderListFragment() {
     private val args: ReportDetailFragmentArgs by navArgs()
@@ -32,10 +32,7 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
     override val viewModel: ReportDetailViewModel by viewModels {
         InjectorUtils.provideReportDetailFragmentViewModelFactory(
             requireContext(),
-            Report.Type.fromInt(args.StringArgReportType),
-            Calendar.getInstance().apply {
-                timeInMillis = args.StringArgTimeStamp
-            }
+            args
         )
     }
 
@@ -56,13 +53,40 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
                 Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
                 else -> resources.getString(R.string.no)
             }
-        setupPieChart(binding.pieChart)
-        addPieChartData(binding.pieChart)
+        initPieChart(binding.pieChart)
+        setPieChartData(binding.pieChart)
         setupCustomLegend(
             binding.diningInQty,
             binding.takeoutQty,
             binding.totalQty
         )
+        viewModel.setOnOrderUpdateListener (object:
+            AbstractOrderListFragmentViewModel.OrderUpdateListener {
+            override fun onUpdate(order: Order) {
+                if (order.isValid) {
+                    if (order.isTakeout) {
+                        viewModel.takeOutCount++
+                    } else {
+                        viewModel.diningInCount++
+                    }
+                } else {
+                    if (order.isTakeout) {
+                        viewModel.takeOutCount--
+                    } else {
+                        viewModel.diningInCount--
+                    }
+                }
+
+                setPieChartData(binding.pieChart)
+                setupCustomLegend(
+                    binding.diningInQty,
+                    binding.takeoutQty,
+                    binding.totalQty
+                )
+                binding.pieChart.invalidate()
+            }
+
+        })
         return binding.root
     }
 
@@ -70,7 +94,7 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
      * Private methods
      */
 
-    private fun setupPieChart(pieChart: PieChart) {
+    private fun initPieChart(pieChart: PieChart) {
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
         pieChart.isRotationEnabled = true
@@ -81,17 +105,17 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         pieChart.legend.isEnabled = false
     }
 
-    private fun addPieChartData(pieChart: PieChart) {
+    private fun setPieChartData(pieChart: PieChart) {
         val dataEntries = ArrayList<PieEntry>(2).apply {
             add(
                 PieEntry(
-                    args.StringArgTakeoutCount.toFloat(),
+                    viewModel.takeOutCount.toFloat(),
                     resources.getString(R.string.take_out)
                 )
             )
             add(
                 PieEntry(
-                    args.StringArgDiningInCount.toFloat(),
+                    viewModel.diningInCount.toFloat(),
                     resources.getString(R.string.dining_in)
                 )
             )
@@ -120,10 +144,10 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         takeoutQty: TextView,
         totalQty: TextView
     ) {
-        diningInQty.text = args.StringArgDiningInCount.toString()
-        takeoutQty.text = args.StringArgTakeoutCount.toString()
+        diningInQty.text = viewModel.takeOutCount.toString()
+        takeoutQty.text = viewModel.diningInCount.toString()
         totalQty.text =
-            (args.StringArgDiningInCount + args.StringArgTakeoutCount).toString()
+            (viewModel.takeOutCount + viewModel.diningInCount).toString()
     }
 
     override fun filterList() {

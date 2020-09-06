@@ -4,9 +4,8 @@ import android.content.Context
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
-import com.yue.ordernow.data.Report
+import com.yue.ordernow.fragments.ReportDetailFragmentArgs
 import com.yue.ordernow.viewModels.*
-import java.util.*
 
 object InjectorUtils {
 
@@ -35,10 +34,9 @@ object InjectorUtils {
 
     fun provideReportDetailFragmentViewModelFactory(
         context: Context,
-        reportType: Report.Type,
-        requestedTime: Calendar
+        args: ReportDetailFragmentArgs
     ): ReportDetailViewModelFactory =
-        ReportDetailViewModelFactory(getOrderRepository(context), reportType, requestedTime)
+        ReportDetailViewModelFactory(getOrderRepository(context), args)
 
     fun provideRecentOrderViewModelFactory(context: Context): RecentOrderViewModelFactory =
         RecentOrderViewModelFactory(getOrderRepository(context))
