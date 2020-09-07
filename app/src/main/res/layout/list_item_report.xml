@@ -122,7 +122,7 @@
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barChart"
                     android:layout_width="0dp"
-                    android:layout_height="176dp"
+                    android:layout_height="194dp"
                     android:layout_weight="1" />
             </LinearLayout>
 

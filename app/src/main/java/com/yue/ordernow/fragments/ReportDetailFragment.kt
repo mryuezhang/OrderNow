@@ -42,7 +42,6 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
     ): View? {
         binding = FragmentReportDetailBinding.inflate(inflater, container, false)
 
-        binding.reportSummary.layoutParams.height = resources.displayMetrics.widthPixels / 2
         setupOrderList(binding.orderList, binding.textNoUnpaidOrders)
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.title =

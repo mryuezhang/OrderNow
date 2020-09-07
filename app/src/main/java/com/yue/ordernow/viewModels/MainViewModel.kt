@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yue.ordernow.data.*
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainViewModel internal constructor(
     private val orderRepository: OrderRepository,
@@ -14,6 +16,23 @@ class MainViewModel internal constructor(
     var totalQuantity = 0
     var isTakeout = false
     var orderer = ""
+
+    init {
+        viewModelScope.launch {
+            val now = Calendar.getInstance()
+            if (saleSummaryRepository.getDailySaleSummary(now).value == null) {
+                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.TODAY, now))
+            }
+
+            if (saleSummaryRepository.getWeeklySaleSummary(now).value == null) {
+                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_WEEK, now))
+            }
+
+            if (saleSummaryRepository.getMonthlySaleSummary(now).value == null) {
+                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_MONTH, now))
+            }
+        }
+    }
 
     fun saveToDatabase(order: Order) {
         viewModelScope.launch {
