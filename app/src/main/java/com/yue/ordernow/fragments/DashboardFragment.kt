@@ -3,6 +3,7 @@ package com.yue.ordernow.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -45,6 +46,15 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     private fun subscribeUi(adapter: ReportAdapter) {
+        viewModel.dailySaleSummary.observe(viewLifecycleOwner) {
+            Log.i("DailySaleSummary", it.saleData.toString())
+        }
+        viewModel.weeklySaleSummary.observe(viewLifecycleOwner) {
+            Log.i("WeeklySaleSummary", it.saleData.toString())
+        }
+        viewModel.monthlySaleSummary.observe(viewLifecycleOwner) {
+            Log.i("MonthlySaleSummary", it.saleData.toString())
+        }
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
             val reportToday = Report(Report.Type.TODAY, 0, 0f)
             val reportWeek = Report(Report.Type.THIS_WEEK, 0, 0f)

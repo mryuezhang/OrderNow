@@ -26,7 +26,6 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         )
     }
 
-
     fun getDailyUnPaidOrders(calendar: Calendar, searchText: String) = if (searchText == "") {
         orderDao.getUnPaidOrdersBetween(
             getDayStart(calendar).timeInMillis,
@@ -154,11 +153,11 @@ class OrderRepository private constructor(private val orderDao: OrderDao) {
         orderDao.deleteAllOrders()
     }
 
-    suspend fun insertOrder(order: Order) {
+    suspend fun insert(order: Order) {
         orderDao.insert(order)
     }
 
-    suspend fun updateOrder(order: Order) {
+    suspend fun update(order: Order) {
         orderDao.update(order)
     }
 

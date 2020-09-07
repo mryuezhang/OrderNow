@@ -10,13 +10,10 @@ import com.yue.ordernow.utilities.getWeekStart
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.collections.forEach
-import kotlin.collections.getValue
 import kotlin.collections.set
-import kotlin.collections.withDefault
 
 @Entity(tableName = "sale-summary")
-data class SaleSummary(
+data class SaleSummary (
     @ColumnInfo(name = "type")
     var type: Type
 ) {
@@ -25,11 +22,7 @@ data class SaleSummary(
     var id: Long = 0
 
     @ColumnInfo(name = "date")
-    var date: Calendar = when (type) {
-        Type.TODAY -> { getDayStart(Calendar.getInstance()) }
-        Type.THIS_WEEK -> { getWeekStart(Calendar.getInstance()) }
-        Type.THIS_MONTH -> { getMonthStart(Calendar.getInstance()) }
-    }
+    lateinit var date: Calendar
 
     @ColumnInfo(name = "order-ids")
     var orderIds = ArrayList<Long>()
@@ -83,5 +76,16 @@ data class SaleSummary(
             }
             orderIds.remove(order.id)
         }
+    }
+
+    companion object {
+        fun newInstance(type: Type, orderCreatedTime: Calendar): SaleSummary =
+            SaleSummary(type).apply {
+                date =  when (type) {
+                    Type.TODAY -> { getDayStart(orderCreatedTime) }
+                    Type.THIS_WEEK -> { getWeekStart(orderCreatedTime) }
+                    Type.THIS_MONTH -> { getMonthStart(orderCreatedTime) }
+                }
+            }
     }
 }

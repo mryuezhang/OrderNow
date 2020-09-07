@@ -22,7 +22,6 @@ import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.utilities.PercentFormatter
 import com.yue.ordernow.utilities.getThemeColor
-import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 import com.yue.ordernow.viewModels.ReportDetailViewModel
 
 class ReportDetailFragment : AbstractFilterableOrderListFragment() {
@@ -60,9 +59,8 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
             binding.takeoutQty,
             binding.totalQty
         )
-        viewModel.setOnOrderUpdateListener (object:
-            AbstractOrderListFragmentViewModel.OrderUpdateListener {
-            override fun onUpdate(order: Order) {
+        orderValidityChangeListener = object : OrderValidityChangeListener {
+            override fun onChange(order: Order) {
                 if (order.isValid) {
                     if (order.isTakeout) {
                         viewModel.takeOutCount++
@@ -85,8 +83,7 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
                 )
                 binding.pieChart.invalidate()
             }
-
-        })
+        }
         return binding.root
     }
 

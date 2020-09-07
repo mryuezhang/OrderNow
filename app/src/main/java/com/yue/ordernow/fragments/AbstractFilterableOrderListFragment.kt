@@ -11,7 +11,12 @@ import com.yue.ordernow.data.Order
 
 abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment() {
 
+    interface OrderValidityChangeListener {
+        fun onChange(order: Order)
+    }
+
     protected abstract fun filterList()
+    protected var orderValidityChangeListener: OrderValidityChangeListener? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -103,9 +108,11 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         // Update database
                         viewModel.updateOrder(order)
 
+                        orderValidityChangeListener?.onChange(order)
+
                         Snackbar.make(
                             requireView(),
-                            resources.getString(R.string.text_order_changed_to_paid),
+                            resources.getString(R.string.text_order_change_to_invalid),
                             Snackbar.LENGTH_LONG
                         ).setAction(resources.getString(R.string.undo)) {
                             order.isValid = true

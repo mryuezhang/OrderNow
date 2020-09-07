@@ -4,6 +4,7 @@ import android.content.Context
 import com.yue.ordernow.data.AppDatabase
 import com.yue.ordernow.data.MenuItemRepository
 import com.yue.ordernow.data.OrderRepository
+import com.yue.ordernow.data.SaleSummaryRepository
 import com.yue.ordernow.fragments.ReportDetailFragmentArgs
 import com.yue.ordernow.viewModels.*
 
@@ -19,8 +20,13 @@ object InjectorUtils {
             AppDatabase.getInstance(context.applicationContext).orderDao()
         )
 
+    private fun getSaleSummaryRepository(context: Context): SaleSummaryRepository =
+        SaleSummaryRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).saleSummaryDao()
+        )
+
     fun provideMainViewModelFactory(context: Context): MainViewModelFactory = MainViewModelFactory(
-        getOrderRepository(context)
+        getOrderRepository(context), getSaleSummaryRepository(context)
     )
 
     fun provideMenuOptionsViewModelFactory(
@@ -30,7 +36,7 @@ object InjectorUtils {
         MenuOptionsViewModelFactory(getMenuItemRepository(context), category)
 
     fun provideDashboardViewModelFactory(context: Context): DashboardViewModelFactory =
-        DashboardViewModelFactory(getOrderRepository(context))
+        DashboardViewModelFactory(getOrderRepository(context), getSaleSummaryRepository(context))
 
     fun provideReportDetailFragmentViewModelFactory(
         context: Context,

@@ -3,11 +3,14 @@ package com.yue.ordernow.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yue.ordernow.data.OrderRepository
+import com.yue.ordernow.data.SaleSummaryRepository
 
-class MainViewModelFactory(private val repository: OrderRepository) :
+class MainViewModelFactory(
+    private val orderRepository: OrderRepository,
+    private val saleSummaryRepository: SaleSummaryRepository) :
     ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        MainViewModel(repository) as T
+        MainViewModel(orderRepository, saleSummaryRepository) as T
 }

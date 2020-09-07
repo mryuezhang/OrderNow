@@ -1,13 +1,13 @@
 package com.yue.ordernow.viewModels
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.yue.ordernow.data.OrderRepository
-import kotlinx.coroutines.launch
+import com.yue.ordernow.data.SaleSummaryRepository
 import java.util.*
 
 class DashboardViewModel internal constructor(
-    private val orderRepository: OrderRepository
+    orderRepository: OrderRepository,
+    saleSummaryRepository: SaleSummaryRepository
 ) : ViewModel() {
     val now: Calendar = Calendar.getInstance()
     val orders = orderRepository.getAllOrders()
@@ -15,10 +15,8 @@ class DashboardViewModel internal constructor(
 //    val weeklyOrders = orderRepository.getWeeklyOrders(now)
     val monthlyOrders = orderRepository.getMonthlyOrdersWithExtraDays(now)
 //    val yearlyOrders = orderRepository.getYearlyOrders(now)
-
-    suspend fun deleteAllOrders() {
-        viewModelScope.launch {
-            orderRepository.deleteAllOrders()
-        }
-    }
+    val saleSummaries = saleSummaryRepository.getAll()
+    val dailySaleSummary = saleSummaryRepository.getDailySaleSummary(now)
+    val weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(now)
+    val monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(now)
 }

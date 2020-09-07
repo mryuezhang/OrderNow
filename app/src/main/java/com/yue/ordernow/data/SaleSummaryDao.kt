@@ -9,6 +9,7 @@ import java.util.*
 
 @Dao
 interface SaleSummaryDao {
+
     /**
      * Get all sale summaries from the database
      *

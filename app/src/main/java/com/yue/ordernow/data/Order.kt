@@ -74,18 +74,17 @@ data class Order(
 
         private fun timeStamp(): Calendar {
             val now = Calendar.getInstance()
-            if (now.get(Calendar.DAY_OF_MONTH) ==
-                lastOrderCreatedTime?.get(Calendar.DAY_OF_MONTH)
+            if (now.get(Calendar.DAY_OF_YEAR) ==
+                lastOrderCreatedTime?.get(Calendar.DAY_OF_YEAR)
             ) {
                 // if this and previous order are made within the same day
-                lastOrderCreatedTime = now
                 orderCount++
             } else {
                 // if this order and previous order are not made within the same day, or there is no previous order
-                lastOrderCreatedTime = now
                 orderCount = 0
                 orderCount++
             }
+            lastOrderCreatedTime = now
             return now
         }
 
@@ -110,7 +109,6 @@ data class Order(
                 true
             )
         }
-
 
         fun newInstance(
             orderItems: ArrayList<OrderItem>,
