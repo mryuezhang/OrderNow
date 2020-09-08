@@ -16,17 +16,20 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.yue.ordernow.R
+import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentReportDetailBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.utilities.PercentFormatter
 import com.yue.ordernow.utilities.getThemeColor
+import com.yue.ordernow.viewModels.MainViewModel
 import com.yue.ordernow.viewModels.ReportDetailViewModel
 
 class ReportDetailFragment : AbstractFilterableOrderListFragment() {
     private val args: ReportDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentReportDetailBinding
+    override lateinit var activityViewModel: MainViewModel
 
     override val viewModel: ReportDetailViewModel by viewModels {
         InjectorUtils.provideReportDetailFragmentViewModelFactory(
@@ -40,9 +43,16 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        if (activity is MainActivity) {
+            activityViewModel = (activity as MainActivity).viewModel
+        } else {
+            throw IllegalAccessException("Illegal parent activity")
+        }
+
         binding = FragmentReportDetailBinding.inflate(inflater, container, false)
 
-        setupOrderList(binding.orderList, binding.textNoUnpaidOrders)
+        subscribeUi(binding.orderList, binding.textNoUnpaidOrders)
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.title =
             when (args.StringArgReportType) {
@@ -144,6 +154,12 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         takeoutQty.text = viewModel.diningInCount.toString()
         totalQty.text =
             (viewModel.takeOutCount + viewModel.diningInCount).toString()
+    }
+
+    private fun subscribeUi() {
+        viewModel.saleSummary.observe(viewLifecycleOwner) {
+
+        }
     }
 
     override fun filterList() {

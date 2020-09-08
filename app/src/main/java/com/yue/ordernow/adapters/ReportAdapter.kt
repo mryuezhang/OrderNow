@@ -190,7 +190,6 @@ class ReportAdapter(private val listener: ReportClickListener) :
         }
 
         private fun getBarDataValues(report: Report): ArrayList<BarEntry> {
-
             val values = ArrayList<BarEntry>()
             var index = 0f
 

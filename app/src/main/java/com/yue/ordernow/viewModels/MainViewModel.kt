@@ -35,14 +35,19 @@ class MainViewModel internal constructor(
         }
     }
 
+    fun updateOrder(order: Order) {
+        viewModelScope.launch {
+            orderRepository.update(order)
+        }
+    }
+
     fun updateSaleSummary(saleSummary: SaleSummary?) {
         viewModelScope.launch {
             if (saleSummary != null) {
                 saleSummaryRepository.update(saleSummary)
             } else {
-                Log.i("FFF", "FFFFF")
+                Log.e("MainViewModel", "Cannot update sale summary with null vale")
             }
-
         }
     }
 }

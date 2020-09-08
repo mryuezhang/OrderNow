@@ -6,7 +6,7 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderRepository
 
 class RecentOrderViewModel(orderRepository: OrderRepository) :
-    AbstractOrderListFragmentViewModel(orderRepository) {
+    AbstractOrderListFragmentViewModel() {
 
     override val orders: LiveData<List<Order>> = queryType.switchMap {
         if (it == ALL) {

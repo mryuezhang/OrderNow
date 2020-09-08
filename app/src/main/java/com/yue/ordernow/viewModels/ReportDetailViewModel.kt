@@ -3,13 +3,15 @@ package com.yue.ordernow.viewModels
 import androidx.lifecycle.switchMap
 import com.yue.ordernow.data.OrderRepository
 import com.yue.ordernow.data.Report
+import com.yue.ordernow.data.SaleSummaryRepository
 import com.yue.ordernow.fragments.ReportDetailFragmentArgs
 import java.util.*
 
 class ReportDetailViewModel internal constructor(
     orderRepository: OrderRepository,
+    saleSummaryRepository: SaleSummaryRepository,
     args: ReportDetailFragmentArgs
-) : AbstractOrderListFragmentViewModel(orderRepository) {
+) : AbstractOrderListFragmentViewModel() {
     override val orders = when (Report.Type.fromInt(args.StringArgReportType)) {
         Report.Type.TODAY -> {
             queryType.switchMap {
@@ -50,6 +52,18 @@ class ReportDetailViewModel internal constructor(
                     }
                 }
             }
+        }
+    }
+
+    val saleSummary =  when (Report.Type.fromInt(args.StringArgReportType)) {
+        Report.Type.TODAY -> {
+            saleSummaryRepository.getDailySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
+        }
+        Report.Type.THIS_WEEK -> {
+            saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
+        }
+        Report.Type.THIS_MONTH -> {
+            saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
         }
     }
 

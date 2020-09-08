@@ -42,7 +42,7 @@ object InjectorUtils {
         context: Context,
         args: ReportDetailFragmentArgs
     ): ReportDetailViewModelFactory =
-        ReportDetailViewModelFactory(getOrderRepository(context), args)
+        ReportDetailViewModelFactory(getOrderRepository(context), getSaleSummaryRepository(context), args)
 
     fun provideRecentOrderViewModelFactory(context: Context): RecentOrderViewModelFactory =
         RecentOrderViewModelFactory(getOrderRepository(context))

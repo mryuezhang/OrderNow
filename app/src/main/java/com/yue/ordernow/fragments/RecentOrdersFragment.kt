@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import com.yue.ordernow.R
+import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.databinding.FragmentRecentOrdersBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
+import com.yue.ordernow.viewModels.MainViewModel
 
 class RecentOrdersFragment : AbstractFilterableOrderListFragment() {
 
@@ -20,14 +22,22 @@ class RecentOrdersFragment : AbstractFilterableOrderListFragment() {
         )
     }
 
+    override lateinit var activityViewModel: MainViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (activity is MainActivity) {
+            activityViewModel = (activity as MainActivity).viewModel
+        } else {
+            throw IllegalAccessException("Illegal parent activity")
+        }
+
         binding = FragmentRecentOrdersBinding.inflate(inflater, container, false)
 
-        setupOrderList(binding.content.orderList, binding.content.emptyListHelperText)
+        subscribeUi(binding.content.orderList, binding.content.emptyListHelperText)
         setHasOptionsMenu(true)
 
         return binding.root

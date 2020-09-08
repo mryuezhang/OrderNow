@@ -11,12 +11,18 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderAdapter
+import com.yue.ordernow.data.SaleSummary
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
+import com.yue.ordernow.viewModels.MainViewModel
 
 abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClickListener {
 
     protected abstract val viewModel: AbstractOrderListFragmentViewModel
+    protected abstract var activityViewModel: MainViewModel
     protected abstract fun updateNoOrderHelpTextWhenSearching()
+    protected var dailySaleSummary: SaleSummary? = null
+    protected var weeklySaleSummary: SaleSummary? = null
+    protected var monthlySaleSummary: SaleSummary? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_order_list_fragment, menu)
@@ -47,7 +53,14 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    protected fun setupOrderList(orderList: RecyclerView, emptyTextView: TextView) {
+    protected fun subscribeUi(orderList: RecyclerView, emptyTextView: TextView) {
+        setupOrderList(orderList, emptyTextView)
+        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) { dailySaleSummary = it }
+        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) { weeklySaleSummary = it }
+        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) { monthlySaleSummary = it }
+    }
+
+    private fun setupOrderList(orderList: RecyclerView, emptyTextView: TextView) {
         orderList.addItemDecoration(
             DividerItemDecoration(
                 requireContext(),

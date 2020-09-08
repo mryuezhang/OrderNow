@@ -54,7 +54,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                             adapter.notifyItemChanged(position)
 
                             // Update database
-                            viewModel.updateOrder(order)
+                            activityViewModel.updateOrder(order)
 
                             Snackbar.make(
                                 requireView(),
@@ -67,7 +67,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                                 adapter.notifyItemChanged(position)
 
                                 // Update database
-                                viewModel.updateOrder(order)
+                                activityViewModel.updateOrder(order)
                             }.show()
                         }
                     }
@@ -80,7 +80,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                             adapter.notifyItemChanged(position)
 
                             // Update database
-                            viewModel.updateOrder(order)
+                            activityViewModel.updateOrder(order)
 
                             Snackbar.make(
                                 requireView(),
@@ -93,7 +93,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                                 adapter.notifyItemChanged(position)
 
                                 // Update database
-                                viewModel.updateOrder(order)
+                                activityViewModel.updateOrder(order)
                             }.show()
                         }
                     }
@@ -106,9 +106,17 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         adapter.notifyItemChanged(position)
 
                         // Update database
-                        viewModel.updateOrder(order)
+                        activityViewModel.updateOrder(order)
 
                         orderValidityChangeListener?.onChange(order)
+
+                        // Update sale summaries
+                        dailySaleSummary?.removeSaleData(order)
+                        weeklySaleSummary?.removeSaleData(order)
+                        monthlySaleSummary?.removeSaleData(order)
+                        activityViewModel.updateSaleSummary(dailySaleSummary)
+                        activityViewModel.updateSaleSummary(weeklySaleSummary)
+                        activityViewModel.updateSaleSummary(monthlySaleSummary)
 
                         Snackbar.make(
                             requireView(),
@@ -121,7 +129,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                             adapter.notifyItemChanged(position)
 
                             // Update database
-                            viewModel.updateOrder(order)
+                            activityViewModel.updateOrder(order)
                         }.show()
                     }
                 }

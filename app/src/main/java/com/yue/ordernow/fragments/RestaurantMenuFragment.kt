@@ -43,9 +43,9 @@ class RestaurantMenuFragment : Fragment(),
     private lateinit var activityViewModel: MainViewModel
     private var isOptionMenuViable = false
     private var isOrderPaid = false
-    var dailySaleSummary: SaleSummary? = null
-    var weeklySaleSummary: SaleSummary? = null
-    var monthlySaleSummary: SaleSummary? = null
+    private var dailySaleSummary: SaleSummary? = null
+    private var weeklySaleSummary: SaleSummary? = null
+    private var monthlySaleSummary: SaleSummary? = null
     private val slideDownAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(
             context,
@@ -119,17 +119,9 @@ class RestaurantMenuFragment : Fragment(),
             }
         }
 
-        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) {
-            dailySaleSummary = it
-        }
-
-        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) {
-            weeklySaleSummary = it
-        }
-
-        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) {
-            monthlySaleSummary = it
-        }
+        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) { dailySaleSummary = it }
+        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) { weeklySaleSummary = it }
+        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) { monthlySaleSummary = it }
 
         return binding.root
     }
@@ -146,6 +138,7 @@ class RestaurantMenuFragment : Fragment(),
     /*
      * Options menu methods
      */
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
         menu.findItem(R.id.action_confirm).isVisible = isOptionMenuViable

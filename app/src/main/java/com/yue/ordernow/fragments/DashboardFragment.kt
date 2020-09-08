@@ -15,27 +15,25 @@ import com.yue.ordernow.databinding.FragmentDashboardBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.DashboardViewModel
 
+
 class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
 
     private val viewModel: DashboardViewModel by viewModels {
         InjectorUtils.provideDashboardViewModelFactory(requireContext())
     }
 
-    private lateinit var adapter: ReportAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View? = FragmentDashboardBinding.inflate(inflater, container, false).run {
         setHasOptionsMenu(true)
-        val binding = FragmentDashboardBinding.inflate(inflater, container, false).apply {
-            adapter = ReportAdapter(this@DashboardFragment)
-            this.reports.adapter = adapter
-            subscribeUi(adapter)
-        }
+        val adapter = ReportAdapter(this@DashboardFragment)
+        this.reports.adapter = adapter
+        subscribeUi(adapter)
 
-        return binding.root
+        this.root
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_empty, menu)
@@ -49,6 +47,7 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
         val reports = ArrayList<Report>().apply {
             addAll(listOf(reportToday, reportWeek, reportMonth))
         }
+        adapter.submitList(reports)
 
         viewModel.dailySaleSummary.observe(viewLifecycleOwner) {
             reportToday.amount = it.subTotal
@@ -67,20 +66,17 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
 
         viewModel.dailyOrders.observe(viewLifecycleOwner) {
             reportToday.orders.addAll(it)
-            adapter.submitList(reports)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(0)
         }
 
         viewModel.weeklyOrders.observe(viewLifecycleOwner) {
             reportWeek.orders.addAll(it)
-            adapter.submitList(reports)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(1)
         }
 
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
             reportMonth.orders.addAll(it)
-            adapter.submitList(reports)
-            adapter.notifyDataSetChanged()
+            adapter.notifyItemChanged(2)
         }
     }
 

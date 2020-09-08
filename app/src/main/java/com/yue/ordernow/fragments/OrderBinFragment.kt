@@ -9,15 +9,18 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
+import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.FragmentOrderBinBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
+import com.yue.ordernow.viewModels.MainViewModel
 
-class OrderBinFragment() : AbstractOrderListFragment() {
+class OrderBinFragment : AbstractOrderListFragment() {
 
     private lateinit var binding: FragmentOrderBinBinding
+    override lateinit var activityViewModel: MainViewModel
     override val viewModel: AbstractOrderListFragmentViewModel by viewModels {
         InjectorUtils.provideOrderBinViewModelFactory(
             requireContext()
@@ -29,9 +32,15 @@ class OrderBinFragment() : AbstractOrderListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if (activity is MainActivity) {
+            activityViewModel = (activity as MainActivity).viewModel
+        } else {
+            throw IllegalAccessException("Illegal parent activity")
+        }
+
         binding = FragmentOrderBinBinding.inflate(inflater, container, false)
 
-        setupOrderList(binding.content.orderList, binding.content.emptyListHelperText)
+        subscribeUi(binding.content.orderList, binding.content.emptyListHelperText)
         setHasOptionsMenu(true)
 
         return binding.root
@@ -56,7 +65,7 @@ class OrderBinFragment() : AbstractOrderListFragment() {
                 adapter.notifyItemChanged(position)
 
                 // Update database
-                viewModel.updateOrder(order)
+                activityViewModel.updateOrder(order)
 
                 Snackbar.make(
                     requireView(),
@@ -69,7 +78,13 @@ class OrderBinFragment() : AbstractOrderListFragment() {
                     adapter.notifyItemChanged(position)
 
                     // Update database
-                    viewModel.updateOrder(order)
+                    activityViewModel.updateOrder(order)
+                    dailySaleSummary?.addSaleData(order)
+                    weeklySaleSummary?.addSaleData(order)
+                    monthlySaleSummary?.addSaleData(order)
+                    activityViewModel.updateSaleSummary(dailySaleSummary)
+                    activityViewModel.updateSaleSummary(weeklySaleSummary)
+                    activityViewModel.updateSaleSummary(monthlySaleSummary)
                 }.show()
             }
             .show()

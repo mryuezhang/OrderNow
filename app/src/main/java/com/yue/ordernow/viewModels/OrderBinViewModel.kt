@@ -6,7 +6,7 @@ import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderRepository
 
 class OrderBinViewModel(orderRepository: OrderRepository):
-    AbstractOrderListFragmentViewModel(orderRepository) {
+    AbstractOrderListFragmentViewModel() {
 
     override val orders: LiveData<List<Order>> = searchText.switchMap {
         orderRepository.getInvalidOrders(it)
