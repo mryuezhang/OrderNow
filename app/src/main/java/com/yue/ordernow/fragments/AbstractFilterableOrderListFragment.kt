@@ -43,7 +43,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
             .setNegativeButton(resources.getString(R.string.cancel)) { dialog, _ ->
                 dialog.cancel()
             }
-            .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                 when (choice) {
                     // Unpaid
                     0 -> {

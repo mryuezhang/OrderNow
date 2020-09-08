@@ -8,7 +8,6 @@ import com.yue.ordernow.utilities.getDayStart
 import com.yue.ordernow.utilities.getMonthStart
 import com.yue.ordernow.utilities.getWeekStart
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.set
 
@@ -24,14 +23,25 @@ data class SaleSummary (
     @ColumnInfo(name = "date")
     lateinit var date: Calendar
 
-    @ColumnInfo(name = "order-ids")
-    var orderIds = ArrayList<Long>()
-
     @ColumnInfo(name = "sale-data")
     var saleData = HashMap<String, Int>().withDefault { 0 } // <Menu Item Name, # of sold>
 
+    @ColumnInfo(name = "subtotal")
+    var subTotal: Float = 0f
+
+    @ColumnInfo(name = "tax")
+    var tax: Float = 0f
+
+    @ColumnInfo(name = "order-count")
+    var orderCount: Int = 0
+
     private fun addSaleData(string: String, quantity: Int = 1) {
-        saleData[string] = saleData.getValue(string) + quantity
+        if (saleData.containsKey(string)) {
+            saleData[string] = saleData.getValue(string) + quantity
+        } else {
+            saleData[string] = quantity
+        }
+
     }
 
     private fun addSaleData(menuItem: MenuItem, quantity: Int = 1) {
@@ -43,12 +53,12 @@ data class SaleSummary (
     }
 
     fun addSaleData(order: Order) {
-        if (!orderIds.contains(order.id)) {
-            order.orderItems.forEach {
-                addSaleData(it)
-            }
-            orderIds.add(order.id)
+        order.orderItems.forEach {
+            addSaleData(it)
         }
+        subTotal += order.subtotalAmount
+        tax += order.subtotalAmount * order.taxRate
+        orderCount++
     }
 
     private fun removeSaleData(string: String, quantity: Int = 1) {
@@ -70,12 +80,12 @@ data class SaleSummary (
     }
 
     fun removeSaleData(order: Order) {
-        if (orderIds.contains(order.id)) {
-            order.orderItems.forEach {
-                removeSaleData(it)
-            }
-            orderIds.remove(order.id)
+        order.orderItems.forEach {
+            removeSaleData(it)
         }
+        subTotal -= order.subtotalAmount
+        tax -= order.subtotalAmount * order.taxRate
+        orderCount--
     }
 
     companion object {

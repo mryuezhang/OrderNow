@@ -22,6 +22,7 @@ import com.yue.ordernow.adapters.*
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
+import com.yue.ordernow.data.SaleSummary
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 import com.yue.ordernow.utilities.currencyFormat
 import com.yue.ordernow.utilities.hideSoftKeyboard
@@ -42,6 +43,9 @@ class RestaurantMenuFragment : Fragment(),
     private lateinit var activityViewModel: MainViewModel
     private var isOptionMenuViable = false
     private var isOrderPaid = false
+    var dailySaleSummary: SaleSummary? = null
+    var weeklySaleSummary: SaleSummary? = null
+    var monthlySaleSummary: SaleSummary? = null
     private val slideDownAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(
             context,
@@ -113,6 +117,18 @@ class RestaurantMenuFragment : Fragment(),
                 showExpandedBottomSheetShape()
                 showOrderDetailOptionsMenu()
             }
+        }
+
+        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) {
+            dailySaleSummary = it
+        }
+
+        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) {
+            weeklySaleSummary = it
+        }
+
+        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) {
+            monthlySaleSummary = it
         }
 
         return binding.root
@@ -287,30 +303,33 @@ class RestaurantMenuFragment : Fragment(),
         // since inserting into data base is a asyc call, and we are clearing
         // out all the data right after with removeCurrentOrder(). Otherwise
         // empty array lists will be inserted into database
+        val order: Order
         val currentOrderer = binding.bottomSheet.orderer.text.toString().trim()
         if (currentOrderer == "") {
-            activityViewModel.saveToDatabase(
-                Order.newInstance(
-                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
-                    activityViewModel.subtotal,
-                    activityViewModel.totalQuantity,
-                    activityViewModel.isTakeout,
-                    isPaid
-                )
+            order = Order.newInstance(
+                activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
+                activityViewModel.subtotal,
+                activityViewModel.totalQuantity,
+                activityViewModel.isTakeout,
+                isPaid
             )
         } else {
-            activityViewModel.saveToDatabase(
-                Order.newInstance(
-                    activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
-                    activityViewModel.subtotal,
-                    activityViewModel.totalQuantity,
-                    activityViewModel.isTakeout,
-                    isPaid,
-                    currentOrderer
-                )
+            order = Order.newInstance(
+                activityViewModel.orderItems.clone() as ArrayList<OrderItem>,
+                activityViewModel.subtotal,
+                activityViewModel.totalQuantity,
+                activityViewModel.isTakeout,
+                isPaid,
+                currentOrderer
             )
         }
-
+        dailySaleSummary?.addSaleData(order)
+        weeklySaleSummary?.addSaleData(order)
+        monthlySaleSummary?.addSaleData(order)
+        activityViewModel.updateSaleSummary(dailySaleSummary)
+        activityViewModel.updateSaleSummary(weeklySaleSummary)
+        activityViewModel.updateSaleSummary(monthlySaleSummary)
+        activityViewModel.saveToDatabase(order)
 
         // Clear local copy of data and refresh view
         removeCurrentOrder()

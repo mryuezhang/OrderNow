@@ -1,5 +1,6 @@
 package com.yue.ordernow.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.yue.ordernow.data.*
@@ -16,57 +17,32 @@ class MainViewModel internal constructor(
     var totalQuantity = 0
     var isTakeout = false
     var orderer = ""
+    var dailySaleSummary = saleSummaryRepository.getDailySaleSummary(Calendar.getInstance())
+    var weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance())
+    var monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance())
 
     init {
         viewModelScope.launch {
-            val now = Calendar.getInstance()
-            if (saleSummaryRepository.getDailySaleSummary(now).value == null) {
-                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.TODAY, now))
-            }
-
-            if (saleSummaryRepository.getWeeklySaleSummary(now).value == null) {
-                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_WEEK, now))
-            }
-
-            if (saleSummaryRepository.getMonthlySaleSummary(now).value == null) {
-                saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_MONTH, now))
-            }
+            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.TODAY, Calendar.getInstance()))
+            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_WEEK, Calendar.getInstance()))
+            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_MONTH, Calendar.getInstance()))
         }
     }
 
     fun saveToDatabase(order: Order) {
         viewModelScope.launch {
-            var dailySaleSummary = saleSummaryRepository.getDailySaleSummary(order.timeCreated).value
-            if (dailySaleSummary == null) {
-                dailySaleSummary = SaleSummary.newInstance(Report.Type.TODAY, order.timeCreated)
-                dailySaleSummary.addSaleData(order)
-                saleSummaryRepository.insert(dailySaleSummary)
-            } else {
-                dailySaleSummary.addSaleData(order)
-                saleSummaryRepository.update(dailySaleSummary)
-            }
-
-            var weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(order.timeCreated).value
-            if (weeklySaleSummary == null) {
-                weeklySaleSummary = SaleSummary.newInstance(Report.Type.THIS_WEEK, order.timeCreated)
-                weeklySaleSummary.addSaleData(order)
-                saleSummaryRepository.insert(weeklySaleSummary)
-            } else {
-                weeklySaleSummary.addSaleData(order)
-                saleSummaryRepository.update(weeklySaleSummary)
-            }
-
-            var monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(order.timeCreated).value
-            if (monthlySaleSummary == null) {
-                monthlySaleSummary = SaleSummary.newInstance(Report.Type.THIS_MONTH, order.timeCreated)
-                monthlySaleSummary.addSaleData(order)
-                saleSummaryRepository.insert(monthlySaleSummary)
-            } else {
-                monthlySaleSummary.addSaleData(order)
-                saleSummaryRepository.update(monthlySaleSummary)
-            }
-
             orderRepository.insert(order)
+        }
+    }
+
+    fun updateSaleSummary(saleSummary: SaleSummary?) {
+        viewModelScope.launch {
+            if (saleSummary != null) {
+                saleSummaryRepository.update(saleSummary)
+            } else {
+                Log.i("FFF", "FFFFF")
+            }
+
         }
     }
 }

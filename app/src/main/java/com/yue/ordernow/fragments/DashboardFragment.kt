@@ -3,7 +3,6 @@ package com.yue.ordernow.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,8 +14,6 @@ import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentDashboardBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.DashboardViewModel
-import java.util.*
-import kotlin.collections.ArrayList
 
 class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
 
@@ -46,44 +43,44 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
     }
 
     private fun subscribeUi(adapter: ReportAdapter) {
+        val reportToday = Report(Report.Type.TODAY, 0, 0f)
+        val reportWeek = Report(Report.Type.THIS_WEEK, 0, 0f)
+        val reportMonth = Report(Report.Type.THIS_MONTH, 0, 0f)
+        val reports = ArrayList<Report>().apply {
+            addAll(listOf(reportToday, reportWeek, reportMonth))
+        }
+
         viewModel.dailySaleSummary.observe(viewLifecycleOwner) {
-            Log.i("DailySaleSummary", it.saleData.toString())
+            reportToday.amount = it.subTotal
+            reportToday.quantity = it.orderCount
         }
+
         viewModel.weeklySaleSummary.observe(viewLifecycleOwner) {
-            Log.i("WeeklySaleSummary", it.saleData.toString())
+            reportWeek.amount = it.subTotal
+            reportWeek.quantity = it.orderCount
         }
+
         viewModel.monthlySaleSummary.observe(viewLifecycleOwner) {
-            Log.i("MonthlySaleSummary", it.saleData.toString())
+            reportMonth.amount = it.subTotal
+            reportMonth.quantity = it.orderCount
         }
+
+        viewModel.dailyOrders.observe(viewLifecycleOwner) {
+            reportToday.orders.addAll(it)
+            adapter.submitList(reports)
+            adapter.notifyDataSetChanged()
+        }
+
+        viewModel.weeklyOrders.observe(viewLifecycleOwner) {
+            reportWeek.orders.addAll(it)
+            adapter.submitList(reports)
+            adapter.notifyDataSetChanged()
+        }
+
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
-            val reportToday = Report(Report.Type.TODAY, 0, 0f)
-            val reportWeek = Report(Report.Type.THIS_WEEK, 0, 0f)
-            val reportMonth = Report(Report.Type.THIS_MONTH, 0, 0f)
-            it.forEach { order ->
-                if (order.timeCreated.get(Calendar.DAY_OF_YEAR) == viewModel.now.get(Calendar.DAY_OF_YEAR)) {
-                    reportToday.quantity++
-                    reportToday.amount += order.subtotalAmount
-                    reportToday.orders.add(order)
-                }
-
-                if (order.timeCreated.get(Calendar.WEEK_OF_YEAR) == viewModel.now.get(Calendar.WEEK_OF_YEAR)) {
-                    reportWeek.quantity++
-                    reportWeek.amount += order.subtotalAmount
-                    reportWeek.orders.add(order)
-                }
-
-                if (order.timeCreated.get(Calendar.MONTH) == viewModel.now.get(Calendar.MONTH)) {
-                    reportMonth.quantity++
-                    reportMonth.amount += order.subtotalAmount
-                    reportMonth.orders.add(order)
-                }
-            }
-
-            adapter.submitList(ArrayList<Report>().apply {
-                this.add(reportToday)
-                this.add(reportWeek)
-                this.add(reportMonth)
-            })
+            reportMonth.orders.addAll(it)
+            adapter.submitList(reports)
+            adapter.notifyDataSetChanged()
         }
     }
 
