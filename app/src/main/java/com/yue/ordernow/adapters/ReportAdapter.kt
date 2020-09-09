@@ -33,9 +33,9 @@ class ReportAdapter(private val listener: ReportClickListener) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
         ReportViewHolder(
             ListItemReportBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+            LayoutInflater.from(parent.context),
+            parent,
+            false
             )
         )
 
@@ -78,13 +78,13 @@ class ReportAdapter(private val listener: ReportClickListener) :
                     // Hide chart when there is no orders
                     this.charts.visibility = View.GONE
                 } else {
-                    setupBarChart(this.barChart, item)
+                    initBarChart(this.barChart, item)
                     setBarChartData(this.barChart, item)
                 }
             }
         }
 
-        private fun setupBarChart(barChart: BarChart, report: Report) {
+        private fun initBarChart(barChart: BarChart, report: Report) {
             val textPrimaryColor =
                 listener.requestContext().getThemeColor(android.R.attr.textColorPrimary)
             barChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -162,7 +162,20 @@ class ReportAdapter(private val listener: ReportClickListener) :
                 }
             }
 
+        private fun getBarDataValues(report: Report): ArrayList<BarEntry> {
+            val values = ArrayList<BarEntry>()
+            var index = 0f
+
+            initData(report).forEach {
+                values.add(BarEntry(index++, it.toFloat()))
+            }
+
+            return values
+        }
+
         private fun initData(report: Report): IntArray {
+            takeOutCount = 0
+            diningInCount = 0
             val emptyDataSet = initZerosArray(report)
             report.orders.forEach { order ->
                 when (report.type) {
@@ -177,7 +190,6 @@ class ReportAdapter(private val listener: ReportClickListener) :
                         // Java Calendar DAY_OF_MONTH starts at 1
                         emptyDataSet[order.timeCreated.get(Calendar.DAY_OF_MONTH) - 1]++
                     }
-
                 }
 
                 if (order.isTakeout) {
@@ -187,17 +199,6 @@ class ReportAdapter(private val listener: ReportClickListener) :
                 }
             }
             return emptyDataSet
-        }
-
-        private fun getBarDataValues(report: Report): ArrayList<BarEntry> {
-            val values = ArrayList<BarEntry>()
-            var index = 0f
-
-            initData(report).forEach {
-                values.add(BarEntry(index++, it.toFloat()))
-            }
-
-            return values
         }
     }
 

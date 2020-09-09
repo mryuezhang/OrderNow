@@ -102,21 +102,13 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         order.isValid = false
                         order.isPaid = false // invalid orders should be marked as unpaid
 
-                        // Update view
-                        adapter.notifyItemChanged(position)
-
                         // Update database
-                        activityViewModel.updateOrder(order)
+                        updateOrderAndSaleSummaries(order)
 
                         orderValidityChangeListener?.onChange(order)
 
-                        // Update sale summaries
-                        dailySaleSummary?.removeSaleData(order)
-                        weeklySaleSummary?.removeSaleData(order)
-                        monthlySaleSummary?.removeSaleData(order)
-                        activityViewModel.updateSaleSummary(dailySaleSummary)
-                        activityViewModel.updateSaleSummary(weeklySaleSummary)
-                        activityViewModel.updateSaleSummary(monthlySaleSummary)
+                        // Update view
+                        adapter.notifyItemChanged(position)
 
                         Snackbar.make(
                             requireView(),
@@ -125,11 +117,11 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         ).setAction(resources.getString(R.string.undo)) {
                             order.isValid = true
 
+                            // Update database
+                            updateOrderAndSaleSummaries(order)
+
                             // Update view
                             adapter.notifyItemChanged(position)
-
-                            // Update database
-                            activityViewModel.updateOrder(order)
                         }.show()
                     }
                 }

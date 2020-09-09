@@ -41,7 +41,6 @@ data class SaleSummary (
         } else {
             saleData[string] = quantity
         }
-
     }
 
     private fun addSaleData(menuItem: MenuItem, quantity: Int = 1) {
@@ -62,12 +61,14 @@ data class SaleSummary (
     }
 
     private fun removeSaleData(string: String, quantity: Int = 1) {
-        val v = saleData.getValue(string)
-        if (v > quantity) {
-            saleData[string] = v - quantity
+        if (saleData.containsKey(string)) {
+            val v = saleData.getValue(string)
+            if (v > quantity) {
+                saleData[string] = v - quantity
 
-        } else if (v == quantity) {
-            saleData.remove(string)
+            } else if (v == quantity) {
+                saleData.remove(string)
+            }
         }
     }
 

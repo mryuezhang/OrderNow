@@ -61,11 +61,11 @@ class OrderBinFragment : AbstractOrderListFragment() {
             .setPositiveButton(resources.getString(R.string.validate)) { _, _ ->
                 order.isValid = true
 
+                // Update database
+                updateOrderAndSaleSummaries(order)
+
                 // Update view
                 adapter.notifyItemChanged(position)
-
-                // Update database
-                activityViewModel.updateOrder(order)
 
                 Snackbar.make(
                     requireView(),
@@ -74,17 +74,11 @@ class OrderBinFragment : AbstractOrderListFragment() {
                 ).setAction(resources.getString(R.string.undo)) {
                     order.isValid = false
 
+                    // Update database
+                    updateOrderAndSaleSummaries(order)
+
                     // Update view
                     adapter.notifyItemChanged(position)
-
-                    // Update database
-                    activityViewModel.updateOrder(order)
-                    dailySaleSummary?.addSaleData(order)
-                    weeklySaleSummary?.addSaleData(order)
-                    monthlySaleSummary?.addSaleData(order)
-                    activityViewModel.updateSaleSummary(dailySaleSummary)
-                    activityViewModel.updateSaleSummary(weeklySaleSummary)
-                    activityViewModel.updateSaleSummary(monthlySaleSummary)
                 }.show()
             }
             .show()

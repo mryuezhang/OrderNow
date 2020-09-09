@@ -34,7 +34,6 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
         this.root
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_empty, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -65,16 +64,19 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
         }
 
         viewModel.dailyOrders.observe(viewLifecycleOwner) {
+            reportToday.orders.clear()
             reportToday.orders.addAll(it)
             adapter.notifyItemChanged(0)
         }
 
         viewModel.weeklyOrders.observe(viewLifecycleOwner) {
+            reportWeek.orders.clear()
             reportWeek.orders.addAll(it)
             adapter.notifyItemChanged(1)
         }
 
         viewModel.monthlyOrders.observe(viewLifecycleOwner) {
+            reportMonth.orders.clear()
             reportMonth.orders.addAll(it)
             adapter.notifyItemChanged(2)
         }

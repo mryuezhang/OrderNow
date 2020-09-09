@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderAdapter
+import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.SaleSummary
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 import com.yue.ordernow.viewModels.MainViewModel
@@ -58,6 +59,22 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
         activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) { dailySaleSummary = it }
         activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) { weeklySaleSummary = it }
         activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) { monthlySaleSummary = it }
+    }
+
+    protected fun updateOrderAndSaleSummaries(order: Order) {
+        activityViewModel.updateOrder(order)
+        if (order.isValid) {
+            dailySaleSummary?.addSaleData(order)
+            weeklySaleSummary?.addSaleData(order)
+            monthlySaleSummary?.addSaleData(order)
+        } else {
+            dailySaleSummary?.removeSaleData(order)
+            weeklySaleSummary?.removeSaleData(order)
+            monthlySaleSummary?.removeSaleData(order)
+        }
+        activityViewModel.updateSaleSummary(dailySaleSummary)
+        activityViewModel.updateSaleSummary(weeklySaleSummary)
+        activityViewModel.updateSaleSummary(monthlySaleSummary)
     }
 
     private fun setupOrderList(orderList: RecyclerView, emptyTextView: TextView) {
