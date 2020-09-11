@@ -17,17 +17,10 @@ class MainViewModel internal constructor(
     var totalQuantity = 0
     var isTakeout = false
     var orderer = ""
-    var dailySaleSummary = saleSummaryRepository.getDailySaleSummary(Calendar.getInstance())
-    var weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance())
-    var monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance())
-
-    init {
-        viewModelScope.launch {
-            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.TODAY, Calendar.getInstance()))
-            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_WEEK, Calendar.getInstance()))
-            saleSummaryRepository.insert(SaleSummary.newInstance(Report.Type.THIS_MONTH, Calendar.getInstance()))
-        }
-    }
+    var saleSummaries = saleSummaryRepository.getAllRelatedSaleSummaries(Calendar.getInstance())
+//    var dailySaleSummary = saleSummaryRepository.getDailySaleSummary(Calendar.getInstance())
+//    var weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance())
+//    var monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance())
 
     fun saveToDatabase(order: Order) {
         viewModelScope.launch {
@@ -38,6 +31,12 @@ class MainViewModel internal constructor(
     fun updateOrder(order: Order) {
         viewModelScope.launch {
             orderRepository.update(order)
+        }
+    }
+
+    fun saveToDatabase(saleSummary: SaleSummary) {
+        viewModelScope.launch {
+            saleSummaryRepository.insert(saleSummary)
         }
     }
 

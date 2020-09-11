@@ -14,6 +14,8 @@ import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.FragmentDashboardBinding
 import com.yue.ordernow.utilities.InjectorUtils
 import com.yue.ordernow.viewModels.DashboardViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
@@ -46,55 +48,29 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
         val reports = ArrayList<Report>().apply {
             addAll(listOf(reportToday, reportWeek, reportMonth))
         }
-        adapter.submitList(reports)
 
-        viewModel.dailySaleSummary.observe(viewLifecycleOwner) {
-            reportToday.amount = it.subTotal
-            reportToday.quantity = it.orderCount
-        }
-
-        viewModel.weeklySaleSummary.observe(viewLifecycleOwner) {
-            reportWeek.amount = it.subTotal
-            reportWeek.quantity = it.orderCount
-        }
-
-        viewModel.monthlySaleSummary.observe(viewLifecycleOwner) {
-            reportMonth.amount = it.subTotal
-            reportMonth.quantity = it.orderCount
-        }
-
-        viewModel.dailyOrders.observe(viewLifecycleOwner) {
-            reportToday.orders.clear()
-            reportToday.orders.addAll(it)
-            adapter.notifyItemChanged(0)
-        }
-
-        viewModel.weeklyOrders.observe(viewLifecycleOwner) {
-            reportWeek.orders.clear()
-            reportWeek.orders.addAll(it)
-            adapter.notifyItemChanged(1)
-        }
-
-        viewModel.monthlyOrders.observe(viewLifecycleOwner) {
-            reportMonth.orders.clear()
-            reportMonth.orders.addAll(it)
-            adapter.notifyItemChanged(2)
+        viewModel.monthlyOrders.observe(viewLifecycleOwner) { list ->
+            list.forEach {
+                if (viewModel.now.get(Calendar.DAY_OF_YEAR) == it.timeCreated.get(Calendar.DAY_OF_YEAR)) {
+                    reportToday.associate(it)
+                }
+                if (viewModel.now.get(Calendar.WEEK_OF_YEAR) == it.timeCreated.get(Calendar.WEEK_OF_YEAR)) {
+                    reportWeek.associate(it)
+                }
+                reportMonth.associate(it)
+            }
+            adapter.submitList(reports)
         }
     }
 
-    override fun onClick(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
-        navigateToReport(type, takeoutCount, diningInCount)
+    override fun onClick(report: Report) {
+        navigateToReport(report)
     }
 
     override fun requestContext(): Context = requireContext()
 
-    private fun navigateToReport(type: Report.Type, takeoutCount: Int, diningInCount: Int) {
-        val direction = DashboardFragmentDirections.actionNavDashboardToReportDetailFragment(
-            type.value,
-            takeoutCount,
-            diningInCount,
-            viewModel.now.timeInMillis
-        )
+    private fun navigateToReport(report: Report) {
+        val direction = DashboardFragmentDirections.actionNavDashboardToReportDetailFragment(report)
         view?.findNavController()?.navigate(direction)
     }
 }

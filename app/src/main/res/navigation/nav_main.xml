@@ -79,17 +79,8 @@
             app:popExitAnim="@anim/slide_out_right" />
 
         <argument
-            android:name="@string/arg_report_type"
-            app:argType="integer" />
-        <argument
-            android:name="@string/arg_takeout_count"
-            app:argType="integer" />
-        <argument
-            android:name="@string/arg_dining_in_count"
-            app:argType="integer" />
-        <argument
-            android:name="@string/arg_time_stamp"
-            app:argType="long" />
+            android:name="@string/arg_report"
+            app:argType="com.yue.ordernow.data.Report" />
     </fragment>
 
     <fragment

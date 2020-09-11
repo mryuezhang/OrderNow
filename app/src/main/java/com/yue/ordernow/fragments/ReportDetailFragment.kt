@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -55,11 +56,10 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         subscribeUi(binding.orderList, binding.textNoUnpaidOrders)
         setHasOptionsMenu(true)
         (activity as AppCompatActivity).supportActionBar?.title =
-            when (args.StringArgReportType) {
-                Report.Type.TODAY.value -> resources.getString(R.string.today)
-                Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
-                Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
-                else -> resources.getString(R.string.no)
+            when (args.StringArgReport.type) {
+                Report.Type.TODAY -> resources.getString(R.string.today)
+                Report.Type.THIS_WEEK -> resources.getString(R.string.this_week)
+                Report.Type.THIS_MONTH -> resources.getString(R.string.this_month)
             }
         initPieChart(binding.pieChart)
         setPieChartData(binding.pieChart)
@@ -143,6 +143,17 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         }
 
         pieChart.data = data
+    }
+
+    private fun setBarChartData(barChart: BarChart) {
+        val menuItemNames = ArrayList<String>()
+        val quantities = ArrayList<Int>()
+//        when (args.StringArgReport.type) {
+//            Report.Type.TODAY.value -> {
+//            }
+//            Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
+//            Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
+//        }
     }
 
     private fun setupCustomLegend(

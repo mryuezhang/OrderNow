@@ -12,17 +12,17 @@ class ReportDetailViewModel internal constructor(
     saleSummaryRepository: SaleSummaryRepository,
     args: ReportDetailFragmentArgs
 ) : AbstractOrderListFragmentViewModel() {
-    override val orders = when (Report.Type.fromInt(args.StringArgReportType)) {
+    override val orders = when (args.StringArgReport.type) {
         Report.Type.TODAY -> {
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getDailyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getDailyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
 
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getDailyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getDailyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
                 }
             }
@@ -31,11 +31,11 @@ class ReportDetailViewModel internal constructor(
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getWeeklyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getWeeklyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getWeeklyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getWeeklyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
                 }
             }
@@ -44,30 +44,29 @@ class ReportDetailViewModel internal constructor(
             queryType.switchMap {
                 if (it == ALL) {
                     searchText.switchMap { string ->
-                        orderRepository.getMonthlyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getMonthlyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
                 } else {
                     searchText.switchMap { string ->
-                        orderRepository.getMonthlyUnpaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp }, string)
+                        orderRepository.getMonthlyUnpaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
                 }
             }
         }
     }
 
-    val saleSummary =  when (Report.Type.fromInt(args.StringArgReportType)) {
+    val saleSummary =  when (args.StringArgReport.type) {
         Report.Type.TODAY -> {
-            saleSummaryRepository.getDailySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
+            saleSummaryRepository.getDailySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp })
         }
         Report.Type.THIS_WEEK -> {
-            saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
+            saleSummaryRepository.getWeeklySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp })
         }
         Report.Type.THIS_MONTH -> {
-            saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgTimeStamp })
+            saleSummaryRepository.getMonthlySaleSummary(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp })
         }
     }
 
-    var takeOutCount = args.StringArgTakeoutCount
-    var diningInCount = args.StringArgDiningInCount
-
+    var takeOutCount = args.StringArgReport.takeOutCount
+    var diningInCount = args.StringArgReport.diningInCount
 }

@@ -12,20 +12,17 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.yue.ordernow.R
 import com.yue.ordernow.data.Report
 import com.yue.ordernow.databinding.ListItemReportBinding
 import com.yue.ordernow.utilities.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ReportAdapter(private val listener: ReportClickListener) :
     ListAdapter<Report, RecyclerView.ViewHolder>(ReportDiffCallback()) {
 
     interface ReportClickListener {
-        fun onClick(type: Report.Type, takeoutCount: Int, diningInCount: Int)
+        fun onClick(report: Report)
 
         fun requestContext(): Context
     }
@@ -48,13 +45,11 @@ class ReportAdapter(private val listener: ReportClickListener) :
 
     private inner class ReportViewHolder(private val binding: ListItemReportBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private var takeOutCount = 0
-        private var diningInCount = 0
 
         init {
             binding.setOnClickListener {
                 binding.report?.let { report ->
-                    listener.onClick(report.type, takeOutCount, diningInCount)
+                    listener.onClick(report)
                 }
             }
         }
@@ -71,15 +66,15 @@ class ReportAdapter(private val listener: ReportClickListener) :
                     Report.Type.THIS_MONTH -> listener.requestContext().getString(R.string.this_month)
                 }
 
-                if (item.orders.isEmpty()) {
+                if (item.quantity != 0) {
+                    initBarChart(this.barChart, item)
+                    setBarChartData(this.barChart, item)
+                } else {
                     // Disable clickability when there is no orders
                     this.root.isClickable = false
 
                     // Hide chart when there is no orders
                     this.charts.visibility = View.GONE
-                } else {
-                    initBarChart(this.barChart, item)
-                    setBarChartData(this.barChart, item)
                 }
             }
         }
@@ -123,82 +118,12 @@ class ReportAdapter(private val listener: ReportClickListener) :
         }
 
         private fun setBarChartData(barChart: BarChart, report: Report) {
-            val dataSet = BarDataSet(getBarDataValues(report), "").apply {
+            val dataSet = BarDataSet(report.barEntries, "").apply {
                 setDrawIcons(false)
                 this.valueFormatter = ValueOverBarFormatter()
                 this.color = ContextCompat.getColor(listener.requestContext(), R.color.colorPrimary)
             }
             barChart.data = BarData(dataSet)
-        }
-
-        private fun initZerosArray(report: Report): IntArray =
-            when (report.type) {
-                Report.Type.TODAY -> {
-                    IntArray(24) { 0 }
-                }
-                Report.Type.THIS_WEEK -> {
-                    IntArray(7) { 0 }
-                }
-                Report.Type.THIS_MONTH -> {
-                    when (report.orders[0].timeCreated.get(Calendar.MONTH)) {
-                        Calendar.JANUARY, Calendar.MARCH, Calendar.MAY, Calendar.JULY, Calendar.AUGUST, Calendar.OCTOBER, Calendar.DECEMBER -> {
-                            IntArray(31) { 0 }
-                        }
-                        Calendar.APRIL, Calendar.JUNE, Calendar.SEPTEMBER, Calendar.NOVEMBER -> {
-                            IntArray(30) { 0 }
-                        }
-                        else -> {
-                            val cal = Calendar.getInstance().apply {
-                                set(Calendar.YEAR, report.orders[0].timeCreated.get(Calendar.YEAR))
-                            }
-
-                            if (cal.getActualMaximum(Calendar.DAY_OF_YEAR) > 365) {
-                                IntArray(29) { 0 }
-                            } else {
-                                IntArray(28) { 0 }
-                            }
-                        }
-                    }
-                }
-            }
-
-        private fun getBarDataValues(report: Report): ArrayList<BarEntry> {
-            val values = ArrayList<BarEntry>()
-            var index = 0f
-
-            initData(report).forEach {
-                values.add(BarEntry(index++, it.toFloat()))
-            }
-
-            return values
-        }
-
-        private fun initData(report: Report): IntArray {
-            takeOutCount = 0
-            diningInCount = 0
-            val emptyDataSet = initZerosArray(report)
-            report.orders.forEach { order ->
-                when (report.type) {
-                    Report.Type.TODAY -> {
-                        emptyDataSet[order.timeCreated.get(Calendar.HOUR_OF_DAY)]++
-                    }
-                    Report.Type.THIS_WEEK -> {
-                        // Java Calendar DAY_OF_MONTH starts at 1, which is Sunday
-                        emptyDataSet[order.timeCreated.get(Calendar.DAY_OF_WEEK) - 1]++
-                    }
-                    Report.Type.THIS_MONTH -> {
-                        // Java Calendar DAY_OF_MONTH starts at 1
-                        emptyDataSet[order.timeCreated.get(Calendar.DAY_OF_MONTH) - 1]++
-                    }
-                }
-
-                if (order.isTakeout) {
-                    takeOutCount++
-                } else {
-                    diningInCount++
-                }
-            }
-            return emptyDataSet
         }
     }
 

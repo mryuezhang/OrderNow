@@ -178,7 +178,5 @@ data class Order(
         parcel.writeByte(if (isValid) 1 else 0)
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
+    override fun describeContents(): Int = 0
 }

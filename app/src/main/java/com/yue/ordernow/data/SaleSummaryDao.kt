@@ -40,6 +40,10 @@ interface SaleSummaryDao {
     @Query("SELECT * FROM `sale-summary` WHERE `date` == :time AND `type` == :type ORDER BY `date`")
     fun getSaleSummary(time: Calendar, type: Report.Type): LiveData<SaleSummary>
 
+
+    @Query("SELECT * FROM `sale-summary` WHERE `date` == :dayStart AND `type` == 0 UNION SELECT * FROM `sale-summary` WHERE `date` == :weekStart AND `type` == 1 UNION SELECT * FROM `sale-summary` WHERE `date` == :monthStart AND `type` == 2")
+    fun getAllRelatedSaleSummaries(dayStart: Calendar, weekStart: Calendar, monthStart: Calendar): LiveData<List<SaleSummary>>
+
     /**
      * Get a daily sale summary
      *

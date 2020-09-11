@@ -9,14 +9,9 @@ class DashboardViewModel internal constructor(
     orderRepository: OrderRepository,
     saleSummaryRepository: SaleSummaryRepository
 ) : ViewModel() {
-    val now: Calendar = Calendar.getInstance()
-    val orders = orderRepository.getAllOrders()
+    internal val now = Calendar.getInstance()
     val dailyOrders = orderRepository.getDailyOrders(now)
     val weeklyOrders = orderRepository.getWeeklyOrders(now)
     val monthlyOrders = orderRepository.getMonthlyOrdersWithExtraDays(now)
-//    val yearlyOrders = orderRepository.getYearlyOrders(now)
-    val saleSummaries = saleSummaryRepository.getAll()
-    val dailySaleSummary = saleSummaryRepository.getDailySaleSummary(now)
-    val weeklySaleSummary = saleSummaryRepository.getWeeklySaleSummary(now)
-    val monthlySaleSummary = saleSummaryRepository.getMonthlySaleSummary(now)
+    val saleSummaries = saleSummaryRepository.getAllRelatedSaleSummaries(now)
 }

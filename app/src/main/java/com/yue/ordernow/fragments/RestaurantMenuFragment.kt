@@ -2,6 +2,7 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -9,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -22,7 +22,6 @@ import com.yue.ordernow.adapters.*
 import com.yue.ordernow.data.MenuItem
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.data.OrderItem
-import com.yue.ordernow.data.SaleSummary
 import com.yue.ordernow.databinding.FragmentRestaurantMenuBinding
 import com.yue.ordernow.utilities.currencyFormat
 import com.yue.ordernow.utilities.hideSoftKeyboard
@@ -30,7 +29,7 @@ import com.yue.ordernow.viewModels.MainViewModel
 
 private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 
-class RestaurantMenuFragment : Fragment(),
+class RestaurantMenuFragment : AbstractSaleSummaryFragment(),
     CustomOrderDialogFragment.CustomOrderDialogListener,
     ModifyOrderDialogFragment.ModifyOrderDialogListener,
     MenuItemAdapter.MenuItemListener,
@@ -43,9 +42,7 @@ class RestaurantMenuFragment : Fragment(),
     private lateinit var activityViewModel: MainViewModel
     private var isOptionMenuViable = false
     private var isOrderPaid = false
-    private var dailySaleSummary: SaleSummary? = null
-    private var weeklySaleSummary: SaleSummary? = null
-    private var monthlySaleSummary: SaleSummary? = null
+
     private val slideDownAnimation: Animation by lazy {
         AnimationUtils.loadAnimation(
             context,
@@ -119,9 +116,7 @@ class RestaurantMenuFragment : Fragment(),
             }
         }
 
-        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) { dailySaleSummary = it }
-        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) { weeklySaleSummary = it }
-        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) { monthlySaleSummary = it }
+        subscribeAndInit(activityViewModel)
 
         return binding.root
     }
@@ -316,9 +311,12 @@ class RestaurantMenuFragment : Fragment(),
                 currentOrderer
             )
         }
-        dailySaleSummary?.addSaleData(order)
-        weeklySaleSummary?.addSaleData(order)
-        monthlySaleSummary?.addSaleData(order)
+        dailySaleSummary.addSaleData(order)
+        weeklySaleSummary.addSaleData(order)
+        monthlySaleSummary.addSaleData(order)
+        Log.i("TODAY", dailySaleSummary.subTotal.toString() + ", " + dailySaleSummary.orderCount)
+        Log.i("WEEK", weeklySaleSummary.subTotal.toString() + ", " + weeklySaleSummary.orderCount)
+        Log.i("MONTH", monthlySaleSummary.subTotal.toString() + ", " + monthlySaleSummary.orderCount)
         activityViewModel.updateSaleSummary(dailySaleSummary)
         activityViewModel.updateSaleSummary(weeklySaleSummary)
         activityViewModel.updateSaleSummary(monthlySaleSummary)

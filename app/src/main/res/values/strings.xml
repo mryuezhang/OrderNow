@@ -119,6 +119,7 @@
     <string name="arg_takeout_count">takeout-count</string>
     <string name="arg_dining_in_count">dining-in-count</string>
     <string name="arg_time_stamp">time-stamp</string>
+    <string name="arg_report">report</string>
 
     <string name="key_tax_rate">tax_rate</string>
     <string name="title_tax_rate">Tax Rate</string>

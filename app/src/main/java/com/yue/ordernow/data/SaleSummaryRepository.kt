@@ -1,6 +1,9 @@
 package com.yue.ordernow.data
 
 import androidx.lifecycle.LiveData
+import com.yue.ordernow.utilities.getDayStart
+import com.yue.ordernow.utilities.getMonthStart
+import com.yue.ordernow.utilities.getWeekStart
 import java.util.*
 
 class SaleSummaryRepository private constructor(private val saleSummaryDao: SaleSummaryDao) {
@@ -16,6 +19,11 @@ class SaleSummaryRepository private constructor(private val saleSummaryDao: Sale
 
     fun getMonthlySaleSummary(time: Calendar): LiveData<SaleSummary> =
         saleSummaryDao.getMonthlySaleSummary(time)
+
+    fun getAllRelatedSaleSummaries(time: Calendar): LiveData<List<SaleSummary>> =
+        saleSummaryDao.getAllRelatedSaleSummaries(getDayStart(time),
+            getWeekStart(time),
+            getMonthStart(time))
 
     suspend fun insert(saleSummary: SaleSummary) {
         saleSummaryDao.insert(saleSummary)

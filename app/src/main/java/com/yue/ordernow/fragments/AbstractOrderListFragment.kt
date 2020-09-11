@@ -5,25 +5,20 @@ import android.view.MenuInflater
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.data.Order
-import com.yue.ordernow.data.SaleSummary
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 import com.yue.ordernow.viewModels.MainViewModel
 
-abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClickListener {
+abstract class AbstractOrderListFragment : AbstractSaleSummaryFragment(), OrderAdapter.ItemLongClickListener {
 
     protected abstract val viewModel: AbstractOrderListFragmentViewModel
     protected abstract var activityViewModel: MainViewModel
     protected abstract fun updateNoOrderHelpTextWhenSearching()
-    protected var dailySaleSummary: SaleSummary? = null
-    protected var weeklySaleSummary: SaleSummary? = null
-    protected var monthlySaleSummary: SaleSummary? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_order_list_fragment, menu)
@@ -56,21 +51,20 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
 
     protected fun subscribeUi(orderList: RecyclerView, emptyTextView: TextView) {
         setupOrderList(orderList, emptyTextView)
-        activityViewModel.dailySaleSummary.observe(viewLifecycleOwner) { dailySaleSummary = it }
-        activityViewModel.weeklySaleSummary.observe(viewLifecycleOwner) { weeklySaleSummary = it }
-        activityViewModel.monthlySaleSummary.observe(viewLifecycleOwner) { monthlySaleSummary = it }
+
+        subscribeAndInit(activityViewModel)
     }
 
     protected fun updateOrderAndSaleSummaries(order: Order) {
         activityViewModel.updateOrder(order)
         if (order.isValid) {
-            dailySaleSummary?.addSaleData(order)
-            weeklySaleSummary?.addSaleData(order)
-            monthlySaleSummary?.addSaleData(order)
+            dailySaleSummary.addSaleData(order)
+            weeklySaleSummary.addSaleData(order)
+            monthlySaleSummary.addSaleData(order)
         } else {
-            dailySaleSummary?.removeSaleData(order)
-            weeklySaleSummary?.removeSaleData(order)
-            monthlySaleSummary?.removeSaleData(order)
+            dailySaleSummary.removeSaleData(order)
+            weeklySaleSummary.removeSaleData(order)
+            monthlySaleSummary.removeSaleData(order)
         }
         activityViewModel.updateSaleSummary(dailySaleSummary)
         activityViewModel.updateSaleSummary(weeklySaleSummary)
