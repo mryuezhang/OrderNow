@@ -5,16 +5,16 @@ import android.view.MenuInflater
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.OrderAdapter
-import com.yue.ordernow.data.Order
 import com.yue.ordernow.viewModels.AbstractOrderListFragmentViewModel
 import com.yue.ordernow.viewModels.MainViewModel
 
-abstract class AbstractOrderListFragment : AbstractSaleSummaryFragment(), OrderAdapter.ItemLongClickListener {
+abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClickListener {
 
     protected abstract val viewModel: AbstractOrderListFragmentViewModel
     protected abstract var activityViewModel: MainViewModel
@@ -51,24 +51,6 @@ abstract class AbstractOrderListFragment : AbstractSaleSummaryFragment(), OrderA
 
     protected fun subscribeUi(orderList: RecyclerView, emptyTextView: TextView) {
         setupOrderList(orderList, emptyTextView)
-
-        subscribeAndInit(activityViewModel)
-    }
-
-    protected fun updateOrderAndSaleSummaries(order: Order) {
-        activityViewModel.updateOrder(order)
-        if (order.isValid) {
-            dailySaleSummary.addSaleData(order)
-            weeklySaleSummary.addSaleData(order)
-            monthlySaleSummary.addSaleData(order)
-        } else {
-            dailySaleSummary.removeSaleData(order)
-            weeklySaleSummary.removeSaleData(order)
-            monthlySaleSummary.removeSaleData(order)
-        }
-        activityViewModel.updateSaleSummary(dailySaleSummary)
-        activityViewModel.updateSaleSummary(weeklySaleSummary)
-        activityViewModel.updateSaleSummary(monthlySaleSummary)
     }
 
     private fun setupOrderList(orderList: RecyclerView, emptyTextView: TextView) {

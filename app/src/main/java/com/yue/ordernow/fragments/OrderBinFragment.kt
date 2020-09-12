@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.yue.ordernow.R
-import com.yue.ordernow.activities.MainActivity
 import com.yue.ordernow.adapters.OrderAdapter
 import com.yue.ordernow.data.Order
 import com.yue.ordernow.databinding.FragmentOrderBinBinding
@@ -32,11 +31,6 @@ class OrderBinFragment : AbstractOrderListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (activity is MainActivity) {
-            activityViewModel = (activity as MainActivity).viewModel
-        } else {
-            throw IllegalAccessException("Illegal parent activity")
-        }
 
         binding = FragmentOrderBinBinding.inflate(inflater, container, false)
 
@@ -62,7 +56,7 @@ class OrderBinFragment : AbstractOrderListFragment() {
                 order.isValid = true
 
                 // Update database
-                updateOrderAndSaleSummaries(order)
+                activityViewModel.updateOrder(order)
 
                 // Update view
                 adapter.notifyItemChanged(position)
@@ -75,7 +69,7 @@ class OrderBinFragment : AbstractOrderListFragment() {
                     order.isValid = false
 
                     // Update database
-                    updateOrderAndSaleSummaries(order)
+                    activityViewModel.updateOrder(order)
 
                     // Update view
                     adapter.notifyItemChanged(position)

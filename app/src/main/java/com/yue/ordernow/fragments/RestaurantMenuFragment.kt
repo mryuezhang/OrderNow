@@ -2,7 +2,6 @@ package com.yue.ordernow.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -10,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -29,7 +29,7 @@ import com.yue.ordernow.viewModels.MainViewModel
 
 private const val IS_BOTTOM_SHEET_EXPAND = "ibse"
 
-class RestaurantMenuFragment : AbstractSaleSummaryFragment(),
+class RestaurantMenuFragment : Fragment(),
     CustomOrderDialogFragment.CustomOrderDialogListener,
     ModifyOrderDialogFragment.ModifyOrderDialogListener,
     MenuItemAdapter.MenuItemListener,
@@ -115,8 +115,6 @@ class RestaurantMenuFragment : AbstractSaleSummaryFragment(),
                 showOrderDetailOptionsMenu()
             }
         }
-
-        subscribeAndInit(activityViewModel)
 
         return binding.root
     }
@@ -311,15 +309,6 @@ class RestaurantMenuFragment : AbstractSaleSummaryFragment(),
                 currentOrderer
             )
         }
-        dailySaleSummary.addSaleData(order)
-        weeklySaleSummary.addSaleData(order)
-        monthlySaleSummary.addSaleData(order)
-        Log.i("TODAY", dailySaleSummary.subTotal.toString() + ", " + dailySaleSummary.orderCount)
-        Log.i("WEEK", weeklySaleSummary.subTotal.toString() + ", " + weeklySaleSummary.orderCount)
-        Log.i("MONTH", monthlySaleSummary.subTotal.toString() + ", " + monthlySaleSummary.orderCount)
-        activityViewModel.updateSaleSummary(dailySaleSummary)
-        activityViewModel.updateSaleSummary(weeklySaleSummary)
-        activityViewModel.updateSaleSummary(monthlySaleSummary)
         activityViewModel.saveToDatabase(order)
 
         // Clear local copy of data and refresh view

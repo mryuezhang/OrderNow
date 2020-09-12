@@ -15,8 +15,7 @@ import com.yue.ordernow.worker.DataBaseWorker
 @Database(
     entities = [
         MenuItem::class,
-        Order::class,
-        SaleSummary::class
+        Order::class
     ],
     version = DATA_VERSION,
     exportSchema = false)
@@ -24,7 +23,6 @@ import com.yue.ordernow.worker.DataBaseWorker
 abstract class AppDatabase : RoomDatabase() {
     abstract fun menuItemDao(): MenuItemDao
     abstract fun orderDao(): OrderDao
-    abstract fun saleSummaryDao(): SaleSummaryDao
 
     companion object {
 

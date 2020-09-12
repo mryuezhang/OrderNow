@@ -152,7 +152,7 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
 //            Report.Type.TODAY.value -> {
 //            }
 //            Report.Type.THIS_WEEK.value -> resources.getString(R.string.this_week)
-//            Report.Type.THIS_MONTH.value -> resources.getString(R.string.this_month)
+//            Report.Type.THIS_MONTH+.value -> resources.getString(R.string.this_month)
 //        }
     }
 
@@ -165,12 +165,6 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
         takeoutQty.text = viewModel.diningInCount.toString()
         totalQty.text =
             (viewModel.takeOutCount + viewModel.diningInCount).toString()
-    }
-
-    private fun subscribeUi() {
-        viewModel.saleSummary.observe(viewLifecycleOwner) {
-
-        }
     }
 
     override fun filterList() {

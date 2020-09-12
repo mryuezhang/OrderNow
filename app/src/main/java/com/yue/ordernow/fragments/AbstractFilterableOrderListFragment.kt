@@ -103,7 +103,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         order.isPaid = false // invalid orders should be marked as unpaid
 
                         // Update database
-                        updateOrderAndSaleSummaries(order)
+                        activityViewModel.updateOrder(order)
 
                         orderValidityChangeListener?.onChange(order)
 
@@ -118,7 +118,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                             order.isValid = true
 
                             // Update database
-                            updateOrderAndSaleSummaries(order)
+                            activityViewModel.updateOrder(order)
 
                             // Update view
                             adapter.notifyItemChanged(position)
