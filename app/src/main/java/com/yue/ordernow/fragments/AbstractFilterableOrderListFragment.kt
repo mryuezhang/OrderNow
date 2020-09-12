@@ -11,12 +11,12 @@ import com.yue.ordernow.data.Order
 
 abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment() {
 
-    interface OrderValidityChangeListener {
+    interface InvalidateOrderListener {
         fun onChange(order: Order)
     }
 
     protected abstract fun filterList()
-    protected var orderValidityChangeListener: OrderValidityChangeListener? = null
+    protected var invalidateOrderListener: InvalidateOrderListener? = null
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
@@ -105,7 +105,7 @@ abstract class AbstractFilterableOrderListFragment : AbstractOrderListFragment()
                         // Update database
                         activityViewModel.updateOrder(order)
 
-                        orderValidityChangeListener?.onChange(order)
+                        invalidateOrderListener?.onChange(order)
 
                         // Update view
                         adapter.notifyItemChanged(position)

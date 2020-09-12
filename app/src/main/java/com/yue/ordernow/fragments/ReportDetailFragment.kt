@@ -68,7 +68,7 @@ class ReportDetailFragment : AbstractFilterableOrderListFragment() {
             binding.takeoutQty,
             binding.totalQty
         )
-        orderValidityChangeListener = object : OrderValidityChangeListener {
+        invalidateOrderListener = object : InvalidateOrderListener {
             override fun onChange(order: Order) {
                 if (order.isValid) {
                     if (order.isTakeout) {

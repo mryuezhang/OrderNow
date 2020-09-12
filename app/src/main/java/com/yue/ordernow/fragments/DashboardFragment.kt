@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import com.yue.ordernow.R
 import com.yue.ordernow.adapters.ReportAdapter
@@ -49,7 +48,11 @@ class DashboardFragment : Fragment(), ReportAdapter.ReportClickListener {
             addAll(listOf(reportToday, reportWeek, reportMonth))
         }
 
-        viewModel.monthlyOrders.observe(viewLifecycleOwner) { list ->
+        // Since ReportDetailFragment can modify our order list(toggle orders' validity),
+        // the observer cannot be view life cycle aware. This is because if order list is
+        // modified within ReportDetailFragment, observer won't observe the change since
+        // DashboardFragment's view is not visible at the moment
+        viewModel.monthlyOrders.observeForever { list ->
             list.forEach {
                 if (viewModel.now.get(Calendar.DAY_OF_YEAR) == it.timeCreated.get(Calendar.DAY_OF_YEAR)) {
                     reportToday.associate(it)
