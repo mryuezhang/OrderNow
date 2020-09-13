@@ -5,14 +5,17 @@ import android.os.Parcelable
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.data.Entry
 import com.yue.ordernow.utilities.currencyFormat
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 data class Report(val type: Type, var quantity: Int, var amount: Float) : Parcelable {
     var timeStamp: Long = 0
     var takeOutCount = 0
     var diningInCount = 0
     val barEntries = ArrayList<BarEntry>()
+    var saleData: java.util.HashMap<String, Int> = HashMap()
 
     fun getFormattedAmount(): String = currencyFormat(amount)
 
@@ -83,6 +86,14 @@ data class Report(val type: Type, var quantity: Int, var amount: Float) : Parcel
 
         quantity++
         amount += order.subtotalAmount
+        
+        order.orderItems.forEach { 
+            if (saleData.containsKey(it.item.name)) {
+                saleData[it.item.name] = saleData.getValue(it.item.name) + it.quantity
+            } else {
+                saleData[it.item.name] = it.quantity
+            }
+        }
     }
 
     enum class Type(val value: Int) {
@@ -102,6 +113,7 @@ data class Report(val type: Type, var quantity: Int, var amount: Float) : Parcel
         takeOutCount = parcel.readInt()
         diningInCount = parcel.readInt()
         parcel.readTypedList(barEntries as List<Entry>, BarEntry.CREATOR)
+        saleData = parcel.readSerializable() as HashMap<String, Int>
     }
 
     override fun describeContents(): Int = 0
@@ -114,6 +126,7 @@ data class Report(val type: Type, var quantity: Int, var amount: Float) : Parcel
         dest.writeInt(takeOutCount)
         dest.writeInt(diningInCount)
         dest.writeTypedList(barEntries)
+        dest.writeSerializable(saleData as Serializable)
     }
 
     companion object CREATOR : Parcelable.Creator<Report> {
@@ -125,6 +138,4 @@ data class Report(val type: Type, var quantity: Int, var amount: Float) : Parcel
             return arrayOfNulls(size)
         }
     }
-
-
 }

@@ -28,19 +28,19 @@ class RecentOrdersFragment : AbstractFilterableOrderListFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View? = FragmentRecentOrdersBinding.inflate(inflater, container, false).run {
         if (activity is MainActivity) {
             activityViewModel = (activity as MainActivity).viewModel
         } else {
             throw IllegalAccessException("Illegal parent activity")
         }
 
-        binding = FragmentRecentOrdersBinding.inflate(inflater, container, false)
+        binding = this
 
-        subscribeUi(binding.content.orderList, binding.content.emptyListHelperText)
+        initOrderList(this.content.orderList, this.content.emptyListHelperText)
         setHasOptionsMenu(true)
 
-        return binding.root
+        this.root
     }
 
     override fun filterList() {

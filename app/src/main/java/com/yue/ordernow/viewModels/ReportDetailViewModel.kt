@@ -17,7 +17,6 @@ class ReportDetailViewModel internal constructor(
                     searchText.switchMap { string ->
                         orderRepository.getDailyOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)
                     }
-
                 } else {
                     searchText.switchMap { string ->
                         orderRepository.getDailyUnPaidOrders(Calendar.getInstance().apply { timeInMillis = args.StringArgReport.timeStamp }, string)

@@ -120,7 +120,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView15">
 
                 <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart"
+                    android:id="@+id/bar_chart"
                     android:layout_width="0dp"
                     android:layout_height="194dp"
                     android:layout_weight="1" />

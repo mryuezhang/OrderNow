@@ -58,5 +58,8 @@ class PercentFormatter(private val pieChart: PieChart) : ValueFormatter() {
             mFormat.format(value.toDouble())
         }
     }
+}
 
+class MenuItemNameFormatter(val labels: ArrayList<String>) : ValueFormatter() {
+    override fun getFormattedValue(value: Float): String = labels[value.toInt()]
 }

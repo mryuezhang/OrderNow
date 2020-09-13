@@ -20,7 +20,7 @@ interface OrderDao {
      * @return A LiveData object holding the last order
      */
     @Query("SELECT * FROM `orders` ORDER BY `time-created` DESC LIMIT 1")
-    fun getLastOrder(): LiveData<Order>
+    fun getLastOrder(): LiveData<Order?>
 
     /**
      * Get orders between a time period

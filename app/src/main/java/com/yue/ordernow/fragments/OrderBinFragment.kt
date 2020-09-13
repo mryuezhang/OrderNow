@@ -30,14 +30,12 @@ class OrderBinFragment : AbstractOrderListFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
-        binding = FragmentOrderBinBinding.inflate(inflater, container, false)
-
-        subscribeUi(binding.content.orderList, binding.content.emptyListHelperText)
+    ): View? = FragmentOrderBinBinding.inflate(inflater, container, false).run {
+        binding = this
+        initOrderList(this.content.orderList, this.content.emptyListHelperText)
         setHasOptionsMenu(true)
 
-        return binding.root
+        this.root
     }
 
     override fun updateNoOrderHelpTextWhenSearching() {

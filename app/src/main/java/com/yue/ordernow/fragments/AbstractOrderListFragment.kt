@@ -50,17 +50,6 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
     }
 
     protected fun subscribeUi(orderList: RecyclerView, emptyTextView: TextView) {
-        setupOrderList(orderList, emptyTextView)
-    }
-
-    private fun setupOrderList(orderList: RecyclerView, emptyTextView: TextView) {
-        orderList.addItemDecoration(
-            DividerItemDecoration(
-                requireContext(),
-                DividerItemDecoration.VERTICAL
-            )
-        )
-
         val adapter = OrderAdapter(requireContext(), this)
         orderList.adapter = adapter
 
@@ -68,5 +57,16 @@ abstract class AbstractOrderListFragment : Fragment(), OrderAdapter.ItemLongClic
             adapter.submitListWithHeaders(orders)
             emptyTextView.isGone = orders.isNotEmpty()
         }
+    }
+
+    protected fun initOrderList(orderList: RecyclerView, emptyTextView: TextView) {
+        subscribeUi(orderList, emptyTextView)
+
+        orderList.addItemDecoration(
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 }

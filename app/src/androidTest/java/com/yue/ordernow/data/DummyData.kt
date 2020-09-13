@@ -11,9 +11,6 @@ object DummyData {
     val orderItem4 = OrderItem(wings, 3, "")
     var order1: Order
     var order2: Order
-    val dailySaleSummary = SaleSummary(Report.Type.TODAY)
-    val weeklySaleSummary = SaleSummary(Report.Type.THIS_WEEK)
-    val monthlySaleSummary = SaleSummary(Report.Type.THIS_MONTH)
 
     init {
         order1 =

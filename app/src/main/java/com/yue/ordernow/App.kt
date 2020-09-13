@@ -11,8 +11,10 @@ class App : Application() {
 
         val database = AppDatabase.getInstance(applicationContext)
         database.orderDao().getLastOrder().observeForever {
-            Order.lastOrderCreatedTime = it.timeCreated
-            Order.orderCount = it.orderNumber
+            if (it != null) {
+                Order.lastOrderCreatedTime = it.timeCreated
+                Order.orderCount = it.orderNumber
+            }
         }
     }
 }

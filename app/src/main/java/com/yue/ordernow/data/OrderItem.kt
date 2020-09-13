@@ -37,7 +37,6 @@ data class OrderItem(val item: MenuItem, var quantity: Int, var note: String) : 
 
     fun getFormattedAmount(): String = currencyFormat(item.price * quantity + extraCost)
 
-
     companion object CREATOR : Parcelable.Creator<OrderItem> {
         override fun createFromParcel(parcel: Parcel): OrderItem {
             return OrderItem(parcel)
